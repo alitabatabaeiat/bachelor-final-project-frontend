@@ -5,6 +5,7 @@ import typography from './typography';
 import overrides from './overrides';
 
 const theme = createMuiTheme({
+  direction: 'rtl',
   palette,
   typography,
   overrides,
