@@ -16,11 +16,15 @@ const useStyles = makeStyles(theme => ({
   logoContainer: {
     display: 'flex',
     alignItems: 'center',
-    color: 'white'
   },
   logoIcon: {
     fontSize: 40,
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(1),
+    color: 'white'
+  },
+  logoText: {
+    color: 'white',
+    marginTop: theme.spacing(1)
   },
   flexGrow: {
     flexGrow: 1
@@ -48,7 +52,7 @@ const Topbar = props => {
           to="/"
         >
           <HomeWorkIcon className={classes.logoIcon}/>
-          <Typography variant="span">آپارتمان من</Typography>
+          <Typography variant="h5" className={classes.logoText}>آپارتمان من</Typography>
         </RouterLink>
         <div className={classes.flexGrow}/>
         <Hidden mdDown>
