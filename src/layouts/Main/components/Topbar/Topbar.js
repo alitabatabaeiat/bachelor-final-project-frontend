@@ -30,7 +30,10 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   signOutButton: {
-    marginLeft: theme.spacing(1)
+    marginLeft: theme.spacing(1),
+    '& svg': {
+      transform: 'rotate(180deg)'
+    }
   }
 }));
 
@@ -52,7 +55,12 @@ const Topbar = props => {
           to="/"
         >
           <HomeWorkIcon className={classes.logoIcon}/>
-          <Typography variant="h5" className={classes.logoText}>آپارتمان من</Typography>
+          <Typography
+            className={classes.logoText}
+            variant="h5"
+          >
+            اپلیکیشن آپارتمان من
+          </Typography>
         </RouterLink>
         <div className={classes.flexGrow}/>
         <Hidden mdDown>

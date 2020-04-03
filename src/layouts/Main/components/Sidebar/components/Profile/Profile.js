@@ -3,7 +3,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { Avatar, Typography } from '@material-ui/core';
+import { Avatar, Typography, Button } from '@material-ui/core';
+import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,7 +18,12 @@ const useStyles = makeStyles(theme => ({
     height: 60
   },
   name: {
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1)
+  },
+  roleButton: {
+    paddingTop: 0,
+    paddingBottom: 0
   }
 }));
 
@@ -27,9 +33,9 @@ const Profile = props => {
   const classes = useStyles();
 
   const user = {
-    name: 'Shen Zhi',
+    name: 'سید علی طباطبایی آل طه',
     avatar: '/images/avatars/avatar_11.png',
-    bio: 'Brain Director'
+    role: 'مدیر'
   };
 
   return (
@@ -50,7 +56,15 @@ const Profile = props => {
       >
         {user.name}
       </Typography>
-      <Typography variant="body2">{user.bio}</Typography>
+      <Button
+        className={classes.roleButton}
+        color="primary"
+        endIcon={<SwapHorizIcon />}
+        size="small"
+        variant="outlined"
+      >
+        {user.role}
+      </Button>
     </div>
   );
 };

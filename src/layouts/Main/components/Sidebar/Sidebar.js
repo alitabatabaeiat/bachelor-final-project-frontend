@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import PeopleIcon from '@material-ui/icons/People';
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import ImageIcon from '@material-ui/icons/Image';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SettingsIcon from '@material-ui/icons/Settings';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
+import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
+import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
+import PanToolIcon from '@material-ui/icons/PanTool';
 
-import { Profile, SidebarNav, UpgradePlan } from './components';
+import { Profile, SidebarNav, Apartment } from './components';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -44,24 +44,24 @@ const Sidebar = props => {
 
   const pages = [
     {
-      title: 'Dashboard',
+      title: 'داشبورد',
       href: '/dashboard',
       icon: <DashboardIcon />
     },
     {
-      title: 'Users',
+      title: 'هزینه ها',
       href: '/users',
-      icon: <PeopleIcon />
+      icon: <AccountBalanceWalletIcon />
     },
     {
-      title: 'Products',
+      title: 'واحد ها',
       href: '/products',
-      icon: <ShoppingBasketIcon />
+      icon: <MeetingRoomIcon />
     },
     {
-      title: 'Authentication',
+      title: 'اعلام شارژ',
       href: '/sign-in',
-      icon: <LockOpenIcon />
+      icon: <PanToolIcon />
     },
     {
       title: 'Typography',
@@ -74,12 +74,12 @@ const Sidebar = props => {
       icon: <ImageIcon />
     },
     {
-      title: 'Account',
+      title: 'پروفایل',
       href: '/account',
       icon: <AccountBoxIcon />
     },
     {
-      title: 'Settings',
+      title: 'تنظیمات',
       href: '/settings',
       icon: <SettingsIcon />
     }
@@ -99,11 +99,12 @@ const Sidebar = props => {
       >
         <Profile />
         <Divider className={classes.divider} />
+        <Apartment />
+        <Divider className={classes.divider} />
         <SidebarNav
           className={classes.nav}
           pages={pages}
         />
-        <UpgradePlan />
       </div>
     </Drawer>
   );
