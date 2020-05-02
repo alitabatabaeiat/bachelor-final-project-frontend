@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -9,34 +8,48 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-import PersonIcon from '@material-ui/icons/Person';
 import AddIcon from '@material-ui/icons/Add';
-import Typography from '@material-ui/core/Typography';
 import { blue } from '@material-ui/core/colors';
 import ApartmentIcon from '@material-ui/icons/Apartment';
-import Divider from '@material-ui/core/Divider';
+import { selectApartments } from '../../../../../../selectors/apartments/ApartmentsSelector';
+import * as ApartmentsAction from '../../../../../../store/apartments/ApartmentsAction';
+import { useDispatch, useSelector } from 'react-redux';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
 
-const apartments = [{
-  'id': 4,
-  'title': 'گالریا - ۲',
-  'city': 'تهران',
-  'address': 'خ الهیه - خ گلنار - پ ۵۵'
-}, {
-  'id': 5,
-  'title': 'گالریا - ۱',
-  'city': 'تهران',
-  'address': 'خ الهیه - خ گلنار - پ ۵۲'
-}];
+// const apartments = [{
+//   'id': 4,
+//   'title': 'گالریا - ۲',
+//   'city': 'تهران',
+//   'address': 'خ الهیه - خ گلنار - پ ۵۵'
+// }, {
+//   'id': 5,
+//   'title': 'گالریا - ۱',
+//   'city': 'تهران',
+//   'address': 'خ الهیه - خ گلنار - پ ۵۲'
+// }];
 const useStyles = makeStyles({
   avatar: {
     backgroundColor: blue[100],
     color: blue[600]
+  },
+  dialogContent: {
+    maxHeight: '50vh'
   }
 });
 
 function ApartmentDialog(props) {
   const classes = useStyles();
   const { onClose, selectedValue, open } = props;
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(ApartmentsAction.requestAllApartments());
+  }, [dispatch]);
+
+  const apartments = useSelector(selectApartments);
+  console.log(apartments);
 
   const handleClose = () => {
     onClose(selectedValue);
@@ -50,25 +63,32 @@ function ApartmentDialog(props) {
     <Dialog
       onClose={handleClose}
       open={open}
+      scroll="paper"
     >
       <DialogTitle>انتخاب ساختمان</DialogTitle>
-      <Divider />
-      <List>
-        {apartments.map((apartment) => (
-          <ListItem
-            button
-            key={apartment.id}
-            onClick={() => handleListItemClick(apartment)}
-          >
-            <ListItemAvatar>
-              <Avatar className={classes.avatar}>
-                <ApartmentIcon/>
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={apartment.title}/>
-          </ListItem>
-        ))}
+      <DialogContent
+        className={classes.dialogContent}
+        dividers
+      >
+        <List>
+          {apartments.map((apartment) => (
+            <ListItem
+              button
+              key={apartment.id}
+              onClick={() => handleListItemClick(apartment)}
+            >
+              <ListItemAvatar>
+                <Avatar className={classes.avatar}>
+                  <ApartmentIcon/>
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={apartment.title}/>
+            </ListItem>
+          ))}
+        </List>
+      </DialogContent>
 
+      <DialogActions>
         <ListItem
           autoFocus
           button
@@ -81,7 +101,7 @@ function ApartmentDialog(props) {
           </ListItemAvatar>
           <ListItemText primary="ایجاد ساختمان جدید"/>
         </ListItem>
-      </List>
+      </DialogActions>
     </Dialog>
   );
 }
