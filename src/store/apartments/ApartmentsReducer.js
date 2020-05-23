@@ -17,6 +17,15 @@ const apartmentsReducer = baseReducer(initialState, {
       selectedApartment: action.payload[-1]
     };
   },
+
+  [ApartmentsAction.REQUEST_DELETE_APARTMENT_FINISHED](state, action) {
+    if (action.error)
+      return state;
+    //
+    // let apartments = [...state.apartments];
+    // apartments = apartments.filter(apartment => apartment.id !== action.payload.id);
+    return state
+  },
 });
 
 export default apartmentsReducer;

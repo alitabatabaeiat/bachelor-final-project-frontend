@@ -11,23 +11,17 @@ import Dialog from '@material-ui/core/Dialog';
 import AddIcon from '@material-ui/icons/Add';
 import { blue } from '@material-ui/core/colors';
 import ApartmentIcon from '@material-ui/icons/Apartment';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import { selectApartments } from '../../../../../../selectors/apartments/ApartmentsSelector';
 import * as ApartmentsAction from '../../../../../../store/apartments/ApartmentsAction';
 import { useDispatch, useSelector } from 'react-redux';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import IconButton from '@material-ui/core/IconButton';
 
-// const apartments = [{
-//   'id': 4,
-//   'title': 'گالریا - ۲',
-//   'city': 'تهران',
-//   'address': 'خ الهیه - خ گلنار - پ ۵۵'
-// }, {
-//   'id': 5,
-//   'title': 'گالریا - ۱',
-//   'city': 'تهران',
-//   'address': 'خ الهیه - خ گلنار - پ ۵۲'
-// }];
 const useStyles = makeStyles({
   avatar: {
     backgroundColor: blue[100],
@@ -49,7 +43,6 @@ function ApartmentDialog(props) {
   }, [dispatch]);
 
   const apartments = useSelector(selectApartments);
-  console.log(apartments);
 
   const handleClose = () => {
     onClose(selectedValue);
@@ -57,6 +50,11 @@ function ApartmentDialog(props) {
 
   const handleListItemClick = (value) => {
     onClose(value);
+  };
+
+  const handleDeleteClick = (id) => {
+    dispatch(ApartmentsAction.requestDeleteApartment(id));
+    onClose();
   };
 
   return (
@@ -83,6 +81,14 @@ function ApartmentDialog(props) {
                 </Avatar>
               </ListItemAvatar>
               <ListItemText primary={apartment.title}/>
+              <ListItemSecondaryAction>
+                <IconButton
+                  edge="end"
+                  onClick={() => handleDeleteClick(apartment.id)}
+                >
+                  <DeleteIcon fontSize="small"/>
+                </IconButton>
+              </ListItemSecondaryAction>
             </ListItem>
           ))}
         </List>

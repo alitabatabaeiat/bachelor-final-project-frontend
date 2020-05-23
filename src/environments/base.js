@@ -10,7 +10,8 @@ export default function baseEnv(baseApi) {
     },
     api: {
       apartments: (role) => ({
-        getAll: `${baseApi}/${role}/apartments`
+        getAll: `${baseApi}/${role}/apartments`,
+        delete: (id) => `${baseApi}/${role}/apartments/${id}`,
       })
     },
     isProduction: true,

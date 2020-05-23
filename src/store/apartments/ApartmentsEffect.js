@@ -6,3 +6,9 @@ export async function requestAllApartments(role) {
 
   return HttpUtils.get(endpoint);
 }
+
+export async function requestDeleteApartment(role, id) {
+  const endpoint = environment.api.apartments(role).delete(id);
+
+  return HttpUtils.del(endpoint);
+}
