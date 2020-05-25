@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import MoneyIcon from '@material-ui/icons/Money';
+import HomeIcon from '@material-ui/icons/Home';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Budget = props => {
+const Residents = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -62,38 +62,38 @@ const Budget = props => {
               gutterBottom
               variant="body2"
             >
-              BUDGET
+              واحد‌ها
             </Typography>
-            <Typography variant="h3">$24,000</Typography>
+            <Typography variant="h3">۱۲</Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
-              <MoneyIcon className={classes.icon} />
+              <HomeIcon className={classes.icon} />
             </Avatar>
           </Grid>
         </Grid>
-        <div className={classes.difference}>
-          <ArrowDownwardIcon className={classes.differenceIcon} />
-          <Typography
-            className={classes.differenceValue}
-            variant="body2"
-          >
-            12%
-          </Typography>
-          <Typography
-            className={classes.caption}
-            variant="caption"
-          >
-            Since last month
-          </Typography>
-        </div>
+        {/*<div className={classes.difference}>*/}
+        {/*  <ArrowDownwardIcon className={classes.differenceIcon} />*/}
+        {/*  <Typography*/}
+        {/*    className={classes.differenceValue}*/}
+        {/*    variant="body2"*/}
+        {/*  >*/}
+        {/*    12%*/}
+        {/*  </Typography>*/}
+        {/*  <Typography*/}
+        {/*    className={classes.caption}*/}
+        {/*    variant="caption"*/}
+        {/*  >*/}
+        {/*    Since last month*/}
+        {/*  </Typography>*/}
+        {/*</div>*/}
       </CardContent>
     </Card>
   );
 };
 
-Budget.propTypes = {
+Residents.propTypes = {
   className: PropTypes.string
 };
 
-export default Budget;
+export default Residents;

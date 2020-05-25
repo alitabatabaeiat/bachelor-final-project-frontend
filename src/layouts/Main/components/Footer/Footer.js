@@ -24,16 +24,17 @@ const Footer = props => {
         &copy;{' '}
         <Link
           component="a"
-          href="https://devias.io/"
+          href="https://github.com/alitabatabaeiat"
           target="_blank"
         >
-          Devias IO
+          علی طباطبایی
         </Link>
-        . 2019
+        <Typography variant="displayInline">
+          {' '}- ۱۳۹۸-۱۳۹۹
+        </Typography>
       </Typography>
       <Typography variant="caption">
-        Created with love for the environment. By designers and developers who
-        love to work together in offices!
+        ساخته شده برای پروژه کارشناسی دانشگاه تهران
       </Typography>
     </div>
   );
