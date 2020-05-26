@@ -30,7 +30,7 @@ const Footer = props => {
           علی طباطبایی
         </Link>
         <Typography variant="displayInline">
-          {' '}- ۱۳۹۸-۱۳۹۹
+          {' '}۱۳۹۸ - ۱۳۹۹
         </Typography>
       </Typography>
       <Typography variant="caption">

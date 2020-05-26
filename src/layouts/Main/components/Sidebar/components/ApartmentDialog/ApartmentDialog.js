@@ -12,13 +12,11 @@ import AddIcon from '@material-ui/icons/Add';
 import { blue } from '@material-ui/core/colors';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import { selectApartments } from '../../../../../../selectors/apartments/ApartmentsSelector';
+import { selectApartments } from './ApartmentDialogSelector';
 import * as ApartmentsAction from '../../../../../../store/apartments/ApartmentsAction';
 import { useDispatch, useSelector } from 'react-redux';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 
@@ -34,7 +32,7 @@ const useStyles = makeStyles({
 
 function ApartmentDialog(props) {
   const classes = useStyles();
-  const { onClose, selectedValue, open } = props;
+  const { onClose, open } = props;
 
   const dispatch = useDispatch();
 
@@ -45,11 +43,12 @@ function ApartmentDialog(props) {
   const apartments = useSelector(selectApartments);
 
   const handleClose = () => {
-    onClose(selectedValue);
+    onClose();
   };
 
   const handleListItemClick = (value) => {
-    onClose(value);
+    dispatch(ApartmentsAction.updateActiveApartment(value));
+    onClose();
   };
 
   const handleDeleteClick = (id) => {
@@ -114,8 +113,7 @@ function ApartmentDialog(props) {
 
 ApartmentDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-  selectedValue: PropTypes.string.isRequired
+  open: PropTypes.bool.isRequired
 };
 
 export default ApartmentDialog;

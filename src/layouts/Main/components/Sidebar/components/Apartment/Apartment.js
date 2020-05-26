@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/styles';
 import { Typography, Button } from '@material-ui/core';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import ApartmentDialog from '../ApartmentDialog';
+import { useSelector } from 'react-redux';
+import { selectActiveApartment } from './ApartmentSelector';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,12 +18,8 @@ const useStyles = makeStyles(theme => ({
 
 const Apartment = props => {
   const [open, setOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState({
-    'id': 4,
-    'title': 'گالریا - ۲',
-    'city': 'تهران',
-    'address': 'خ الهیه - خ گلنار - پ ۵۵'
-  });
+
+  const activeApartment = useSelector(selectActiveApartment);
 
   const { className, ...rest } = props;
 
@@ -29,10 +27,8 @@ const Apartment = props => {
 
   const handleClickOpen = () => setOpen(true);
 
-  const handleClose = (value) => {
+  const handleClose = () => {
     setOpen(false);
-    if (value)
-      setSelectedValue(value);
   };
 
   return (
@@ -51,19 +47,18 @@ const Apartment = props => {
           align="center"
           variant="h6"
         >
-          {selectedValue.title}
+          {activeApartment.title}
         </Typography>
         <Typography
           align="center"
           variant="body2"
         >
-          کد: {selectedValue.id}
+          کد: {activeApartment.id}
         </Typography>
       </div>
       <ApartmentDialog
         onClose={handleClose}
         open={open}
-        selectedValue={selectedValue}
       />
     </div>
   );

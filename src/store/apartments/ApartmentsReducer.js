@@ -3,7 +3,11 @@ import baseReducer from '../../helpers/BaseReducer';
 
 export const initialState = {
   apartments: [],
-  selectedApartment: null,
+  activeApartment: {
+    id: '-',
+    title: 'هیچ آپارتمانی انتخاب نشده است'
+  },
+  expenses: []
 };
 
 const apartmentsReducer = baseReducer(initialState, {
@@ -13,8 +17,7 @@ const apartmentsReducer = baseReducer(initialState, {
     return {
       ...state,
       apartments: action.payload.data,
-      // TODO: App should persist that what was the last selectedApartment before refresh
-      selectedApartment: action.payload[-1]
+      activeApartment: state.activeApartment ?? action.payload.data[0]
     };
   },
 
@@ -24,8 +27,32 @@ const apartmentsReducer = baseReducer(initialState, {
     //
     // let apartments = [...state.apartments];
     // apartments = apartments.filter(apartment => apartment.id !== action.payload.id);
-    return state
+    return state;
   },
+
+  [ApartmentsAction.UPDATE_ACTIVE_APARTMENT](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      activeApartment: action.payload
+    };
+  },
+
+  [ApartmentsAction.REQUEST_ALL_APARTMENT_EXPENSES_FINISHED](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      expenses: action.payload.data
+    };
+  },
+
+  [ApartmentsAction.REQUEST_DELETE_APARTMENT_EXPENSE_FINISHED](state, action) {
+    if (action.error)
+      return state;
+    return state;
+  }
 });
 
 export default apartmentsReducer;

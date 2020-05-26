@@ -5,11 +5,24 @@ import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProductio
 import { routerMiddleware } from 'connected-react-router';
 import reduxFreeze from 'redux-freeze';
 import rootReducer from './rootReducer';
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 
 export default function createStoreWithMiddleware(initialState, history) {
   const middleware = [environment.isDevelopment ? reduxFreeze : null, thunk, routerMiddleware(history)].filter(Boolean);
 
-  const store = createStore(rootReducer(history), initialState, composeWithDevTools(applyMiddleware(...middleware)));
+  const persistConfig = {
+    key: 'root',
+    storage,
+  };
 
-  return store;
+  const persistedReducer = persistReducer(persistConfig, rootReducer(history));
+
+  const store = createStore(persistedReducer, initialState, composeWithDevTools(applyMiddleware(...middleware)));
+  const persistor = persistStore(store);
+
+  return {
+    store,
+    persistor
+  };
 }

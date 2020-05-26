@@ -5,9 +5,9 @@ const env = environment(baseApi);
 
 const developmentEnv = {
   ...env,
-  api: {
-    ...env.api,
-  },
+  api: (role) => ({
+    ...env.api(role),
+  }),
   isProduction: false,
   isDevelopment: true,
 };

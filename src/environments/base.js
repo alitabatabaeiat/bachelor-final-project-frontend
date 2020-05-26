@@ -8,12 +8,16 @@ export default function baseEnv(baseApi) {
     route: {
       baseRoute: '/'
     },
-    api: {
-      apartments: (role) => ({
+    api: (role) => ({
+      apartments: (apartmentId ='') => ({
         getAll: `${baseApi}/${role}/apartments`,
-        delete: (id) => `${baseApi}/${role}/apartments/${id}`,
+        delete: `${baseApi}/${role}/apartments/${apartmentId}`,
+        expenses: (expensesId = '') => ({
+          getAll: `${baseApi}/${role}/apartments/${apartmentId}/expenses`,
+          delete: `${baseApi}/${role}/apartments/${apartmentId}/expenses/${expensesId}`,
+        })
       })
-    },
+    }),
     isProduction: true,
     isDevelopment: false,
     isTesting: false
