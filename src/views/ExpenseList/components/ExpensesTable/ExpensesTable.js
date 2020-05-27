@@ -21,6 +21,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectExpenses } from './ExpensesSelector';
 import * as ApartmentsAction from '../../../../store/apartments/ApartmentsAction';
 import { englishNumber, englishNumberWithCommas } from '../../../../helpers/persian';
+import Button from '@material-ui/core/Button';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -31,8 +35,6 @@ const useStyles = makeStyles(theme => ({
     minWidth: 1050
   },
   nameContainer: {
-    // display: 'flex',
-    textAlign: 'center',
     width: 20,
     height: 20,
     borderRadius: 10
@@ -169,7 +171,31 @@ const ExpensesTable = props => {
                       {englishNumber(moment(expense.createdAt).locale('fa').format('YYYY/MM/DD'))}
                     </TableCell>
                     <TableCell>{expense.description}</TableCell>
-                    <TableCell />
+                    <TableCell>
+                      <Box
+                        component="span"
+                        mx={2}
+                      >
+                        <Button
+                          className={classes.button}
+                          color="primary"
+                          size="small"
+                          startIcon={<EditIcon />}
+                          variant="contained"
+                        >
+                        ویرایش
+                        </Button>
+                      </Box>
+                      <Button
+                        className={classes.button}
+                        color="secondary"
+                        size="small"
+                        startIcon={<DeleteIcon />}
+                        variant="contained"
+                      >
+                        حذف
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

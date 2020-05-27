@@ -46,7 +46,7 @@ const ExpensesToolbar = props => {
           color="primary"
           variant="contained"
         >
-          افزودن هزینه
+          ثبت هزینه
         </Button>
       </div>
       <div className={classes.row}>

@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 
 import { ExpensesToolbar, ExpensesTable } from './components';
 import mockData from './data';
+import ExpenseFormDialog from './components/ExpenseFormDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,6 +25,11 @@ const ExpenseList = () => {
       <div className={classes.content}>
         <ExpensesTable users={users} />
       </div>
+      <ExpenseFormDialog
+        onClose={() => {}}
+        onSubmit={() => {}}
+        open
+      />
     </div>
   );
 };
