@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/styles';
@@ -6,6 +6,10 @@ import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import SaveIcon from '@material-ui/icons/Save';
 import AddIcon from '@material-ui/icons/Add';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectExpenseOptions, selectExpenseTypes } from './ExpenseFormSelector';
+import * as ExpenseTypesAction from '../../../../store/expenseTypes/ExpenseTypesAction';
+import * as ApartmentsAction from '../../../../store/apartments/ApartmentsAction';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -33,11 +37,32 @@ const useStyles = makeStyles((theme) => ({
   },
   rightFormElement: {
     marginRight: theme.spacing(2)
-  }
+  },
+  typeCircle: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginRight: theme.spacing(1)
+  },
+  // typeTitle: {
+  //   color: 'white',
+  //   padding: '2px 6px 2px 6px',
+  //   borderRadius: 4
+  // }
 }));
 
 const ExpenseForm = props => {
   const { onSubmit } = props;
+
+  const types = useSelector(selectExpenseTypes);
+  const options = useSelector(selectExpenseOptions);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(ExpenseTypesAction.requestAllExpenseTypes());
+    dispatch(ApartmentsAction.requestAllExpenseOptions());
+  }, [dispatch]);
 
   const [state, setState] = React.useState({
     type: null,
@@ -79,16 +104,27 @@ const ExpenseForm = props => {
           label="نوع"
           margin="dense"
           onChange={handleChange}
+          required
           select
           value={state.type}
           variant="outlined"
         >
-          <MenuItem
-            key={1}
-            value={1}
-          >
-            الکی
-          </MenuItem>
+          {
+            types.map(type => (
+              <MenuItem
+                key={type.id}
+                value={type.id}
+              >
+                <span
+                  className={classes.typeCircle}
+                  style={{
+                    backgroundColor: '#' + type.color
+                  }}
+                />
+                <span>{type.title}</span>
+              </MenuItem>
+            ))
+          }
         </TextField>
 
         <Button
@@ -109,6 +145,7 @@ const ExpenseForm = props => {
           helperText="مبلغ هزینه را وارد کنید"
           label="مبلغ"
           margin="dense"
+          required
           variant="outlined"
         />
 
@@ -122,16 +159,21 @@ const ExpenseForm = props => {
           label="تقسیم بر اساس"
           margin="dense"
           onChange={handleChange}
+          required
           select
           value={state.splitOption}
           variant="outlined"
         >
-          <MenuItem
-            key={1}
-            value={1}
-          >
-            الکی
-          </MenuItem>
+          { options &&
+            options.splitOptions.map(splitOption => (
+              <MenuItem
+                key={splitOption.id}
+                value={splitOption.id}
+              >
+                {splitOption.title}
+              </MenuItem>
+            ))
+          }
         </TextField>
       </div>
 
@@ -146,16 +188,22 @@ const ExpenseForm = props => {
           label="برای"
           margin="dense"
           onChange={handleChange}
+          required
           select
           value={state.filterOption}
           variant="outlined"
         >
-          <MenuItem
-            key={1}
-            value={1}
-          >
-            الکی
-          </MenuItem>
+          {
+            options &&
+            options.filterOptions.map(filterOption => (
+              <MenuItem
+                key={filterOption.id}
+                value={filterOption.id}
+              >
+                {filterOption.title}
+              </MenuItem>
+            ))
+          }
         </TextField>
 
         <TextField

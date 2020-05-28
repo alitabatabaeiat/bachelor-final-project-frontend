@@ -4,6 +4,7 @@ import apartmentReducer from './apartments/ApartmentsReducer';
 import errorReducer from './error/ErrorReducer';
 import requestingReducer from './requesting/RequestingReducer';
 import userReducer from './user/UserReducer';
+import expenseTypesReducer from './expenseTypes/ExpenseTypesReducer';
 
 export default function rootReducer(history) {
   const reducerMap = {
@@ -12,6 +13,7 @@ export default function rootReducer(history) {
     router: connectRouter(history),
     user: userReducer,
     apartments: apartmentReducer,
+    expenseTypes: expenseTypesReducer
   };
 
   return combineReducers(reducerMap);

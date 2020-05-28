@@ -1,5 +1,6 @@
 import * as ApartmentsAction from './ApartmentsAction';
 import baseReducer from '../../helpers/BaseReducer';
+import { REQUEST_ALL_EXPENSE_OPTIONS } from './ApartmentsAction';
 
 export const initialState = {
   apartments: [],
@@ -7,7 +8,11 @@ export const initialState = {
     id: '-',
     title: 'هیچ آپارتمانی انتخاب نشده است'
   },
-  expenses: []
+  expenses: [],
+  expenseOptions: {
+    splitOptions: [],
+    filterOptions: []
+  }
 };
 
 const apartmentsReducer = baseReducer(initialState, {
@@ -52,6 +57,15 @@ const apartmentsReducer = baseReducer(initialState, {
     if (action.error)
       return state;
     return state;
+  },
+
+  [ApartmentsAction.REQUEST_ALL_EXPENSE_OPTIONS_FINISHED](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      expenseOptions: action.payload.data
+    };
   }
 });
 

@@ -24,3 +24,9 @@ export async function requestDeleteApartmentExpense(role, apartmentId, expenseId
 
   return HttpUtils.del(endpoint);
 }
+
+export async function requestAllExpenseOptions(role, apartmentId, expenseId) {
+  const endpoint = environment.api(role).apartments(apartmentId).expenses().getAllOptions;
+
+  return HttpUtils.get(endpoint);
+}

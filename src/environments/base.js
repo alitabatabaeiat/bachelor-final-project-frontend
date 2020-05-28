@@ -9,13 +9,17 @@ export default function baseEnv(baseApi) {
       baseRoute: '/'
     },
     api: (role) => ({
-      apartments: (apartmentId ='') => ({
+      apartments: (apartmentId = '') => ({
         getAll: `${baseApi}/${role}/apartments`,
         delete: `${baseApi}/${role}/apartments/${apartmentId}`,
         expenses: (expensesId = '') => ({
           getAll: `${baseApi}/${role}/apartments/${apartmentId}/expenses`,
           delete: `${baseApi}/${role}/apartments/${apartmentId}/expenses/${expensesId}`,
+          getAllOptions: `${baseApi}/${role}/apartments/${apartmentId}/expenses/options`,
         })
+      }),
+      expenseTypes: () => ({
+        getAll: `${baseApi}/${role}/expenseTypes`
       })
     }),
     isProduction: true,

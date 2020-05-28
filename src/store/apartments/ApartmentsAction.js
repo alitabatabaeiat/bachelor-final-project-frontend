@@ -15,6 +15,9 @@ export const REQUEST_ALL_APARTMENT_EXPENSES_FINISHED = 'ApartmentsAction.REQUEST
 export const REQUEST_DELETE_APARTMENT_EXPENSE = 'ApartmentsAction.REQUEST_DELETE_APARTMENT_EXPENSE';
 export const REQUEST_DELETE_APARTMENT_EXPENSE_FINISHED = 'ApartmentsAction.REQUEST_DELETE_APARTMENT_EXPENSE_FINISHED';
 
+export const REQUEST_ALL_EXPENSE_OPTIONS = 'ApartmentsAction.REQUEST_ALL_EXPENSE_OPTIONS';
+export const REQUEST_ALL_EXPENSE_OPTIONS_FINISHED = 'ApartmentsAction.REQUEST_ALL_EXPENSE_OPTIONS_FINISHED';
+
 
 export function requestAllApartments() {
   return async (dispatch, getState) => {
@@ -54,5 +57,15 @@ export function requestDeleteApartmentExpense(expenseId) {
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_DELETE_APARTMENT_EXPENSE, ApartmentsEffect.requestDeleteApartmentExpense,
       userRole, apartmentId, expenseId);
+  };
+}
+
+export function requestAllExpenseOptions() {
+  return async (dispatch, getState) => {
+    const userRole = getState().user.role;
+    const apartmentId = getState().apartments.activeApartment.id;
+
+    await ActionUtils.createThunkEffect(dispatch, REQUEST_ALL_EXPENSE_OPTIONS, ApartmentsEffect.requestAllExpenseOptions,
+      userRole, apartmentId);
   };
 }
