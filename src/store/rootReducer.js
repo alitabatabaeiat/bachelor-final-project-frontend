@@ -5,6 +5,7 @@ import errorReducer from './error/ErrorReducer';
 import requestingReducer from './requesting/RequestingReducer';
 import userReducer from './user/UserReducer';
 import expenseTypesReducer from './expenseTypes/ExpenseTypesReducer';
+import unitsReducer from './units/UnitsReducer';
 
 export default function rootReducer(history) {
   const reducerMap = {
@@ -13,6 +14,7 @@ export default function rootReducer(history) {
     router: connectRouter(history),
     user: userReducer,
     apartments: apartmentReducer,
+    units: unitsReducer,
     expenseTypes: expenseTypesReducer
   };
 

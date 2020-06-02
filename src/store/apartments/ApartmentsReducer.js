@@ -1,6 +1,5 @@
 import * as ApartmentsAction from './ApartmentsAction';
 import baseReducer from '../../helpers/BaseReducer';
-import { REQUEST_ALL_EXPENSE_OPTIONS } from './ApartmentsAction';
 
 export const initialState = {
   apartments: [],

@@ -20,6 +20,9 @@ export default function baseEnv(baseApi) {
       }),
       expenseTypes: () => ({
         getAll: `${baseApi}/${role}/expenseTypes`
+      }),
+      units: () => ({
+        getAll: `${baseApi}/${role}/units`
       })
     }),
     isProduction: true,
