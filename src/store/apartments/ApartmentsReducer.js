@@ -52,6 +52,15 @@ const apartmentsReducer = baseReducer(initialState, {
     };
   },
 
+  [ApartmentsAction.REQUEST_CREATE_APARTMENT_EXPENSE_FINISHED](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      expenses: [action.payload.data, ...state.expenses]
+    };
+  },
+
   [ApartmentsAction.REQUEST_DELETE_APARTMENT_EXPENSE_FINISHED](state, action) {
     if (action.error)
       return state;

@@ -40,29 +40,7 @@ const useStyles = makeStyles((theme) => ({
 const ExpenseFormDialog = props => {
   const { open, onClose, onSubmit } = props;
 
-  const [state, setState] = React.useState({
-    type: null,
-    amount: null,
-    splitOption: null,
-    filterOption: null,
-    description: null
-  });
-
   const classes = useStyles();
-
-  const handleChange = (event) => {
-    const name = event.target.name;
-    setState({
-      ...state,
-      [name]: event.target.value
-    });
-  };
-
-  const handleSubmit = () => {
-    // validation
-
-    onSubmit();
-  };
 
   return (
     <Dialog

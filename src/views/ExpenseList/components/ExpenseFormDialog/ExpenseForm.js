@@ -14,7 +14,7 @@ import * as UnitsAction from '../../../../store/units/UnitsAction';
 import Paper from '@material-ui/core/Paper';
 import clsx from 'clsx';
 import { Typography } from '@material-ui/core';
-import { englishNumber, englishNumberWithCommas } from '../../../../helpers/persian';
+import { toPersianNumber, toEnglishNumberWithoutComma, toPersianNumberWithComma } from '../../../../helpers/persian';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Badge from '@material-ui/core/Badge';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     flexBasis: 0
   },
   typeTextField: {
-    flexGrow: 8
+    flexGrow: 6
   },
   addExpenseTypeButton: {
     marginTop: theme.spacing(1)
@@ -75,6 +75,9 @@ const useStyles = makeStyles((theme) => ({
   },
   unitCoefficient: {
     maxWidth: 100
+  },
+  submitButton: {
+    marginLeft: 'auto'
   }
 }));
 
@@ -119,6 +122,15 @@ const ExpenseForm = props => {
     });
   };
 
+  const handleAmountChange = async event => {
+    const { name, value } = event.target;
+    const amount = value ? parseInt(toEnglishNumberWithoutComma(value)) : undefined;
+    await setState({
+      ...state,
+      [name]: amount
+    });
+  };
+
   const handleSplitOptionChange = async event => {
     if (event.target.value === 6)
       await setCoefficients([
@@ -154,10 +166,8 @@ const ExpenseForm = props => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // validation
-    console.log(units);
-    console.log(coefficients);
     const data = {
       ...state,
       coefficients: coefficients ? coefficients.filter((coefficient, index) => units[index].selected) : undefined,
@@ -165,13 +175,16 @@ const ExpenseForm = props => {
     };
 
     const errors = validate(createApartmentExpenseSchema, data);
-    if (!(data.coefficients.find(coefficient => coefficient > 0) > 0))
+    if (data.coefficients && !(data.coefficients.find(coefficient => coefficient > 0) > 0))
       errors.coefficients = {
         message: 'باید حداقل یکی از ضرایب واحدهای انتخابی غیر صفر باشد'
       };
     setErrors(errors);
+    if (!errors) {
+      await dispatch(ApartmentsAction.requestCreateApartmentExpense(data));
 
-    onSubmit();
+      onSubmit();
+    }
   };
 
   const hasError = (errors, name) => errors && errors[name];
@@ -221,7 +234,7 @@ const ExpenseForm = props => {
           startIcon={<AddIcon/>}
           variant="contained"
         >
-          ثبت
+          نوع جدید
         </Button>
       </div>
 
@@ -235,9 +248,9 @@ const ExpenseForm = props => {
           }}
           label="مبلغ"
           margin="dense"
-          onChange={handleChange}
+          onChange={handleAmountChange}
           required
-          value={state.amount}
+          value={toPersianNumberWithComma(state.amount)}
           variant="outlined"
         />
 
@@ -314,63 +327,64 @@ const ExpenseForm = props => {
           variant="outlined"
         />
       </div>
-
-      <div className={clsx(classes.formRowContainer, classes.unitsRowContainer)}>
-        {
-          state.filterOption &&
-          units.map((unit, index) => (
-            <ButtonBase
-              className={classes.unitButton}
-              focusVisibleClassName={classes.focusVisible}
-              key={unit.id}
-              onClick={(event) => handleOnUnitClick(event, index)}
-            >
-              <Badge
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left'
-                }}
-                badgeContent={
-                  unit.selected ?
-                    <CheckCircleIcon
-                      color="primary"
-                      fontSize="small"
-                    /> : false
-                }
+      {
+        state.filterOption &&
+        <div className={clsx(classes.formRowContainer, classes.unitsRowContainer)}>
+          {
+            units.map((unit, index) => (
+              <ButtonBase
+                className={classes.unitButton}
+                focusVisibleClassName={classes.focusVisible}
+                key={unit.id}
+                onClick={(event) => handleOnUnitClick(event, index)}
               >
-                <Paper className={classes.unit}>
-                  <Typography variant="body1">
-                    طبقه {englishNumber(unit.floor)} - {unit.title}
-                  </Typography>
-                  <Typography variant="caption">
-                    {unit.resident ? `${unit.resident.firstName ?? 'ساکن ثبت نام نکرده'} ${unit.resident.lastName ?? ''}` : 'واحد خالی'}
-                  </Typography>
-                  {
-                    <Typography variant="caption">
-                      {unit.share !== undefined ? englishNumberWithCommas(unit.share.toFixed(0)) + ' ریال' : 'نامشخص'}
+                <Badge
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left'
+                  }}
+                  badgeContent={
+                    unit.selected ?
+                      <CheckCircleIcon
+                        color="primary"
+                        fontSize="small"
+                      /> : false
+                  }
+                >
+                  <Paper className={classes.unit}>
+                    <Typography variant="body1">
+                      طبقه {toPersianNumber(unit.floor)} - {unit.title}
                     </Typography>
-                  }
-                  {
-                    state.splitOption === 6 &&
-                    <TextField
-                      className={classes.unitCoefficient}
-                      inputProps={{
-                        name: index
-                      }}
-                      label="ضریب"
-                      margin="dense"
-                      onChange={handleCoefficientChange}
-                      size="small"
-                      value={coefficients[index]}
-                      variant="outlined"
-                    />
-                  }
-                </Paper>
-              </Badge>
-            </ButtonBase>
-          ))
-        }
-      </div>
+                    <Typography variant="caption">
+                      {unit.resident ? `${unit.resident.firstName ?? 'ساکن ثبت نام نکرده'} ${unit.resident.lastName ?? ''}` : 'واحد خالی'}
+                    </Typography>
+                    {
+                      <Typography variant="caption">
+                        {unit.share !== undefined ? toPersianNumberWithComma(Math.round(unit.share)) + ' ریال' : 'نامشخص'}
+                      </Typography>
+                    }
+                    {
+                      state.splitOption === 6 &&
+                      <TextField
+                        className={classes.unitCoefficient}
+                        inputProps={{
+                          name: index
+                        }}
+                        label="ضریب"
+                        margin="dense"
+                        onChange={handleCoefficientChange}
+                        size="small"
+                        value={coefficients[index]}
+                        variant="outlined"
+                      />
+                    }
+                  </Paper>
+                </Badge>
+              </ButtonBase>
+            ))
+          }
+        </div>
+      }
 
       {hasError(errors, 'units') ?
         <div className={clsx(classes.formRowContainer, classes.errorContainer)}>
@@ -394,7 +408,7 @@ const ExpenseForm = props => {
 
       <div className={classes.formRowContainer}>
         <Button
-          className={classes.button}
+          className={classes.submitButton}
           color="primary"
           onClick={handleSubmit}
           startIcon={<SaveIcon/>}

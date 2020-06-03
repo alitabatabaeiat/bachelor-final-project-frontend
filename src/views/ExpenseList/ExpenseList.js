@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 
 import { ExpensesToolbar, ExpensesTable } from './components';
-import mockData from './data';
 import ExpenseFormDialog from './components/ExpenseFormDialog';
 
 const useStyles = makeStyles(theme => ({
@@ -15,20 +14,28 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ExpenseList = () => {
+  const [open, setOpen] = useState(true);
+
   const classes = useStyles();
 
-  const [users] = useState(mockData);
+  const handleExpenseFormDialogOpen = () => {
+    setOpen(true);
+  };
+
+  const handleExpenseFormDialogClose = () => {
+    setOpen(false);
+  };
 
   return (
     <div className={classes.root}>
-      <ExpensesToolbar />
+      <ExpensesToolbar onCreateApartmentExpenseClick={handleExpenseFormDialogOpen} />
       <div className={classes.content}>
-        <ExpensesTable users={users} />
+        <ExpensesTable />
       </div>
       <ExpenseFormDialog
-        onClose={() => {}}
-        onSubmit={() => {}}
-        open
+        onClose={handleExpenseFormDialogClose}
+        onSubmit={handleExpenseFormDialogClose}
+        open={open}
       />
     </div>
   );

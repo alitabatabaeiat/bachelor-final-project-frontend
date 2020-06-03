@@ -14,6 +14,7 @@ export default function baseEnv(baseApi) {
         delete: `${baseApi}/${role}/apartments/${apartmentId}`,
         expenses: (expensesId = '') => ({
           getAll: `${baseApi}/${role}/apartments/${apartmentId}/expenses`,
+          create: `${baseApi}/${role}/apartments/${apartmentId}/expenses`,
           delete: `${baseApi}/${role}/apartments/${apartmentId}/expenses/${expensesId}`,
           getAllOptions: `${baseApi}/${role}/apartments/${apartmentId}/expenses/options`,
         })

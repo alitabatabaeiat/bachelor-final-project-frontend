@@ -20,7 +20,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { selectExpenses } from './ExpensesSelector';
 import * as ApartmentsAction from '../../../../store/apartments/ApartmentsAction';
-import { englishNumber, englishNumberWithCommas } from '../../../../helpers/persian';
+import { toPersianNumber, toPersianNumberWithComma } from '../../../../helpers/persian';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -164,13 +164,13 @@ const ExpensesTable = props => {
                       />
                     </TableCell>
                     <TableCell>{expense.type.title}</TableCell>
-                    <TableCell>{englishNumberWithCommas(expense.amount)}</TableCell>
+                    <TableCell>{toPersianNumberWithComma(expense.amount)}</TableCell>
                     <TableCell>{expense.filterOption.title}</TableCell>
                     <TableCell>{expense.splitOption.title}</TableCell>
                     <TableCell>
-                      {englishNumber(moment(expense.createdAt).locale('fa').format('YYYY/MM/DD'))}
+                      {toPersianNumber(moment(expense.createdAt).locale('fa').format('YYYY/MM/DD'))}
                     </TableCell>
-                    <TableCell>{expense.description}</TableCell>
+                    <TableCell>{expense.description ? expense.description : '-'}</TableCell>
                     <TableCell>
                       <Box
                         component="span"
