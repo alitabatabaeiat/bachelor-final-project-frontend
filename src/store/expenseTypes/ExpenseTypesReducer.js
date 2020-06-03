@@ -13,6 +13,15 @@ const expenseTypesReducer = baseReducer(initialState, {
       ...state,
       types: action.payload.data
     };
+  },
+
+  [ApartmentsAction.REQUEST_CREATE_EXPENSE_TYPE_FINISHED](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      types: [action.payload.data, ...state.types]
+    };
   }
 });
 

@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 
 import { ExpensesToolbar, ExpensesTable } from './components';
 import ExpenseFormDialog from './components/ExpenseFormDialog';
+import ExpenseTypeDialog from './components/ExpenseTypeDialog/ExpenseTypeDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,16 +15,25 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ExpenseList = () => {
-  const [open, setOpen] = useState(true);
+  const [expenseFormDialogOpen, setExpenseFormDialogOpen] = useState(false);
+  const [expenseTypeDialogOpen, setExpenseTypeDialogOpen] = useState(false);
 
   const classes = useStyles();
 
   const handleExpenseFormDialogOpen = () => {
-    setOpen(true);
+    setExpenseFormDialogOpen(true);
+  };
+
+  const handleExpenseTypeDialogOpen = () => {
+    setExpenseTypeDialogOpen(true);
   };
 
   const handleExpenseFormDialogClose = () => {
-    setOpen(false);
+    setExpenseFormDialogOpen(false);
+  };
+
+  const handleExpenseTypeDialogClose = () => {
+    setExpenseTypeDialogOpen(false);
   };
 
   return (
@@ -34,8 +44,14 @@ const ExpenseList = () => {
       </div>
       <ExpenseFormDialog
         onClose={handleExpenseFormDialogClose}
+        onOpenExpenseTypeDialog={handleExpenseTypeDialogOpen}
         onSubmit={handleExpenseFormDialogClose}
-        open={open}
+        open={expenseFormDialogOpen}
+      />
+      <ExpenseTypeDialog
+        onClose={handleExpenseTypeDialogClose}
+        onSubmit={handleExpenseTypeDialogClose}
+        open={expenseTypeDialogOpen}
       />
     </div>
   );

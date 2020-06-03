@@ -6,3 +6,9 @@ export async function requestExpenseTypes(role) {
 
   return HttpUtils.get(endpoint);
 }
+
+export async function requestCreateExpenseType(role, data) {
+  const endpoint = environment.api(role).expenseTypes().create;
+
+  return HttpUtils.post(endpoint, data);
+}

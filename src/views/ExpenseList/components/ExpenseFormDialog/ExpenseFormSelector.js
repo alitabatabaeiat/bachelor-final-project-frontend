@@ -33,9 +33,10 @@ function _selectUnits(units, localState = {}, coefficients, selectedUnits) {
   if (splitOption && amount) {
     switch (splitOption) {
       case 1:
+        const unitsCount = filteredUnits.reduce((curr, unit) => (unit.selected ? 1 : 0) + curr, 0);
         filteredUnits = filteredUnits.map(unit => ({
           ...unit,
-          share: unit.selected ? amount / filteredUnits.length : 0
+          share: unit.selected ? amount / unitsCount : 0
         }));
         break;
       case 2: {

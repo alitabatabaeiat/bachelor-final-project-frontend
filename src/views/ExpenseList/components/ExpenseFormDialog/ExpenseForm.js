@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ExpenseForm = props => {
-  const { onSubmit } = props;
+  const { onSubmit, onAddExpenseTypeClick } = props;
 
   const [state, setState] = React.useState({
     type: undefined,
@@ -134,20 +134,20 @@ const ExpenseForm = props => {
   const handleSplitOptionChange = async event => {
     if (event.target.value === 6)
       await setCoefficients([
-        ...Array(units.length).fill(0)
+        ...Array(units.length).fill(false)
       ]);
     await handleChange(event);
   };
 
   const handleFilterOptionChange = async event => {
-    if (event.target.value === 4) {
+    if (event.target.value === 4)
       await setSelectedUnits([
         ...Array(units.length).fill(false)
       ]);
+    if (event.target.value === 6)
       await setCoefficients([
         ...Array(units.length).fill(0)
       ]);
-    }
     await handleChange(event);
   };
 
@@ -229,7 +229,7 @@ const ExpenseForm = props => {
         <Button
           className={clsx(classes.formElement, classes.addExpenseTypeButton)}
           color="primary"
-          onClick={handleAddExpenseType}
+          onClick={onAddExpenseTypeClick}
           size="small"
           startIcon={<AddIcon/>}
           variant="contained"
@@ -318,7 +318,7 @@ const ExpenseForm = props => {
           error={hasError(errors, 'description')}
           helperText={hasError(errors, 'description') ? errors.description.message : 'شرح هزینه را وارد کنید'}
           inputProps={{
-            name: 'amount'
+            name: 'description'
           }}
           label="شرح"
           margin="dense"
@@ -422,6 +422,7 @@ const ExpenseForm = props => {
 };
 
 ExpenseForm.propTypes = {
+  onAddExpenseTypeClick: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired
 };
 
