@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Avatar, Typography, Button } from '@material-ui/core';
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -47,9 +48,10 @@ const Profile = props => {
         alt="Person"
         className={classes.avatar}
         component={RouterLink}
-        src={user.avatar}
         to="/settings"
-      />
+      >
+        <AccountCircleIcon style={{fontSize: 70}}/>
+      </Avatar>
       <Typography
         className={classes.name}
         variant="h4"
