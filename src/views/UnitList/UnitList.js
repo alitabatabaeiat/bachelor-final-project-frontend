@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { IconButton, Grid, Typography } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
-import { ProductsToolbar, ProductCard } from './components';
-import mockData from './data';
+import { UnitsToolbar, UnitCard } from './components';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUnits } from './UnitListSelector';
+import * as UnitsAction from '../../store/units/UnitsAction';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,28 +24,34 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ProductList = () => {
+const UnitList = () => {
   const classes = useStyles();
 
-  const [products] = useState(mockData);
+  const units = useSelector(selectUnits);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(UnitsAction.requestAllUnits());
+  }, [dispatch]);
 
   return (
     <div className={classes.root}>
-      <ProductsToolbar />
+      <UnitsToolbar onCreateUnitClick={() => {}} />
       <div className={classes.content}>
         <Grid
           container
           spacing={3}
         >
-          {products.map(product => (
+          {units.map(unit => (
             <Grid
               item
-              key={product.id}
+              key={unit.id}
               lg={4}
               md={6}
               xs={12}
             >
-              <ProductCard product={product} />
+              <UnitCard unit={unit} />
             </Grid>
           ))}
         </Grid>
@@ -61,4 +69,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default UnitList;

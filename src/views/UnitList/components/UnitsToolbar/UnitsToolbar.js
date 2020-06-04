@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
 
 import { SearchInput } from 'components';
+import AddIcon from '@material-ui/icons/Add';
+
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -28,39 +30,39 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ProductsToolbar = props => {
-  const { className, ...rest } = props;
+const UnitsToolbar = props => {
+  const { className, onCreateUnitClick } = props;
 
   const classes = useStyles();
 
   return (
     <div
-      {...rest}
       className={clsx(classes.root, className)}
     >
       <div className={classes.row}>
         <span className={classes.spacer} />
-        <Button className={classes.importButton}>Import</Button>
-        <Button className={classes.exportButton}>Export</Button>
         <Button
           color="primary"
+          onClick={onCreateUnitClick}
+          startIcon={<AddIcon/>}
           variant="contained"
         >
-          Add product
+          ایجاد واحد
         </Button>
       </div>
       <div className={classes.row}>
         <SearchInput
           className={classes.searchInput}
-          placeholder="Search product"
+          placeholder="جستجو"
         />
       </div>
     </div>
   );
 };
 
-ProductsToolbar.propTypes = {
-  className: PropTypes.string
+UnitsToolbar.propTypes = {
+  className: PropTypes.string,
+  onCreateUnitClick: PropTypes.func.isRequired
 };
 
-export default ProductsToolbar;
+export default UnitsToolbar;

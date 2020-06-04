@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
 
 import { SearchInput } from 'components';
+import AddIcon from '@material-ui/icons/Add';
+
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -42,6 +44,7 @@ const ExpensesToolbar = props => {
         <Button
           color="primary"
           onClick={onCreateApartmentExpenseClick}
+          startIcon={<AddIcon/>}
           variant="contained"
         >
           ثبت هزینه

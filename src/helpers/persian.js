@@ -1,7 +1,7 @@
 import persianJs from 'persianjs';
 
 export function toPersianNumber(number) {
-  return persianJs(number).englishNumber().toString();
+  return persianJs(number.toString()).englishNumber().toString();
 }
 
 export function toPersianNumberWithComma(amount) {
@@ -14,4 +14,10 @@ export function toPersianNumberWithComma(amount) {
 export function toEnglishNumberWithoutComma(amount) {
   if (!amount) return amount;
   return persianJs(amount).toEnglishNumber().toString().replace(',', '');
+}
+
+export function toPersianMobileNumber(number) {
+  const mobileNumber = `0${number.substr(0, 3)} ` +
+    `${number.substr(3, 3)} ${number.substr(6, 4)}`;
+  return toPersianNumber(mobileNumber);
 }
