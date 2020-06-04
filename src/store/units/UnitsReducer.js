@@ -13,6 +13,14 @@ const unitsReducer = baseReducer(initialState, {
       ...state,
       units: action.payload.data
     };
+  },
+  [UnitsAction.REQUEST_CREATE_UNIT_FINISHED](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      units: [action.payload.data, ...state.units]
+    };
   }
 });
 

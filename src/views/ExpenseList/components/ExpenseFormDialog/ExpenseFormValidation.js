@@ -1,7 +1,7 @@
 import Joi from '@hapi/joi';
 import Rules from '../../../../helpers/rules';
 
-const createApartmentExpenseSchema = Joi.object({
+export const createApartmentExpenseSchema = Joi.object({
   type: Rules.id.required(),
   amount: Joi.number().integer().min(0).required(),
   description: Rules.persianText.max(256),
@@ -12,7 +12,3 @@ const createApartmentExpenseSchema = Joi.object({
   }),
   coefficients: Joi.array().items(Joi.number().integer().min(0)).min(1)
 });
-
-export {
-  createApartmentExpenseSchema
-};

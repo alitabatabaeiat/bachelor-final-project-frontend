@@ -6,3 +6,9 @@ export async function requestUnits(role, params) {
 
   return HttpUtils.get(endpoint, params);
 }
+
+export async function requestCreateUnit(role, data) {
+  const endpoint = environment.api(role).units().create;
+
+  return HttpUtils.post(endpoint, data);
+}

@@ -24,7 +24,8 @@ export default function baseEnv(baseApi) {
         create: `${baseApi}/${role}/expenseTypes`,
       }),
       units: () => ({
-        getAll: `${baseApi}/${role}/units`
+        getAll: `${baseApi}/${role}/units`,
+        create: `${baseApi}/${role}/units`
       })
     }),
     isProduction: true,

@@ -4,7 +4,7 @@ import { IconButton, Grid, Typography } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
-import { UnitsToolbar, UnitCard } from './components';
+import { UnitsToolbar, UnitCard, UnitFormDialog } from './components';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUnits } from './UnitListSelector';
 import * as UnitsAction from '../../store/units/UnitsAction';
@@ -25,6 +25,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UnitList = () => {
+  const [unitFormDialogOpen, setUnitFormDialogOpen] = useState(true);
+
+  const handleUnitFormDialogOpen = () => {
+    setUnitFormDialogOpen(true);
+  };
+
+  const handleUnitFormDialogClose = () => {
+    setUnitFormDialogOpen(false);
+  };
+
   const classes = useStyles();
 
   const units = useSelector(selectUnits);
@@ -37,7 +47,7 @@ const UnitList = () => {
 
   return (
     <div className={classes.root}>
-      <UnitsToolbar onCreateUnitClick={() => {}} />
+      <UnitsToolbar onCreateUnitClick={handleUnitFormDialogOpen}/>
       <div className={classes.content}>
         <Grid
           container
@@ -51,7 +61,7 @@ const UnitList = () => {
               md={6}
               xs={12}
             >
-              <UnitCard unit={unit} />
+              <UnitCard unit={unit}/>
             </Grid>
           ))}
         </Grid>
@@ -59,12 +69,17 @@ const UnitList = () => {
       <div className={classes.pagination}>
         <Typography variant="caption">1-6 of 20</Typography>
         <IconButton>
-          <ChevronLeftIcon />
+          <ChevronLeftIcon/>
         </IconButton>
         <IconButton>
-          <ChevronRightIcon />
+          <ChevronRightIcon/>
         </IconButton>
       </div>
+      <UnitFormDialog
+        onClose={handleUnitFormDialogClose}
+        onSubmit={handleUnitFormDialogClose}
+        open={unitFormDialogOpen}
+      />
     </div>
   );
 };

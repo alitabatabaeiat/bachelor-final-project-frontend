@@ -110,10 +110,6 @@ const ExpenseForm = props => {
 
   const classes = useStyles();
 
-  const handleAddExpenseType = () => {
-    console.log('handleAddExpenseType');
-  };
-
   const handleChange = async event => {
     const name = event.target.name;
     await setState({
@@ -124,7 +120,7 @@ const ExpenseForm = props => {
 
   const handleAmountChange = async event => {
     const { name, value } = event.target;
-    const amount = value ? parseInt(toEnglishNumberWithoutComma(value)) : undefined;
+    const amount = toEnglishNumberWithoutComma(value)
     await setState({
       ...state,
       [name]: amount

@@ -4,7 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/styles';
-import ExpenseForm from './ExpenseForm';
+import UnitForm from './UnitForm';
 import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -29,11 +29,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ExpenseFormDialog = props => {
-  const { open, onClose, onSubmit, onOpenExpenseTypeDialog } = props;
+const UnitFormDialog = props => {
+  const { open, onClose, onSubmit } = props;
 
   const classes = useStyles();
-
 
   return (
     <Dialog
@@ -44,12 +43,11 @@ const ExpenseFormDialog = props => {
     >
       <DialogTitle disableTypography>
         <Typography variant="h4">
-          ثبت هزینه
+          ایجاد واحد
         </Typography>
       </DialogTitle>
       <DialogContent>
-        <ExpenseForm
-          onAddExpenseTypeClick={onOpenExpenseTypeDialog}
+        <UnitForm
           onSubmit={onSubmit}
         />
       </DialogContent>
@@ -57,11 +55,10 @@ const ExpenseFormDialog = props => {
   );
 };
 
-ExpenseFormDialog.propTypes = {
+UnitFormDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
-  onOpenExpenseTypeDialog: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired
 };
 
-export default ExpenseFormDialog;
+export default UnitFormDialog;
