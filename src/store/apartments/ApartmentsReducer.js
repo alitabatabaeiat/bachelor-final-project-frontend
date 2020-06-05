@@ -8,6 +8,7 @@ export const initialState = {
     title: 'هیچ آپارتمانی انتخاب نشده است'
   },
   expenses: [],
+  selectedExpenses: [],
   expenseOptions: {
     splitOptions: [],
     filterOptions: []
@@ -73,6 +74,36 @@ const apartmentsReducer = baseReducer(initialState, {
     return {
       ...state,
       expenseOptions: action.payload.data
+    };
+  },
+
+  [ApartmentsAction.SELECT_ALL_EXPENSES](state) {
+    return {
+      ...state,
+      selectedExpenses: state.expenses.map(expense => expense.id)
+    };
+  },
+
+  [ApartmentsAction.SELECT_EXPENSE](state, action) {
+    return {
+      ...state,
+      selectedExpenses: [...state.selectedExpenses, action.payload]
+    };
+  },
+
+  [ApartmentsAction.UNSELECT_EXPENSE](state, action) {
+    return {
+      ...state,
+      selectedExpenses: state.selectedExpenses.filter(expense => expense !== action.payload)
+    };
+  },
+
+  [ApartmentsAction.RESET_SELECTED_EXPENSES](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      selectedExpenses: []
     };
   }
 });

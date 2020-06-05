@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import ExpensesTable from '../ExpensesTable';
+import ExpensesTable from '../../../../components/ExpensesTable';
 import { makeStyles } from '@material-ui/styles';
 import ExpenseTypeForm from './ExpenseTypeForm';
 import { Typography } from '@material-ui/core';

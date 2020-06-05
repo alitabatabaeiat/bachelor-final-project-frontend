@@ -21,6 +21,14 @@ export const REQUEST_DELETE_APARTMENT_EXPENSE_FINISHED = 'ApartmentsAction.REQUE
 export const REQUEST_ALL_EXPENSE_OPTIONS = 'ApartmentsAction.REQUEST_ALL_EXPENSE_OPTIONS';
 export const REQUEST_ALL_EXPENSE_OPTIONS_FINISHED = 'ApartmentsAction.REQUEST_ALL_EXPENSE_OPTIONS_FINISHED';
 
+export const SELECT_ALL_EXPENSES = 'ApartmentsAction.SELECT_ALL_EXPENSES';
+
+export const SELECT_EXPENSE = 'ApartmentsAction.SELECT_EXPENSE';
+
+export const UNSELECT_EXPENSE = 'ApartmentsAction.UNSELECT_EXPENSE';
+
+export const RESET_SELECTED_EXPENSES = 'ApartmentsAction.RESET_SELECTED_EXPENSES';
+
 
 export function requestAllApartments() {
   return async (dispatch, getState) => {
@@ -82,4 +90,20 @@ export function requestAllExpenseOptions() {
     await ActionUtils.createThunkEffect(dispatch, REQUEST_ALL_EXPENSE_OPTIONS, ApartmentsEffect.requestAllExpenseOptions,
       userRole, apartmentId);
   };
+}
+
+export function selectAllExpenses() {
+  return ActionUtils.createAction(SELECT_ALL_EXPENSES);
+}
+
+export function selectExpense(expenseId) {
+  return ActionUtils.createAction(SELECT_EXPENSE, expenseId);
+}
+
+export function unselectExpense(expenseId) {
+  return ActionUtils.createAction(UNSELECT_EXPENSE, expenseId);
+}
+
+export function resetSelectedExpenses() {
+  return ActionUtils.createAction(RESET_SELECTED_EXPENSES);
 }

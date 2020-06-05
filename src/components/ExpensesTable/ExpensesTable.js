@@ -19,8 +19,8 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 import { selectExpenses } from './ExpensesSelector';
-import * as ApartmentsAction from '../../../../store/apartments/ApartmentsAction';
-import { toPersianNumber, toPersianNumberWithComma } from '../../../../helpers/persian';
+import * as ApartmentsAction from '../../store/apartments/ApartmentsAction';
+import { toPersianNumber, toPersianNumberWithComma } from '../../helpers/persian';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -52,9 +52,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ExpensesTable = props => {
-  const { className, ...rest } = props;
+  const { operation } = props;
 
   const expenses = useSelector(selectExpenses);
+
+  const selectedExpenses = useSelector(state => state.apartments.selectedExpenses);
 
   const dispatch = useDispatch();
 
@@ -64,40 +66,23 @@ const ExpensesTable = props => {
 
   const classes = useStyles();
 
-  const [selectedExpenses, setSelectedExpenses] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
 
   const handleSelectAll = event => {
-    let selectedExpenses;
-
-    if (event.target.checked) {
-      selectedExpenses = expenses.map(expense => expense.id);
-    } else {
-      selectedExpenses = [];
-    }
-
-    setSelectedExpenses(selectedExpenses);
+    if (event.target.checked)
+      dispatch(ApartmentsAction.selectAllExpenses());
+    else
+      dispatch(ApartmentsAction.resetSelectedExpenses());
   };
 
   const handleSelectOne = (event, id) => {
     const selectedIndex = selectedExpenses.indexOf(id);
-    let newSelectedExpenses = [];
 
-    if (selectedIndex === -1) {
-      newSelectedExpenses = newSelectedExpenses.concat(selectedExpenses, id);
-    } else if (selectedIndex === 0) {
-      newSelectedExpenses = newSelectedExpenses.concat(selectedExpenses.slice(1));
-    } else if (selectedIndex === selectedExpenses.length - 1) {
-      newSelectedExpenses = newSelectedExpenses.concat(selectedExpenses.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelectedExpenses = newSelectedExpenses.concat(
-        selectedExpenses.slice(0, selectedIndex),
-        selectedExpenses.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelectedExpenses(newSelectedExpenses);
+    if (selectedIndex === -1)
+      dispatch(ApartmentsAction.selectExpense(id));
+    else
+      dispatch(ApartmentsAction.unselectExpense(id));
   };
 
   const handlePageChange = (event, page) => {
@@ -109,8 +94,7 @@ const ExpensesTable = props => {
   };
   return (
     <Card
-      {...rest}
-      className={clsx(classes.root, className)}
+      className={classes.root}
     >
       <CardContent className={classes.content}>
         <PerfectScrollbar>
@@ -136,7 +120,9 @@ const ExpensesTable = props => {
                   <TableCell>تقسیم بر اساس</TableCell>
                   <TableCell>تاریخ ثبت</TableCell>
                   <TableCell>توضیحات</TableCell>
-                  <TableCell>عملیات</TableCell>
+                  {
+                    operation && <TableCell>عملیات</TableCell>
+                  }
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -171,31 +157,34 @@ const ExpensesTable = props => {
                       {toPersianNumber(moment(expense.createdAt).locale('fa').format('YYYY/MM/DD'))}
                     </TableCell>
                     <TableCell>{expense.description ? expense.description : '-'}</TableCell>
-                    <TableCell>
-                      <Box
-                        component="span"
-                        mx={2}
-                      >
+                    {
+                      operation &&
+                      <TableCell>
+                        <Box
+                          component="span"
+                          mx={2}
+                        >
+                          <Button
+                            className={classes.button}
+                            color="primary"
+                            size="small"
+                            startIcon={<EditIcon/>}
+                            variant="contained"
+                          >
+                            ویرایش
+                          </Button>
+                        </Box>
                         <Button
                           className={classes.button}
-                          color="primary"
+                          color="secondary"
                           size="small"
-                          startIcon={<EditIcon />}
+                          startIcon={<DeleteIcon/>}
                           variant="contained"
                         >
-                        ویرایش
+                          حذف
                         </Button>
-                      </Box>
-                      <Button
-                        className={classes.button}
-                        color="secondary"
-                        size="small"
-                        startIcon={<DeleteIcon />}
-                        variant="contained"
-                      >
-                        حذف
-                      </Button>
-                    </TableCell>
+                      </TableCell>
+                    }
                   </TableRow>
                 ))}
               </TableBody>
@@ -219,7 +208,7 @@ const ExpensesTable = props => {
 };
 
 ExpensesTable.propTypes = {
-  className: PropTypes.string
+  operation: PropTypes.bool.isRequired
 };
 
 export default ExpensesTable;

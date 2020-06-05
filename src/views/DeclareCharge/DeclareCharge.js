@@ -1,58 +1,144 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Grid, Typography as MuiTypography } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import { StartChargeDeclarationForm, SelectExpensesForm } from './components';
+import Button from '@material-ui/core/Button';
+import clsx from 'clsx';
+import { ExpensesTable } from '../ExpenseList/components';
+import { toEnglishNumberWithoutComma } from '../../helpers/persian';
 
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(4)
+  },
+  stepperRoot: {
+    backgroundColor: 'transparent'
   }
 }));
 
-const variants = {
-  h1: 'Nisi euismod ante senectus consequat phasellus ut',
-  h2: 'Nisi euismod ante senectus consequat phasellus ut',
-  h3: 'Nisi euismod ante senectus consequat phasellus ut',
-  h4: 'Nisi euismod ante senectus consequat phasellus ut',
-  h5: 'Nisi euismod ante senectus consequat phasellus ut',
-  h6: 'Nisi euismod ante senectus consequat phasellus ut',
-  subtitle1: 'Leo varius justo aptent arcu urna felis pede nisl',
-  subtitle2: 'Leo varius justo aptent arcu urna felis pede nisl',
-  body1:
-    'Justo proin curabitur dictumst semper auctor, consequat tempor, nostra aenean neque turpis nunc. Leo. Sapien aliquet facilisi turpis, elit facilisi praesent porta metus leo. Dignissim amet dis nec ac integer inceptos erat dis Turpis sodales ad torquent. Dolor, erat convallis.Laoreet velit a fames commodo tristique hendrerit sociosqu rhoncus vel sapien penatibus facilisis faucibus ad. Mus purus vehicula imperdiet tempor lectus, feugiat Sapien erat viverra netus potenti mattis purus turpis. Interdum curabitur potenti tristique. Porta velit dignissim tristique ultrices primis.',
-  body2:
-    'Justo proin curabitur dictumst semper auctor, consequat tempor, nostra aenean neque turpis nunc. Leo. Sapien aliquet facilisi turpis, elit facilisi praesent porta metus leo. Dignissim amet dis nec ac integer inceptos erat dis Turpis sodales ad torquent. Dolor, erat convallis.',
-  caption: 'Accumsan leo pretium conubia ullamcorper.',
-  overline: 'Accumsan leo pretium conubia ullamcorper.',
-  button: 'Vivamus ultrices rutrum fames dictumst'
-};
-
 const DeclareCharge = () => {
   const classes = useStyles();
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [startFormState, setStartFormState] = React.useState({
+    title: undefined,
+    paymentDeadline: undefined,
+    delayPenalty: undefined
+  });
+
+  const steps = ['شروع', 'انتخاب هزینه‌ها', 'اعلام شارژ'];
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleInputChange = async (event, isNumber = false) => {
+    const { name, value } = event.target;
+    await setStartFormState({
+      ...startFormState,
+      [name]: isNumber ? toEnglishNumberWithoutComma(value) : value
+    });
+  };
 
   return (
     <div className={classes.root}>
       <Grid
         container
+        direction="column"
+        justify="center"
         spacing={4}
       >
-        {Object.keys(variants).map((key, i) => (
-          <Fragment key={i}>
+        <Grid
+          item
+          xs
+        >
+          <Stepper
+            activeStep={activeStep}
+            alternativeLabel
+            className={classes.stepperRoot}
+          >
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </Grid>
+
+        <Grid
+          container
+          item
+          justify="center"
+          xs
+        >
+          {
+            activeStep === 0 &&
             <Grid
               item
-              sm={3}
-              xs={12}
+              xs={6}
             >
-              <MuiTypography variant="caption">{key}</MuiTypography>
+              <StartChargeDeclarationForm
+                onInputChange={handleInputChange}
+                state={startFormState}
+              />
             </Grid>
+          }
+          {
+            activeStep === 1 &&
             <Grid
               item
-              sm={9}
               xs={12}
             >
-              <MuiTypography variant={key}>{variants[key]}</MuiTypography>
+              <ExpensesTable operation={false}/>
             </Grid>
-          </Fragment>
-        ))}
+          }
+          {
+            activeStep === 2 && <StartChargeDeclarationForm/>
+          }
+        </Grid>
+
+        <Grid
+          container
+          item
+          justify="center"
+          xs
+        >
+          <Grid
+            container
+            item
+            justify={activeStep === 0 ? 'flex-end' : activeStep === 1 ? 'space-between' : 'flex-start'}
+            xs={9}
+          >
+            {
+              activeStep > 0 &&
+              <Button
+                className={classes.submitButton}
+                color="secondary"
+                onClick={handleBack}
+                variant="contained"
+              >
+                قبلی
+              </Button>
+            }
+            {
+              activeStep < 2 &&
+              <Button
+                className={clsx(classes.submitButton, classes.leftSubmitButton)}
+                color="primary"
+                onClick={handleNext}
+                variant="contained"
+              >
+                بعدی
+              </Button>
+            }
+          </Grid>
+        </Grid>
       </Grid>
     </div>
   );
