@@ -11,3 +11,14 @@ export const createUnitSchema = Joi.object({
   isEmpty: Joi.bool().required(),
   resident: Rules.mobileNumber
 });
+
+export const updateUnitSchema = Joi.object({
+  title: Rules.persianText.min(3).max(25),
+  floor: Joi.number().integer(),
+  area: Joi.number().integer().positive(),
+  parkingSpaceCount: Joi.number().integer().min(0),
+  residentCount: Joi.number().integer().min(0),
+  fixedCharge: Joi.number().integer().min(0),
+  isEmpty: Joi.boolean(),
+  resident: Rules.mobileNumber.allow(null)
+});

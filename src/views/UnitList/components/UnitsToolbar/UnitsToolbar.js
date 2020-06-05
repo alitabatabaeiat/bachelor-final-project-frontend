@@ -6,6 +6,8 @@ import { Button } from '@material-ui/core';
 
 import { SearchInput } from 'components';
 import AddIcon from '@material-ui/icons/Add';
+import { useDispatch, useSelector } from 'react-redux';
+import * as UnitsAction from '../../../../store/units/UnitsAction';
 
 
 const useStyles = makeStyles(theme => ({
@@ -31,9 +33,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UnitsToolbar = props => {
-  const { className, onCreateUnitClick } = props;
+  const { className } = props;
+
+  const dispatch = useDispatch();
 
   const classes = useStyles();
+
+  const handleCreateUnitClick = () => {
+    dispatch(UnitsAction.setFormDialogOpen(true));
+    dispatch(UnitsAction.setFormDialogUpdate(false));
+  };
 
   return (
     <div
@@ -43,7 +52,7 @@ const UnitsToolbar = props => {
         <span className={classes.spacer} />
         <Button
           color="primary"
-          onClick={onCreateUnitClick}
+          onClick={handleCreateUnitClick}
           startIcon={<AddIcon/>}
           variant="contained"
         >
@@ -61,8 +70,7 @@ const UnitsToolbar = props => {
 };
 
 UnitsToolbar.propTypes = {
-  className: PropTypes.string,
-  onCreateUnitClick: PropTypes.func.isRequired
+  className: PropTypes.string
 };
 
 export default UnitsToolbar;

@@ -6,6 +6,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/styles';
 import UnitForm from './UnitForm';
 import { Typography } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import * as UnitsAction from '../../../../store/units/UnitsAction';
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -30,16 +32,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const UnitFormDialog = props => {
-  const { open, onClose, onSubmit } = props;
 
-  const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const units = useSelector(state => state.units);
+
+  const handleClose = () => dispatch(UnitsAction.setFormDialogOpen(false));
 
   return (
     <Dialog
       fullWidth
       maxWidth="sm"
-      onClose={onClose}
-      open={open}
+      onClose={handleClose}
+      open={units.formDialogOpen}
     >
       <DialogTitle disableTypography>
         <Typography variant="h4">
@@ -47,18 +52,13 @@ const UnitFormDialog = props => {
         </Typography>
       </DialogTitle>
       <DialogContent>
-        <UnitForm
-          onSubmit={onSubmit}
-        />
+        <UnitForm />
       </DialogContent>
     </Dialog>
   );
 };
 
 UnitFormDialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired
 };
 
 export default UnitFormDialog;

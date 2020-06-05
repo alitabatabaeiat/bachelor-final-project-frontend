@@ -15,9 +15,14 @@ import PhoneEnabledIcon from '@material-ui/icons/PhoneEnabled';
 import { toPersianMobileNumber, toPersianNumber, toPersianNumberWithComma } from '../../../../helpers/persian';
 import red from '@material-ui/core/colors/red';
 import green from '@material-ui/core/colors/green';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import { useDispatch } from 'react-redux';
+import * as UnitsAction from '../../../../store/units/UnitsAction';
 
 const useStyles = makeStyles(theme => ({
-  root: {},
+  root: {
+    display: 'block'
+  },
   imageContainer: {
     height: 64,
     width: 64,
@@ -73,6 +78,8 @@ const UnitCard = props => {
 
   const classes = useStyles();
 
+  const dispatch = useDispatch();
+
   const cardDetailAlign = 'left';
   const cardDetailVariant = 'body2';
 
@@ -83,128 +90,142 @@ const UnitCard = props => {
       return 'واحد خالی';
   };
 
+  const handleUnitClick = unit => {
+    dispatch(UnitsAction.setFormDialogOpen(true));
+    dispatch(UnitsAction.setFormDialogUpdate(true));
+    dispatch(UnitsAction.selectUnit(unit));
+  };
+
   return (
-    <Card
-      {...rest}
+    <ButtonBase
       className={clsx(classes.root, className)}
+      component="div"
+      focusVisibleClassName={classes.focusVisible}
+      key={unit.id}
+      onClick={() => handleUnitClick(unit)}
     >
-      <CardContent className={classes.cardContent}>
-        {/*<div className={classes.imageContainer}>*/}
-        {/*  <img*/}
-        {/*    alt="Product"*/}
-        {/*    className={classes.image}*/}
-        {/*    src={unit.imageUrl}*/}
-        {/*  />*/}
-        {/*</div>*/}
-        <div className={classes.cardSection}>
-          <Typography
-            align="center"
-            gutterBottom
-            variant="h4"
-          >
-            {unit.title}
-          </Typography>
-        </div>
-        <div className={classes.cardSection}>
-          <div className={clsx(classes.cardHalfSection, classes.cardRightSection)}>
+      <Card
+        {...rest}
+        // className={}
+      >
+        <CardContent className={classes.cardContent}>
+          {/*<div className={classes.imageContainer}>*/}
+          {/*  <img*/}
+          {/*    alt="Product"*/}
+          {/*    className={classes.image}*/}
+          {/*    src={unit.imageUrl}*/}
+          {/*  />*/}
+          {/*</div>*/}
+          <div className={classes.cardSection}>
             <Typography
-              align={cardDetailAlign}
-              className={classes.cardDetail}
-              variant={cardDetailVariant}
+              align="center"
+              gutterBottom
+              variant="h4"
             >
-              طبقه: {toPersianNumber(unit.floor)}
-            </Typography>
-
-            <Typography
-              align={cardDetailAlign}
-              className={classes.cardDetail}
-              variant={cardDetailVariant}
-            >
-              تعداد ساکنین: {toPersianNumber(unit.residentCount)} نفر
-            </Typography>
-
-            <Typography
-              align={cardDetailAlign}
-              className={classes.cardDetail}
-              variant={cardDetailVariant}
-            >
-              شارژ ثابت: {toPersianNumberWithComma(unit.fixedCharge)} ریال
+              {unit.title}
             </Typography>
           </div>
-          <div className={classes.cardHalfSection}>
-            <Typography
-              align={cardDetailAlign}
-              className={classes.cardDetail}
-              variant={cardDetailVariant}
-            >
-              متراژ: {toPersianNumberWithComma(unit.area)} متر مربع
-            </Typography>
-
-            <Typography
-              align={cardDetailAlign}
-              className={classes.cardDetail}
-              variant={cardDetailVariant}
-            >
-              تعداد پارکینگ: {toPersianNumber(unit.parkingSpaceCount)}
-            </Typography>
-
-            <Typography
-              align={cardDetailAlign}
-              className={classes.cardDetail}
-              variant={cardDetailVariant}
-            >
-              وضعیت:{' '}
+          <div className={classes.cardSection}>
+            <div className={clsx(classes.cardHalfSection, classes.cardRightSection)}>
               <Typography
-                component="span"
-                style={{
-                  color: unit.isEmpty ? red[500] : green[600]
-                }}
+                align={cardDetailAlign}
+                className={classes.cardDetail}
                 variant={cardDetailVariant}
               >
-                {unit.isEmpty ? 'خالی' : 'پر'}
+                طبقه: {toPersianNumber(unit.floor)}
               </Typography>
-            </Typography>
+
+              <Typography
+                align={cardDetailAlign}
+                className={classes.cardDetail}
+                variant={cardDetailVariant}
+              >
+                تعداد ساکنین: {toPersianNumber(unit.residentCount)} نفر
+              </Typography>
+
+              <Typography
+                align={cardDetailAlign}
+                className={classes.cardDetail}
+                variant={cardDetailVariant}
+              >
+                شارژ ثابت: {toPersianNumberWithComma(unit.fixedCharge)} ریال
+              </Typography>
+            </div>
+            <div className={classes.cardHalfSection}>
+              <Typography
+                align={cardDetailAlign}
+                className={classes.cardDetail}
+                variant={cardDetailVariant}
+              >
+                متراژ: {toPersianNumberWithComma(unit.area)} متر مربع
+              </Typography>
+
+              <Typography
+                align={cardDetailAlign}
+                className={classes.cardDetail}
+                variant={cardDetailVariant}
+              >
+                تعداد پارکینگ: {toPersianNumber(unit.parkingSpaceCount)}
+              </Typography>
+
+              <Typography
+                align={cardDetailAlign}
+                className={classes.cardDetail}
+                variant={cardDetailVariant}
+              >
+                وضعیت:{' '}
+                <Typography
+                  component="span"
+                  style={{
+                    color: unit.isEmpty ? red[500] : green[600]
+                  }}
+                  variant={cardDetailVariant}
+                >
+                  {unit.isEmpty ? 'خالی' : 'پر'}
+                </Typography>
+              </Typography>
+            </div>
           </div>
-        </div>
-      </CardContent>
-      <Divider/>
-      <CardActions>
-        <Grid
-          container
-          justify="space-between"
-        >
+        </CardContent>
+        <Divider/>
+        <CardActions>
           <Grid
-            className={classes.statsItem}
-            item
+            container
+            justify="space-between"
           >
-            <PersonIcon className={classes.statsIcon}/>
-            <Typography
-              display="inline"
-              variant="body2"
-            >
-              {getResidentName(unit)}
-            </Typography>
-          </Grid>
-          {
-            unit.resident &&
             <Grid
               className={classes.statsItem}
               item
             >
-              <PhoneEnabledIcon className={classes.statsIcon}/>
+              <PersonIcon className={classes.statsIcon}/>
               <Typography
-                align="right"
-                dir="ltr"
-                // display="inline"
+                display="inline"
                 variant="body2"
               >
-                {toPersianMobileNumber(unit.resident.mobileNumber)}
+                {getResidentName(unit)}
               </Typography>
             </Grid>
-          }
-        </Grid>
-      </CardActions>
-    </Card>
+            {
+              unit.resident &&
+              <Grid
+                className={classes.statsItem}
+                item
+              >
+                <PhoneEnabledIcon className={classes.statsIcon}/>
+                <Typography
+                  align="right"
+                  dir="ltr"
+                  display="inline"
+                  variant="body2"
+                >
+                  {toPersianMobileNumber(unit.resident.mobileNumber)}
+                </Typography>
+              </Grid>
+            }
+          </Grid>
+        </CardActions>
+      </Card>
+    </ButtonBase>
   );
 };
 

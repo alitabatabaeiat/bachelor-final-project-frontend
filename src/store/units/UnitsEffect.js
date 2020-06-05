@@ -12,3 +12,15 @@ export async function requestCreateUnit(role, data) {
 
   return HttpUtils.post(endpoint, data);
 }
+
+export async function requestUpdateUnit(role, unitId, data) {
+  const endpoint = environment.api(role).units(unitId).update;
+
+  return HttpUtils.patch(endpoint, data)
+}
+
+export async function requestDeleteUnit(role, unitId) {
+  const endpoint = environment.api(role).units(unitId).delete;
+
+  return HttpUtils.del(endpoint)
+}

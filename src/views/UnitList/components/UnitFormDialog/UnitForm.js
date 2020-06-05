@@ -7,10 +7,11 @@ import SaveIcon from '@material-ui/icons/Save';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import * as UnitsAction from '../../../../store/units/UnitsAction';
-import { toEnglishNumberWithoutComma, toPersianNumberWithComma } from '../../../../helpers/persian';
+import { toEnglishNumberWithoutComma, toPersianNumber, toPersianNumberWithComma } from '../../../../helpers/persian';
 import validate from '../../../../helpers/validate';
-import { createUnitSchema } from './UnitFormValidation';
+import { createUnitSchema, updateUnitSchema } from './UnitFormValidation';
 import Checkbox from '@material-ui/core/Checkbox';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -43,11 +44,13 @@ const useStyles = makeStyles((theme) => ({
   },
   submitButton: {
     marginLeft: 'auto'
+  },
+  leftSubmitButton: {
+    marginLeft: theme.spacing(1)
   }
 }));
 
 const UnitForm = props => {
-  const { onSubmit } = props;
 
   const [state, setState] = React.useState({
     title: undefined,
@@ -64,8 +67,15 @@ const UnitForm = props => {
 
   const dispatch = useDispatch();
 
+  const units = useSelector(state => state.units);
+
   useEffect(() => {
-  }, [dispatch]);
+    if (units)
+      setState({
+        ...units.selectedUnit,
+        resident: units.selectedUnit.resident ? toPersianNumber('0' + units.selectedUnit.resident.mobileNumber) : undefined
+      });
+  }, []);
 
   const classes = useStyles();
 
@@ -87,7 +97,6 @@ const UnitForm = props => {
 
   const handleNumberInputChange = async event => {
     const { name, value } = event.target;
-    console.log(value);
     const amount = toEnglishNumberWithoutComma(value);
     await setState({
       ...state,
@@ -95,10 +104,36 @@ const UnitForm = props => {
     });
   };
 
+  const handleUpdateSubmit = async () => {
+    const {selectedUnit} = units;
+    const data = {
+      title: state.title !== selectedUnit.title ? state.title : undefined,
+      floor: state.floor !== selectedUnit.floor ? state.floor : undefined,
+      area: state.area !== selectedUnit.area ? state.area : undefined,
+      parkingSpaceCount: state.parkingSpaceCount !== selectedUnit.parkingSpaceCount ? state.parkingSpaceCount : undefined,
+      residentCount: state.residentCount !== selectedUnit.residentCount ? state.residentCount : undefined,
+      fixedCharge: state.fixedCharge !== selectedUnit.fixedCharge ? state.fixedCharge : undefined,
+      isEmpty: state.isEmpty !== selectedUnit.isEmpty ? state.isEmpty : undefined
+    };
 
+    const resident = toEnglishNumberWithoutComma(state.resident.substr(1));
+    const residentUpdated = resident !== (selectedUnit.resident ? selectedUnit.resident.mobileNumber : undefined);
+    console.log(data.isEmpty === undefined  && state.isEmpty === false && residentUpdated)
+    if ((data.isEmpty === undefined  && state.isEmpty === false && residentUpdated) || (data.isEmpty === false))
+      data.resident = resident;
+    else if (data.isEmpty === true)
+      data.resident = null;
 
-  const handleSubmit = async () => {
-    // validation
+    const errors = validate(updateUnitSchema, data);
+    setErrors(errors);
+    if (!errors) {
+      await dispatch(UnitsAction.requestUpdateUnit(selectedUnit.id, data));
+
+      await dispatch(UnitsAction.setFormDialogOpen(false));
+    }
+  };
+
+  const handleCreateSubmit = async () => {
     const data = {
       ...state,
       resident: state.isEmpty ? undefined : toEnglishNumberWithoutComma(state.resident.substr(1))
@@ -109,8 +144,20 @@ const UnitForm = props => {
     if (!errors) {
       await dispatch(UnitsAction.requestCreateUnit(data));
 
-      onSubmit();
+      await dispatch(UnitsAction.setFormDialogOpen(false));
     }
+  };
+
+  const handleSubmit = async () => {
+    if (units.formDialogUpdate)
+      await handleUpdateSubmit();
+    else
+      await handleCreateSubmit();
+  };
+
+  const handleDelete = async () => {
+    dispatch(UnitsAction.requestDeleteUnit(units.selectedUnit.id));
+    dispatch(UnitsAction.setFormDialogOpen(false));
   };
 
   const hasError = (errors, name) => errors && errors[name];
@@ -215,7 +262,6 @@ const UnitForm = props => {
           checked={!state.isEmpty}
           className={clsx(classes.formElement, classes.rightFormElement, classes.isEmptyCheckbox)}
           color="primary"
-          defaultChecked
           inputProps={{
             name: 'isEmpty'
           }}
@@ -233,7 +279,7 @@ const UnitForm = props => {
           label="شماره موبایل ساکن"
           margin="dense"
           onChange={handleChange}
-          value={state.resident}
+          value={toPersianNumber(state.resident)}
           variant="outlined"
         />
 
@@ -251,8 +297,20 @@ const UnitForm = props => {
       </div>
 
       <div className={classes.formRowContainer}>
+        {
+          units.formDialogUpdate &&
+          <Button
+            className={classes.submitButton}
+            color="secondary"
+            onClick={handleDelete}
+            startIcon={<DeleteIcon/>}
+            variant="contained"
+          >
+            حذف
+          </Button>
+        }
         <Button
-          className={classes.submitButton}
+          className={clsx(classes.submitButton, classes.leftSubmitButton)}
           color="primary"
           onClick={handleSubmit}
           startIcon={<SaveIcon/>}
@@ -266,7 +324,6 @@ const UnitForm = props => {
 };
 
 UnitForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired
 };
 
 export default UnitForm;

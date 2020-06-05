@@ -25,19 +25,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UnitList = () => {
-  const [unitFormDialogOpen, setUnitFormDialogOpen] = useState(true);
-
-  const handleUnitFormDialogOpen = () => {
-    setUnitFormDialogOpen(true);
-  };
-
-  const handleUnitFormDialogClose = () => {
-    setUnitFormDialogOpen(false);
-  };
-
   const classes = useStyles();
 
-  const units = useSelector(selectUnits);
+  const unitList = useSelector(selectUnits);
 
   const dispatch = useDispatch();
 
@@ -47,13 +37,13 @@ const UnitList = () => {
 
   return (
     <div className={classes.root}>
-      <UnitsToolbar onCreateUnitClick={handleUnitFormDialogOpen}/>
+      <UnitsToolbar />
       <div className={classes.content}>
         <Grid
           container
           spacing={3}
         >
-          {units.map(unit => (
+          {unitList.map(unit => (
             <Grid
               item
               key={unit.id}
@@ -61,7 +51,9 @@ const UnitList = () => {
               md={6}
               xs={12}
             >
-              <UnitCard unit={unit}/>
+              <UnitCard
+                unit={unit}
+              />
             </Grid>
           ))}
         </Grid>
@@ -75,11 +67,7 @@ const UnitList = () => {
           <ChevronRightIcon/>
         </IconButton>
       </div>
-      <UnitFormDialog
-        onClose={handleUnitFormDialogClose}
-        onSubmit={handleUnitFormDialogClose}
-        open={unitFormDialogOpen}
-      />
+      <UnitFormDialog />
     </div>
   );
 };
