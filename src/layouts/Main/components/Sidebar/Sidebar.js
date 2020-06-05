@@ -50,29 +50,29 @@ const Sidebar = props => {
     },
     {
       title: 'هزینه ها',
-      href: '/users',
+      href: '/expenses',
       icon: <AccountBalanceWalletIcon />
     },
     {
       title: 'واحد ها',
-      href: '/products',
+      href: '/units',
       icon: <MeetingRoomIcon />
     },
+    // {
+    //   title: 'ورود',
+    //   href: '/sign-in',
+    //   icon: <TextFieldsIcon />
+    // },
     {
       title: 'اعلام شارژ',
-      href: '/sign-in',
+      href: '/declare-charge',
       icon: <PanToolIcon />
     },
-    {
-      title: 'Typography',
-      href: '/typography',
-      icon: <TextFieldsIcon />
-    },
-    {
-      title: 'Icons',
-      href: '/icons',
-      icon: <ImageIcon />
-    },
+    // {
+    //   title: 'Icons',
+    //   href: '/icons',
+    //   icon: <ImageIcon />
+    // },
     {
       title: 'پروفایل',
       href: '/account',
