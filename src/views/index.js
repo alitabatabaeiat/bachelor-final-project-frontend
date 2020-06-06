@@ -8,3 +8,4 @@ export { default as SignIn } from './SignIn';
 export { default as SignUp } from './SignUp';
 export { default as DeclareCharge } from './DeclareCharge';
 export { default as ExpenseList } from './ExpenseList';
+export { default as BillList } from './BillList';

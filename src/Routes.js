@@ -8,6 +8,7 @@ import {
   Dashboard as DashboardView,
   UnitList as UnitListView,
   ExpenseList as ExpenseListView,
+  BillList as BillListView,
   DeclareCharge as DeclareChargeView,
   Icons as IconsView,
   Account as AccountView,
@@ -48,6 +49,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/declare-charge"
+      />
+      <RouteWithLayout
+        component={BillListView}
+        exact
+        layout={MainLayout}
+        path="/bills"
       />
       <RouteWithLayout
         component={IconsView}
