@@ -57,6 +57,12 @@ const Routes = () => {
         path="/bills"
       />
       <RouteWithLayout
+        component={BillListView}
+        exact
+        layout={MainLayout}
+        path="/reports"
+      />
+      <RouteWithLayout
         component={IconsView}
         exact
         layout={MainLayout}

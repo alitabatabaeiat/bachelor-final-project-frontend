@@ -12,6 +12,7 @@ import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import PanToolIcon from '@material-ui/icons/PanTool';
 import ReceiptIcon from '@material-ui/icons/Receipt';
+import AssessmentIcon from '@material-ui/icons/Assessment';
 
 import { Profile, SidebarNav, Apartment } from './components';
 
@@ -74,6 +75,12 @@ const Sidebar = props => {
       title: 'صورتحساب',
       href: '/bills',
       icon: <ReceiptIcon />
+    },
+
+    {
+      title: 'گزارشات',
+      href: '/reports',
+      icon: <AssessmentIcon />
     },
     // {
     //   title: 'Icons',
