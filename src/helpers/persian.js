@@ -22,3 +22,8 @@ export function toPersianMobileNumber(number) {
     `${number.substr(3, 3)} ${number.substr(6, 4)}`;
   return toPersianNumber(mobileNumber);
 }
+
+export function toPersianJalaliMonth(month) {
+  const months = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
+  return months[month];
+}

@@ -6,6 +6,7 @@ import requestingReducer from './requesting/RequestingReducer';
 import userReducer from './user/UserReducer';
 import expenseTypesReducer from './expenseTypes/ExpenseTypesReducer';
 import unitsReducer from './units/UnitsReducer';
+import chargesReducer from './charges/chargesReducer';
 
 export default function rootReducer(history) {
   const reducerMap = {
@@ -15,7 +16,8 @@ export default function rootReducer(history) {
     user: userReducer,
     apartments: apartmentReducer,
     units: unitsReducer,
-    expenseTypes: expenseTypesReducer
+    expenseTypes: expenseTypesReducer,
+    charges: chargesReducer
   };
 
   return combineReducers(reducerMap);

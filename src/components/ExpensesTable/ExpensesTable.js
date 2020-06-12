@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'jalali-moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -14,7 +13,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TablePagination,
+  TablePagination
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -52,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ExpensesTable = props => {
-  const { operation } = props;
+  const { selectedExpenses: initialSelectedExpenses, chargeDeclaration } = props;
 
   const expenses = useSelector(selectExpenses);
 
@@ -61,8 +60,20 @@ const ExpensesTable = props => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(ApartmentsAction.requestAllApartmentExpenses());
+    dispatch(ApartmentsAction.requestAllApartmentExpenses({ declared: chargeDeclaration ? false : undefined }));
   }, [dispatch]);
+
+  useEffect(() => {
+    const setSelectedExpenses = async () => {
+      await dispatch(ApartmentsAction.resetSelectedExpenses());
+
+      if (initialSelectedExpenses)
+        for (const selectedExpense of initialSelectedExpenses)
+          await dispatch(ApartmentsAction.selectExpense(selectedExpense))
+    };
+
+    setSelectedExpenses();
+  }, []);
 
   const classes = useStyles();
 
@@ -121,7 +132,7 @@ const ExpensesTable = props => {
                   <TableCell>تاریخ ثبت</TableCell>
                   <TableCell>توضیحات</TableCell>
                   {
-                    operation && <TableCell>عملیات</TableCell>
+                    !chargeDeclaration && <TableCell>عملیات</TableCell>
                   }
                 </TableRow>
               </TableHead>
@@ -158,7 +169,7 @@ const ExpensesTable = props => {
                     </TableCell>
                     <TableCell>{expense.description ? expense.description : '-'}</TableCell>
                     {
-                      operation &&
+                      !chargeDeclaration &&
                       <TableCell>
                         <Box
                           component="span"
@@ -208,7 +219,8 @@ const ExpensesTable = props => {
 };
 
 ExpensesTable.propTypes = {
-  operation: PropTypes.bool.isRequired
+  chargeDeclaration: PropTypes.bool,
+  selectedExpenses: PropTypes.array
 };
 
 export default ExpensesTable;

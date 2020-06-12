@@ -15,6 +15,7 @@ import LaptopMacIcon from '@material-ui/icons/LaptopMac';
 import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import TabletMacIcon from '@material-ui/icons/TabletMac';
+import { toPersianNumber } from '../../../../helpers/persian';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const UsersByDevice = props => {
+const ExpensesSeperation = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -85,19 +86,19 @@ const UsersByDevice = props => {
 
   const devices = [
     {
-      title: 'Desktop',
+      title: 'آب',
       value: '63',
       icon: <LaptopMacIcon />,
       color: theme.palette.primary.main
     },
     {
-      title: 'Tablet',
+      title: 'برق',
       value: '15',
       icon: <TabletMacIcon />,
       color: theme.palette.error.main
     },
     {
-      title: 'Mobile',
+      title: 'گاز',
       value: '23',
       icon: <PhoneIphoneIcon />,
       color: theme.palette.warning.main
@@ -110,12 +111,12 @@ const UsersByDevice = props => {
       className={clsx(classes.root, className)}
     >
       <CardHeader
-        action={
-          <IconButton size="small">
-            <RefreshIcon />
-          </IconButton>
-        }
-        title="Users By Device"
+        // action={
+        //   <IconButton size="small">
+        //     <RefreshIcon />
+        //   </IconButton>
+        // }
+        title="هزینه‌ها به تفکیک نوع"
       />
       <Divider />
       <CardContent>
@@ -137,7 +138,7 @@ const UsersByDevice = props => {
                 style={{ color: device.color }}
                 variant="h2"
               >
-                {device.value}%
+                {toPersianNumber(device.value)}٪
               </Typography>
             </div>
           ))}
@@ -147,8 +148,8 @@ const UsersByDevice = props => {
   );
 };
 
-UsersByDevice.propTypes = {
+ExpensesSeperation.propTypes = {
   className: PropTypes.string
 };
 
-export default UsersByDevice;
+export default ExpensesSeperation;

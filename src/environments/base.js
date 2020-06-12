@@ -12,11 +12,14 @@ export default function baseEnv(baseApi) {
       apartments: (apartmentId = '') => ({
         getAll: `${baseApi}/${role}/apartments`,
         delete: `${baseApi}/${role}/apartments/${apartmentId}`,
-        expenses: (expensesId = '') => ({
+        expenses: (expenseId = '') => ({
           getAll: `${baseApi}/${role}/apartments/${apartmentId}/expenses`,
           create: `${baseApi}/${role}/apartments/${apartmentId}/expenses`,
-          delete: `${baseApi}/${role}/apartments/${apartmentId}/expenses/${expensesId}`,
+          delete: `${baseApi}/${role}/apartments/${apartmentId}/expenses/${expenseId}`,
           getAllOptions: `${baseApi}/${role}/apartments/${apartmentId}/expenses/options`,
+        }),
+        charges: (chargeId = '') => ({
+          create: `${baseApi}/${role}/apartments/${apartmentId}/charges`
         })
       }),
       expenseTypes: () => ({

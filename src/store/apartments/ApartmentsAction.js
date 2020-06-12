@@ -50,13 +50,13 @@ export function updateActiveApartment(apartment) {
   return ActionUtils.createAction(UPDATE_ACTIVE_APARTMENT, apartment);
 }
 
-export function requestAllApartmentExpenses() {
+export function requestAllApartmentExpenses(query) {
   return async (dispatch, getState) => {
     const userRole = getState().user.role;
     const apartmentId = getState().apartments.activeApartment.id;
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_ALL_APARTMENT_EXPENSES, ApartmentsEffect.requestAllApartmentExpenses,
-      userRole, apartmentId);
+      userRole, apartmentId, query);
   };
 }
 

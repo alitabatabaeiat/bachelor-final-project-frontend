@@ -4,11 +4,18 @@ import { Grid } from '@material-ui/core';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import { StartChargeDeclarationForm, SelectExpensesForm } from './components';
+import { ChargeInformationForm } from './components';
 import Button from '@material-ui/core/Button';
 import clsx from 'clsx';
 import { ExpensesTable } from '../ExpenseList/components';
-import { toEnglishNumberWithoutComma } from '../../helpers/persian';
+import { toPersianJalaliMonth, toPersianNumber } from '../../helpers/persian';
+import moment from 'jalali-moment';
+import handleInputChange from '../../helpers/handleInputChange';
+import { useDispatch, useSelector } from 'react-redux';
+import * as ChargesAction from '../../store/charges/ChargesAction';
+import UnitChargesTable from './components/UnitChargesTable';
+import validate from '../../helpers/validate';
+import { chargeInformationSchema } from './DeclareChargeValidation';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,32 +26,71 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const now = moment();
+
 const DeclareCharge = () => {
+  const dispatch = useDispatch();
+
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
-  const [startFormState, setStartFormState] = React.useState({
-    title: undefined,
+  const [state, setState] = React.useState({
+    title: `شارژ ${toPersianJalaliMonth(now.jMonth())} ${toPersianNumber(now.format('jYY'))}`,
     paymentDeadline: undefined,
-    delayPenalty: undefined
+    delayPenalty: undefined,
+    includeFixedCharge: true,
+    selectedExpenses: []
   });
+  const [errors, setErrors] = React.useState({});
 
-  const steps = ['شروع', 'انتخاب هزینه‌ها', 'اعلام شارژ'];
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  const selectedExpenses = useSelector(state => state.apartments.selectedExpenses);
+
+  const createdCharge = useSelector(state => state.charges.charge);
+
+  const steps = ['اطلاعات شارژ', 'انتخاب هزینه‌ها', 'اعلام شارژ'];
+
+  const createCharge = async () => {
+    const data = {
+      ...state,
+      expenses: [...selectedExpenses]
+    };
+    console.log(state);
+    console.log(data);
+    console.log(selectedExpenses);
+
+    // validation
+
+    await dispatch(ChargesAction.requestCreateCharge(data));
   };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  const handleNext = async () => {
+    if (activeStep === 0) {
+      const errors = validate(chargeInformationSchema, {...state});
+      await setErrors({...errors});
+      if (errors) return;
+    } else if (activeStep === 1) {
+      console.log(selectedExpenses.toString());
+      await setState({
+        ...state,
+        selectedExpenses: [...selectedExpenses]
+      });
+      console.log(state);
+
+      await createCharge();
+    }
+    await setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
-  const handleInputChange = async (event, isNumber = false) => {
-    const { name, value } = event.target;
-    await setStartFormState({
-      ...startFormState,
-      [name]: isNumber ? toEnglishNumberWithoutComma(value) : value
-    });
+  const handleBack = async () => {
+    if (activeStep === 1)
+      await setState({
+        ...state,
+        selectedExpenses
+      });
+    await setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+
+  const localHandleInputChange = async (event, options) => await handleInputChange(state, setState, event, options);
 
   return (
     <div className={classes.root}>
@@ -83,9 +129,10 @@ const DeclareCharge = () => {
               item
               xs={6}
             >
-              <StartChargeDeclarationForm
-                onInputChange={handleInputChange}
-                state={startFormState}
+              <ChargeInformationForm
+                onInputChange={localHandleInputChange}
+                state={state}
+                errors={errors}
               />
             </Grid>
           }
@@ -95,11 +142,17 @@ const DeclareCharge = () => {
               item
               xs={12}
             >
-              <ExpensesTable operation={false}/>
+              <ExpensesTable
+                chargeDeclaration
+                selectedExpenses={state.selectedExpenses}
+              />
             </Grid>
           }
           {
-            activeStep === 2 && <StartChargeDeclarationForm/>
+            activeStep === 2 &&
+            <UnitChargesTable
+              unitCharges={createdCharge.unitCharges}
+            />
           }
         </Grid>
 
@@ -116,7 +169,7 @@ const DeclareCharge = () => {
             xs={9}
           >
             {
-              activeStep > 0 &&
+              activeStep === 1 &&
               <Button
                 className={classes.submitButton}
                 color="secondary"
@@ -134,7 +187,7 @@ const DeclareCharge = () => {
                 onClick={handleNext}
                 variant="contained"
               >
-                بعدی
+                {activeStep === 1 ? 'اعلام شارژ' : 'بعدی'}
               </Button>
             }
           </Grid>

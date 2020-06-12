@@ -2,15 +2,14 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/styles';
-import Button from '@material-ui/core/Button';
-import SaveIcon from '@material-ui/icons/Save';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
-import * as UnitsAction from '../../../../store/units/UnitsAction';
-import { toEnglishNumberWithoutComma, toPersianNumber, toPersianNumberWithComma } from '../../../../helpers/persian';
-import validate from '../../../../helpers/validate';
+import { toPersianNumber, toPersianNumberWithComma } from '../../../../helpers/persian';
+import moment from 'jalali-moment';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import DeleteIcon from '@material-ui/icons/Delete';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -49,30 +48,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const StartChargeDeclarationForm = props => {
-  const {onInputChange, state} = props;
-  const [errors, setErrors] = React.useState({});
-
-  const dispatch = useDispatch();
+const ChargeInformationForm = props => {
+  const {onInputChange, state, errors} = props;
 
   const classes = useStyles();
 
-  const handleInputChange = async (event, isNumber = false) => {
-    await onInputChange(event, isNumber);
-  };
-
-  const handleSubmit = async () => {
-    const data = {
-      ...state
-    };
-
-    // const errors = validate(createUnitSchema, data);
-    // setErrors(errors);
-    // if (!errors) {
-    //   await dispatch(UnitsAction.requestCreateUnit(data));
-    //
-    //   await dispatch(UnitsAction.setFormDialogOpen(false));
-    // }
+  const handleInputChange = async (event, options = {}) => {
+    await onInputChange(event, options);
   };
 
   const hasError = (errors, name) => errors && errors[name];
@@ -106,7 +88,7 @@ const StartChargeDeclarationForm = props => {
           }}
           label="مهلت پرداخت (روز)"
           margin="dense"
-          onChange={event => handleInputChange(event, true)}
+          onChange={event => handleInputChange(event, {isNumber: true})}
           value={toPersianNumberWithComma(state.paymentDeadline)}
           variant="outlined"
         />
@@ -122,18 +104,41 @@ const StartChargeDeclarationForm = props => {
           }}
           label="جریمه تأخیر در پرداخت (روزانه)"
           margin="dense"
-          onChange={event => handleInputChange(event, true)}
+          onChange={event => handleInputChange(event, {isNumber: true})}
           value={toPersianNumberWithComma(state.delayPenalty)}
           variant="outlined"
         />
+      </div>
+
+      <div className={classes.formRowContainer}>
+        <FormControl
+          error={hasError(errors, 'includeFixedCharge')}
+          required
+        >
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={state.includeFixedCharge}
+                color="primary"
+                name="includeFixedCharge"
+                onChange={event => handleInputChange(event, {isCheckbox: true})}
+              />
+            }
+            label="شارژ ثابت محاسبه گردد"
+          />
+        </FormControl>
+        {
+          hasError(errors, 'includeFixedCharge') && <FormHelperText>{errors.includeFixedCharge.message}</FormHelperText>
+        }
       </div>
     </form>
   );
 };
 
-StartChargeDeclarationForm.propTypes = {
+ChargeInformationForm.propTypes = {
+  errors: PropTypes.object,
   onInputChange: PropTypes.func.isRequired,
   state: PropTypes.object.isRequired
 };
 
-export default StartChargeDeclarationForm;
+export default ChargeInformationForm;

@@ -13,10 +13,10 @@ export async function requestDeleteApartment(role, id) {
   return HttpUtils.del(endpoint);
 }
 
-export async function requestAllApartmentExpenses(role, apartmentId) {
+export async function requestAllApartmentExpenses(role, apartmentId, query) {
   const endpoint = environment.api(role).apartments(apartmentId).expenses().getAll;
 
-  return HttpUtils.get(endpoint);
+  return HttpUtils.get(endpoint, query);
 }
 
 export async function requestCreateApartmentExpense(role, apartmentId, data) {

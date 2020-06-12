@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import PeopleIcon from '@material-ui/icons/PeopleOutlined';
+import MoneyIcon from '@material-ui/icons/Money';
+import { toPersianNumberWithComma } from '../../../../helpers/persian';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const TotalUsers = props => {
+const TotalExpenses = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -51,27 +52,27 @@ const TotalUsers = props => {
       className={clsx(classes.root, className)}
     >
       <CardContent>
-        {/*<Grid*/}
-        {/*  container*/}
-        {/*  justify="space-between"*/}
-        {/*>*/}
-        {/*  <Grid item>*/}
-        {/*    <Typography*/}
-        {/*      className={classes.title}*/}
-        {/*      color="textSecondary"*/}
-        {/*      gutterBottom*/}
-        {/*      variant="body2"*/}
-        {/*    >*/}
-        {/*      TOTAL USERS*/}
-        {/*    </Typography>*/}
-        {/*    <Typography variant="h3">1,600</Typography>*/}
-        {/*  </Grid>*/}
-        {/*  <Grid item>*/}
-        {/*    <Avatar className={classes.avatar}>*/}
-        {/*      <PeopleIcon className={classes.icon} />*/}
-        {/*    </Avatar>*/}
-        {/*  </Grid>*/}
-        {/*</Grid>*/}
+        <Grid
+          container
+          justify="space-between"
+        >
+          <Grid item>
+            <Typography
+              className={classes.title}
+              color="textSecondary"
+              gutterBottom
+              variant="body2"
+            >
+              کل هزینه‌ها
+            </Typography>
+            <Typography variant="h3">{toPersianNumberWithComma(110000000)} ریال</Typography>
+          </Grid>
+          <Grid item>
+            <Avatar className={classes.avatar}>
+              <MoneyIcon className={classes.icon} />
+            </Avatar>
+          </Grid>
+        </Grid>
         {/*<div className={classes.difference}>*/}
         {/*  <ArrowUpwardIcon className={classes.differenceIcon} />*/}
         {/*  <Typography*/}
@@ -92,8 +93,8 @@ const TotalUsers = props => {
   );
 };
 
-TotalUsers.propTypes = {
+TotalExpenses.propTypes = {
   className: PropTypes.string
 };
 
-export default TotalUsers;
+export default TotalExpenses;

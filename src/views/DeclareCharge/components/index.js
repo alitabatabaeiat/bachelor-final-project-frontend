@@ -1,1 +1,1 @@
-export { default as StartChargeDeclarationForm } from './StartChargeDeclarationForm';
+export { default as ChargeInformationForm } from './ChargeInformationForm';
