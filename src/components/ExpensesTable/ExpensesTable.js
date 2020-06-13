@@ -24,6 +24,9 @@ import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import Box from '@material-ui/core/Box';
+import ClearIcon from '@material-ui/icons/Clear';
+import DoneIcon from '@material-ui/icons/Done';
+import green from '@material-ui/core/colors/green';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -69,7 +72,7 @@ const ExpensesTable = props => {
 
       if (initialSelectedExpenses)
         for (const selectedExpense of initialSelectedExpenses)
-          await dispatch(ApartmentsAction.selectExpense(selectedExpense))
+          await dispatch(ApartmentsAction.selectExpense(selectedExpense));
     };
 
     setSelectedExpenses();
@@ -129,6 +132,8 @@ const ExpensesTable = props => {
                   <TableCell>برای</TableCell>
                   <TableCell>مبلغ</TableCell>
                   <TableCell>تقسیم بر اساس</TableCell>
+                  {
+                    !chargeDeclaration && <TableCell>اعلام شده</TableCell>}
                   <TableCell>تاریخ ثبت</TableCell>
                   <TableCell>توضیحات</TableCell>
                   {
@@ -164,6 +169,20 @@ const ExpensesTable = props => {
                     <TableCell>{toPersianNumberWithComma(expense.amount)}</TableCell>
                     <TableCell>{expense.filterOption.title}</TableCell>
                     <TableCell>{expense.splitOption.title}</TableCell>
+                    {
+                      !chargeDeclaration &&
+                      <TableCell>
+                        {expense.isDeclared ?
+                          <DoneIcon
+                            fontSize="small"
+                            style={{ color: green[500] }}
+                          /> :
+                          <ClearIcon
+                            color="error"
+                            fontSize="small"
+                          />}
+                      </TableCell>
+                    }
                     <TableCell>
                       {toPersianNumber(moment(expense.createdAt).locale('fa').format('YYYY/MM/DD'))}
                     </TableCell>
@@ -178,6 +197,7 @@ const ExpensesTable = props => {
                           <Button
                             className={classes.button}
                             color="primary"
+                            disabled
                             size="small"
                             startIcon={<EditIcon/>}
                             variant="contained"
@@ -188,6 +208,7 @@ const ExpensesTable = props => {
                         <Button
                           className={classes.button}
                           color="secondary"
+                          disabled
                           size="small"
                           startIcon={<DeleteIcon/>}
                           variant="contained"
