@@ -7,10 +7,7 @@ import {
   TotalExpenses,
   TasksProgress,
   LastDeclaredCharge,
-  LatestSales,
   ExpensesSeperation,
-  LatestProducts,
-  LatestOrders
 } from './components';
 
 const useStyles = makeStyles(theme => ({

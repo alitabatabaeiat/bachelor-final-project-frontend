@@ -5,6 +5,7 @@ import { makeStyles, useTheme } from '@material-ui/styles';
 import { useMediaQuery } from '@material-ui/core';
 
 import { Sidebar, Topbar, Footer } from './components';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,13 +18,18 @@ const useStyles = makeStyles(theme => ({
   shiftContent: {
     paddingLeft: 240
   },
+  title: {
+    padding: theme.spacing(4),
+    paddingBottom: 0,
+    color: 'white'
+  },
   content: {
     height: '100%'
   }
 }));
 
 const Main = props => {
-  const { children } = props;
+  const { children, title } = props;
 
   const classes = useStyles();
   const theme = useTheme();
@@ -57,6 +63,9 @@ const Main = props => {
         variant={isDesktop ? 'persistent' : 'temporary'}
       />
       <main className={classes.content}>
+        <div className={classes.title}>
+          <Typography variant="h2">{title}</Typography>
+        </div>
         {children}
         <Footer />
       </main>
@@ -65,7 +74,8 @@ const Main = props => {
 };
 
 Main.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
+  title: PropTypes.string
 };
 
 export default Main;

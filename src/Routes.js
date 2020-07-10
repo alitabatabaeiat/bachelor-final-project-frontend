@@ -31,36 +31,42 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/dashboard"
+        title="داشبورد"
       />
       <RouteWithLayout
         component={ExpenseListView}
         exact
         layout={MainLayout}
         path="/expenses"
+        title="هزینه‌ها"
       />
       <RouteWithLayout
         component={UnitListView}
         exact
         layout={MainLayout}
         path="/units"
+        title="واحدها"
       />
       <RouteWithLayout
         component={DeclareChargeView}
         exact
         layout={MainLayout}
         path="/declare-charge"
+        title="اعلام شارژ"
       />
       <RouteWithLayout
         component={BillListView}
         exact
         layout={MainLayout}
         path="/bills"
+        title="صورتحساب"
       />
       <RouteWithLayout
         component={BillListView}
         exact
         layout={MainLayout}
         path="/reports"
+        title="گزارشات"
       />
       <RouteWithLayout
         component={IconsView}
@@ -79,6 +85,7 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/settings"
+        title="تنظیمات"
       />
       <RouteWithLayout
         component={SignUpView}
