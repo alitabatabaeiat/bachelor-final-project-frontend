@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'jalali-moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -29,6 +29,11 @@ import DoneIcon from '@material-ui/icons/Done';
 import green from '@material-ui/core/colors/green';
 
 const useStyles = makeStyles(theme => ({
+  operationButtons: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    marginBottom: theme.spacing(2)
+  },
   root: {},
   content: {
     padding: 0
@@ -107,135 +112,165 @@ const ExpensesTable = props => {
     setRowsPerPage(event.target.value);
   };
   return (
-    <Card
-      className={classes.root}
-    >
-      <CardContent className={classes.content}>
-        <PerfectScrollbar>
-          <div className={classes.inner}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedExpenses.length === expenses.length}
-                      color="primary"
-                      indeterminate={
-                        selectedExpenses.length > 0 &&
-                        selectedExpenses.length < expenses.length
-                      }
-                      onChange={handleSelectAll}
-                    />
-                  </TableCell>
-                  <TableCell padding="checkbox"/>
-                  <TableCell>نام هزینه</TableCell>
-                  <TableCell>برای</TableCell>
-                  <TableCell>مبلغ</TableCell>
-                  <TableCell>تقسیم بر اساس</TableCell>
-                  {
-                    !chargeDeclaration && <TableCell>اعلام شده</TableCell>}
-                  <TableCell>تاریخ ثبت</TableCell>
-                  <TableCell>توضیحات</TableCell>
-                  {
-                    !chargeDeclaration && <TableCell>عملیات</TableCell>
-                  }
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {expenses.slice(0, rowsPerPage).map(expense => (
-                  <TableRow
-                    className={classes.tableRow}
-                    hover
-                    key={expense.id}
-                    selected={selectedExpenses.indexOf(expense.id) !== -1}
-                  >
+    <Fragment>
+      <div className={classes.operationButtons}>
+        <Box
+          component="span"
+          mr={2}
+        >
+          <Button
+            className={classes.button}
+            color="primary"
+            disabled
+            size="small"
+            startIcon={<EditIcon/>}
+            variant="contained"
+          >
+            ویرایش
+          </Button>
+        </Box>
+        <Button
+          className={classes.button}
+          color="secondary"
+          disabled
+          size="small"
+          startIcon={<DeleteIcon/>}
+          variant="contained"
+        >
+          حذف
+        </Button>
+      </div>
+      <Card
+        className={classes.root}
+      >
+        <CardContent className={classes.content}>
+          <PerfectScrollbar>
+            <div className={classes.inner}>
+              <Table>
+                <TableHead>
+                  <TableRow>
                     <TableCell padding="checkbox">
                       <Checkbox
-                        checked={selectedExpenses.indexOf(expense.id) !== -1}
+                        checked={selectedExpenses.length === expenses.length}
                         color="primary"
-                        onChange={event => handleSelectOne(event, expense.id)}
-                        value="true"
+                        indeterminate={
+                          selectedExpenses.length > 0 &&
+                          selectedExpenses.length < expenses.length
+                        }
+                        onChange={handleSelectAll}
                       />
                     </TableCell>
-                    <TableCell>
-                      <div
-                        className={classes.nameContainer}
-                        style={{
-                          backgroundColor: '#' + expense.type.color
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell>{expense.type.title}</TableCell>
-                    <TableCell>{toPersianNumberWithComma(expense.amount)}</TableCell>
-                    <TableCell>{expense.filterOption.title}</TableCell>
-                    <TableCell>{expense.splitOption.title}</TableCell>
+                    <TableCell padding="checkbox"/>
+                    <TableCell>عنوان هزینه</TableCell>
+                    <TableCell>مبلغ</TableCell>
+                    <TableCell>برای</TableCell>
+                    <TableCell>تقسیم بر اساس</TableCell>
                     {
-                      !chargeDeclaration &&
-                      <TableCell>
-                        {expense.isDeclared ?
-                          <DoneIcon
-                            fontSize="small"
-                            style={{ color: green[500] }}
-                          /> :
-                          <ClearIcon
-                            color="error"
-                            fontSize="small"
-                          />}
-                      </TableCell>
-                    }
-                    <TableCell>
-                      {toPersianNumber(moment(expense.createdAt).locale('fa').format('YYYY/MM/DD'))}
-                    </TableCell>
-                    <TableCell>{expense.description ? expense.description : '-'}</TableCell>
-                    {
-                      !chargeDeclaration &&
-                      <TableCell>
-                        <Box
-                          component="span"
-                          mx={2}
-                        >
-                          <Button
-                            className={classes.button}
-                            color="primary"
-                            disabled
-                            size="small"
-                            startIcon={<EditIcon/>}
-                            variant="contained"
-                          >
-                            ویرایش
-                          </Button>
-                        </Box>
-                        <Button
-                          className={classes.button}
-                          color="secondary"
-                          disabled
-                          size="small"
-                          startIcon={<DeleteIcon/>}
-                          variant="contained"
-                        >
-                          حذف
-                        </Button>
-                      </TableCell>
-                    }
+                      !chargeDeclaration && <TableCell>اعلام شده</TableCell>}
+                    <TableCell>تاریخ ثبت</TableCell>
+                    <TableCell>توضیحات</TableCell>
+                    {/*{*/}
+                    {/*  !chargeDeclaration && <TableCell>عملیات</TableCell>*/}
+                    {/*}*/}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </PerfectScrollbar>
-      </CardContent>
-      <CardActions className={classes.actions}>
-        <TablePagination
-          component="div"
-          count={expenses.length}
-          onChangePage={handlePageChange}
-          onChangeRowsPerPage={handleRowsPerPageChange}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[5, 10, 25]}
-        />
-      </CardActions>
-    </Card>
+                </TableHead>
+                <TableBody>
+                  {expenses.slice(0, rowsPerPage).map(expense => (
+                    <TableRow
+                      className={classes.tableRow}
+                      hover
+                      key={expense.id}
+                      selected={selectedExpenses.indexOf(expense.id) !== -1}
+                    >
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          checked={selectedExpenses.indexOf(expense.id) !== -1}
+                          color="primary"
+                          onChange={event => handleSelectOne(event, expense.id)}
+                          value="true"
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <div
+                          className={classes.nameContainer}
+                          style={{
+                            backgroundColor: '#' + expense.type.color
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell>{expense.type.title}</TableCell>
+                      <TableCell>{toPersianNumberWithComma(expense.amount)}</TableCell>
+                      <TableCell>{expense.filterOption.title}</TableCell>
+                      <TableCell>{expense.splitOption.title}</TableCell>
+                      {
+                        !chargeDeclaration &&
+                        <TableCell>
+                          {expense.isDeclared ?
+                            <DoneIcon
+                              fontSize="small"
+                              style={{ color: green[500] }}
+                            /> :
+                            <ClearIcon
+                              color="error"
+                              fontSize="small"
+                            />}
+                        </TableCell>
+                      }
+                      <TableCell>
+                        {toPersianNumber(moment(expense.createdAt).locale('fa').format('YYYY/MM/DD'))}
+                      </TableCell>
+                      <TableCell>{expense.description ? expense.description : '-'}</TableCell>
+                      {/*{*/}
+                      {/*  !chargeDeclaration &&*/}
+                      {/*  <TableCell>*/}
+                      {/*    <Box*/}
+                      {/*      component="span"*/}
+                      {/*      mx={2}*/}
+                      {/*    >*/}
+                      {/*      <Button*/}
+                      {/*        className={classes.button}*/}
+                      {/*        color="primary"*/}
+                      {/*        disabled*/}
+                      {/*        size="small"*/}
+                      {/*        startIcon={<EditIcon/>}*/}
+                      {/*        variant="contained"*/}
+                      {/*      >*/}
+                      {/*        ویرایش*/}
+                      {/*      </Button>*/}
+                      {/*    </Box>*/}
+                      {/*    <Button*/}
+                      {/*      className={classes.button}*/}
+                      {/*      color="secondary"*/}
+                      {/*      disabled*/}
+                      {/*      size="small"*/}
+                      {/*      startIcon={<DeleteIcon/>}*/}
+                      {/*      variant="contained"*/}
+                      {/*    >*/}
+                      {/*      حذف*/}
+                      {/*    </Button>*/}
+                      {/*  </TableCell>*/}
+                      {/*}*/}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </PerfectScrollbar>
+        </CardContent>
+        <CardActions className={classes.actions}>
+          <TablePagination
+            component="div"
+            count={expenses.length}
+            onChangePage={handlePageChange}
+            onChangeRowsPerPage={handleRowsPerPageChange}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            rowsPerPageOptions={[5, 10, 25]}
+          />
+        </CardActions>
+      </Card>
+    </Fragment>
+
   );
 };
 

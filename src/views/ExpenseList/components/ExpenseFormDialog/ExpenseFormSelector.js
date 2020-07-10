@@ -5,7 +5,16 @@ function _selectExpenseTypes(types) {
 }
 
 function _selectExpenseOptions(options) {
-  return options;
+  const {splitOptions, filterOptions} = options;
+  const _options = {
+    splitOptions: [...splitOptions],
+    filterOptions: [...filterOptions]
+  };
+  _options.splitOptions.push({
+    id: 10000,
+    title: 'تعداد ساکنین + تعداد پارکینگ'
+  });
+  return _options;
 }
 
 function _selectUnits(units, localState = {}, coefficients, selectedUnits) {
