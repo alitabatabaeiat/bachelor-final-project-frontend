@@ -150,6 +150,23 @@ const UnitCard = props => {
               >
                 شارژ ثابت: {toPersianNumberWithComma(unit.fixedCharge)} ریال
               </Typography>
+
+              <Typography
+                align={cardDetailAlign}
+                className={classes.cardDetail}
+                variant={cardDetailVariant}
+              >
+                وضعیت:{' '}
+                <Typography
+                  component="span"
+                  style={{
+                    color: unit.isEmpty ? red[500] : green[600]
+                  }}
+                  variant={cardDetailVariant}
+                >
+                  {unit.isEmpty ? 'خالی' : 'پر'}
+                </Typography>
+              </Typography>
             </div>
             <div className={classes.cardHalfSection}>
               <Typography
@@ -173,16 +190,7 @@ const UnitCard = props => {
                 className={classes.cardDetail}
                 variant={cardDetailVariant}
               >
-                وضعیت:{' '}
-                <Typography
-                  component="span"
-                  style={{
-                    color: unit.isEmpty ? red[500] : green[600]
-                  }}
-                  variant={cardDetailVariant}
-                >
-                  {unit.isEmpty ? 'خالی' : 'پر'}
-                </Typography>
+                مصرف برق: {toPersianNumberWithComma(unit.powerConsumption)}
               </Typography>
             </div>
           </div>

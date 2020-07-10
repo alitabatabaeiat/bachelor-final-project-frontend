@@ -32,13 +32,14 @@ function _selectUnits(units, localState = {}, coefficients, selectedUnits) {
   console.log(coefficients);
   if (splitOption && amount) {
     switch (splitOption) {
-      case 1:
+      case 1: {
         const unitsCount = filteredUnits.reduce((curr, unit) => (unit.selected ? 1 : 0) + curr, 0);
         filteredUnits = filteredUnits.map(unit => ({
           ...unit,
           share: unit.selected ? amount / unitsCount : 0
         }));
         break;
+      }
       case 2: {
         const residentCount = filteredUnits.reduce((curr, unit) => (unit.selected ? unit.residentCount : 0) + curr, 0);
         filteredUnits = filteredUnits.map(unit => ({
@@ -78,6 +79,14 @@ function _selectUnits(units, localState = {}, coefficients, selectedUnits) {
             ...unit,
             share: unit.selected ? (amount / coefficient) * coefficients[index] : 0
           }));
+        break;
+      }
+      case 7: {
+        const powerConsumption = filteredUnits.reduce((curr, unit) => (unit.selected ? unit.powerConsumption : 0) + curr, 0);
+        filteredUnits = filteredUnits.map((unit, index) => ({
+          ...unit,
+          share: unit.selected ? (amount / powerConsumption) * unit.powerConsumption : 0
+        }));
         break;
       }
     }

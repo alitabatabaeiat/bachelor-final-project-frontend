@@ -7,7 +7,7 @@ export const initialState = {
 };
 
 const chargesReducer = baseReducer(initialState, {
-  [ApartmentsAction.REQUEST_CREATE_ALL_CHARGES_FINISHED](state, action) {
+  [ApartmentsAction.REQUEST_GET_ALL_CHARGES_FINISHED](state, action) {
     if (action.error)
       return state;
     return {

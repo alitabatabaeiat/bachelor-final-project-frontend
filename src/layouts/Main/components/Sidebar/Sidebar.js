@@ -80,7 +80,8 @@ const Sidebar = props => {
     {
       title: 'گزارشات',
       href: '/reports',
-      icon: <AssessmentIcon />
+      icon: <AssessmentIcon />,
+      disabled: true
     },
     // {
     //   title: 'Icons',
@@ -90,12 +91,14 @@ const Sidebar = props => {
     {
       title: 'پروفایل',
       href: '/account',
-      icon: <AccountBoxIcon />
+      icon: <AccountBoxIcon />,
+      disabled: true
     },
     {
       title: 'تنظیمات',
       href: '/settings',
-      icon: <SettingsIcon />
+      icon: <SettingsIcon />,
+      disabled: true
     }
   ];
 

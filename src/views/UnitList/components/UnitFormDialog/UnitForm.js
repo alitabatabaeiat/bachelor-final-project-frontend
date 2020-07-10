@@ -59,6 +59,7 @@ const UnitForm = props => {
     parkingSpaceCount: undefined,
     residentCount: undefined,
     fixedCharge: undefined,
+    powerConsumption: undefined,
     isEmpty: false,
     resident: undefined
   });
@@ -70,7 +71,7 @@ const UnitForm = props => {
   const units = useSelector(state => state.units);
 
   useEffect(() => {
-    if (units)
+    if (units && units.formDialogUpdate)
       setState({
         ...units.selectedUnit,
         resident: units.selectedUnit.resident ? toPersianNumber('0' + units.selectedUnit.resident.mobileNumber) : undefined
@@ -113,12 +114,13 @@ const UnitForm = props => {
       parkingSpaceCount: state.parkingSpaceCount !== selectedUnit.parkingSpaceCount ? state.parkingSpaceCount : undefined,
       residentCount: state.residentCount !== selectedUnit.residentCount ? state.residentCount : undefined,
       fixedCharge: state.fixedCharge !== selectedUnit.fixedCharge ? state.fixedCharge : undefined,
+      powerConsumption: state.powerConsumption !== selectedUnit.powerConsumption ? state.powerConsumption : undefined,
       isEmpty: state.isEmpty !== selectedUnit.isEmpty ? state.isEmpty : undefined
     };
 
-    const resident = toEnglishNumberWithoutComma(state.resident.substr(1));
+    const resident = state.resident ? toEnglishNumberWithoutComma(state.resident.substr(1)) : undefined;
     const residentUpdated = resident !== (selectedUnit.resident ? selectedUnit.resident.mobileNumber : undefined);
-    console.log(data.isEmpty === undefined  && state.isEmpty === false && residentUpdated)
+    console.log(data.isEmpty === undefined  && state.isEmpty === false && residentUpdated);
     if ((data.isEmpty === undefined  && state.isEmpty === false && residentUpdated) || (data.isEmpty === false))
       data.resident = resident;
     else if (data.isEmpty === true)
@@ -177,20 +179,6 @@ const UnitForm = props => {
           onChange={handleChange}
           required
           value={state.title}
-          variant="outlined"
-        />
-
-        <TextField
-          className={classes.formElement}
-          error={hasError(errors, 'fixedCharge')}
-          helperText={hasError(errors, 'fixedCharge') ? errors.fixedCharge.message : ''}
-          inputProps={{
-            name: 'fixedCharge'
-          }}
-          label="شارژ ثابت"
-          margin="dense"
-          onChange={handleNumberInputChange}
-          value={toPersianNumberWithComma(state.fixedCharge)}
           variant="outlined"
         />
       </div>
@@ -253,6 +241,36 @@ const UnitForm = props => {
           onChange={handleNumberInputChange}
           required
           value={toPersianNumberWithComma(state.residentCount)}
+          variant="outlined"
+        />
+      </div>
+
+      <div className={classes.formRowContainer}>
+        <TextField
+          className={clsx(classes.formElement, classes.rightFormElement)}
+          error={hasError(errors, 'fixedCharge')}
+          helperText={hasError(errors, 'fixedCharge') ? errors.fixedCharge.message : ''}
+          inputProps={{
+            name: 'fixedCharge'
+          }}
+          label="شارژ ثابت"
+          margin="dense"
+          onChange={handleNumberInputChange}
+          value={toPersianNumberWithComma(state.fixedCharge)}
+          variant="outlined"
+        />
+
+        <TextField
+          className={classes.formElement}
+          error={hasError(errors, 'powerConsumption')}
+          helperText={hasError(errors, 'powerConsumption') ? errors.powerConsumption.message : ''}
+          inputProps={{
+            name: 'powerConsumption'
+          }}
+          label="مصرف برق"
+          margin="dense"
+          onChange={handleNumberInputChange}
+          value={toPersianNumberWithComma(state.powerConsumption)}
           variant="outlined"
         />
       </div>

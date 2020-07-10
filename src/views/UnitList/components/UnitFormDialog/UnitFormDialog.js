@@ -48,7 +48,7 @@ const UnitFormDialog = props => {
     >
       <DialogTitle disableTypography>
         <Typography variant="h4">
-          ایجاد واحد
+          {units.formDialogUpdate ? 'تغییر واحد' : 'ایجاد واحد'}
         </Typography>
       </DialogTitle>
       <DialogContent>

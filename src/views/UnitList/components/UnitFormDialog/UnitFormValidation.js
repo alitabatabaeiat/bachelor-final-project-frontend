@@ -8,6 +8,7 @@ export const createUnitSchema = Joi.object({
   parkingSpaceCount: Joi.number().integer().min(0).required(),
   residentCount: Joi.number().integer().min(0).required(),
   fixedCharge: Joi.number().integer().min(0),
+  powerConsumption: Joi.number().integer().min(1),
   isEmpty: Joi.bool().required(),
   resident: Rules.mobileNumber
 });
@@ -19,6 +20,7 @@ export const updateUnitSchema = Joi.object({
   parkingSpaceCount: Joi.number().integer().min(0),
   residentCount: Joi.number().integer().min(0),
   fixedCharge: Joi.number().integer().min(0),
+  powerConsumption: Joi.number().integer().min(1),
   isEmpty: Joi.boolean(),
   resident: Rules.mobileNumber.allow(null)
 });
