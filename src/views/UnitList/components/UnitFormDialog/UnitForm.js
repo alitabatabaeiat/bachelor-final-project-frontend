@@ -60,6 +60,7 @@ const UnitForm = props => {
     residentCount: undefined,
     fixedCharge: undefined,
     powerConsumption: undefined,
+    revisionedConsumptionCoefficient: undefined,
     isEmpty: false,
     resident: undefined
   });
@@ -106,7 +107,7 @@ const UnitForm = props => {
   };
 
   const handleUpdateSubmit = async () => {
-    const {selectedUnit} = units;
+    const { selectedUnit } = units;
     const data = {
       title: state.title !== selectedUnit.title ? state.title : undefined,
       floor: state.floor !== selectedUnit.floor ? state.floor : undefined,
@@ -115,13 +116,15 @@ const UnitForm = props => {
       residentCount: state.residentCount !== selectedUnit.residentCount ? state.residentCount : undefined,
       fixedCharge: state.fixedCharge !== selectedUnit.fixedCharge ? state.fixedCharge : undefined,
       powerConsumption: state.powerConsumption !== selectedUnit.powerConsumption ? state.powerConsumption : undefined,
+      revisionedConsumptionCoefficient: state.revisionedConsumptionCoefficient !== selectedUnit.revisionedConsumptionCoefficient ?
+        state.revisionedConsumptionCoefficient : undefined,
       isEmpty: state.isEmpty !== selectedUnit.isEmpty ? state.isEmpty : undefined
     };
 
     const resident = state.resident ? toEnglishNumberWithoutComma(state.resident.substr(1)) : undefined;
     const residentUpdated = resident !== (selectedUnit.resident ? selectedUnit.resident.mobileNumber : undefined);
-    console.log(data.isEmpty === undefined  && state.isEmpty === false && residentUpdated);
-    if ((data.isEmpty === undefined  && state.isEmpty === false && residentUpdated) || (data.isEmpty === false))
+    console.log(data.isEmpty === undefined && state.isEmpty === false && residentUpdated);
+    if ((data.isEmpty === undefined && state.isEmpty === false && residentUpdated) || (data.isEmpty === false))
       data.resident = resident;
     else if (data.isEmpty === true)
       data.resident = null;
@@ -261,16 +264,30 @@ const UnitForm = props => {
         />
 
         <TextField
-          className={classes.formElement}
+          className={clsx(classes.formElement, classes.rightFormElement)}
           error={hasError(errors, 'powerConsumption')}
           helperText={hasError(errors, 'powerConsumption') ? errors.powerConsumption.message : ''}
           inputProps={{
             name: 'powerConsumption'
           }}
-          label="مصرف برق"
+          label="ضریب مصرف"
           margin="dense"
           onChange={handleNumberInputChange}
           value={toPersianNumberWithComma(state.powerConsumption)}
+          variant="outlined"
+        />
+
+        <TextField
+          className={classes.formElement}
+          error={hasError(errors, 'revisionedConsumptionCoefficient')}
+          helperText={hasError(errors, 'revisionedConsumptionCoefficient') ? errors.revisionedConsumptionCoefficient.message : ''}
+          inputProps={{
+            name: 'powerConsumption'
+          }}
+          label="ضریب مصرف اصلاح شده"
+          margin="dense"
+          onChange={handleNumberInputChange}
+          value={toPersianNumberWithComma(state.revisionedConsumptionCoefficient)}
           variant="outlined"
         />
       </div>
@@ -332,6 +349,9 @@ const UnitForm = props => {
           color="primary"
           onClick={handleSubmit}
           startIcon={<SaveIcon/>}
+          style={{
+            marginRight: !units.formDialogUpdate ? 'auto' : undefined
+          }}
           variant="contained"
         >
           ثبت
@@ -341,7 +361,6 @@ const UnitForm = props => {
   );
 };
 
-UnitForm.propTypes = {
-};
+UnitForm.propTypes = {};
 
 export default UnitForm;

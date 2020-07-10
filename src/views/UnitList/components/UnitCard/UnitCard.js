@@ -156,16 +156,15 @@ const UnitCard = props => {
                 className={classes.cardDetail}
                 variant={cardDetailVariant}
               >
-                وضعیت:{' '}
-                <Typography
-                  component="span"
-                  style={{
-                    color: unit.isEmpty ? red[500] : green[600]
-                  }}
-                  variant={cardDetailVariant}
-                >
-                  {unit.isEmpty ? 'خالی' : 'پر'}
-                </Typography>
+                مصرف برق: {toPersianNumberWithComma(unit.powerConsumption)} (کیلووات/ریال)
+              </Typography>
+
+              <Typography
+                align={cardDetailAlign}
+                className={classes.cardDetail}
+                variant={cardDetailVariant}
+              >
+                ضریب مصرف اصلاح شده: {toPersianNumberWithComma(unit.revisionedConsumptionCoefficient)}
               </Typography>
             </div>
             <div className={classes.cardHalfSection}>
@@ -190,7 +189,24 @@ const UnitCard = props => {
                 className={classes.cardDetail}
                 variant={cardDetailVariant}
               >
-                مصرف برق: {toPersianNumberWithComma(unit.powerConsumption)}
+                وضعیت:{' '}
+                <Typography
+                  component="span"
+                  style={{
+                    color: unit.isEmpty ? red[500] : green[600]
+                  }}
+                  variant={cardDetailVariant}
+                >
+                  {unit.isEmpty ? 'خالی' : 'پر'}
+                </Typography>
+              </Typography>
+
+              <Typography
+                align={cardDetailAlign}
+                className={classes.cardDetail}
+                variant={cardDetailVariant}
+              >
+                ضریب مصرف: {toPersianNumberWithComma(unit.consumptionCoefficient)}
               </Typography>
             </div>
           </div>

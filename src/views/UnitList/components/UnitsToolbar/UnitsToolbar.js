@@ -22,10 +22,10 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   importButton: {
-    marginRight: theme.spacing(1)
+    marginLeft: theme.spacing(1)
   },
   exportButton: {
-    marginRight: theme.spacing(1)
+    marginLeft: theme.spacing(1)
   },
   searchInput: {
     marginRight: theme.spacing(1)
@@ -58,6 +58,26 @@ const UnitsToolbar = props => {
         >
           ایجاد واحد
         </Button>
+
+        <Button
+          className={classes.importButton}
+          color="primary"
+          onClick={handleCreateUnitClick}
+          startIcon={<AddIcon/>}
+          variant="contained"
+        >
+          ایجاد گروهی واحد از فایل اکسل
+        </Button>
+
+        {/*<Button*/}
+        {/*  className={classes.exportButton}*/}
+        {/*  color="primary"*/}
+        {/*  onClick={handleCreateUnitClick}*/}
+        {/*  startIcon={<AddIcon/>}*/}
+        {/*  variant="contained"*/}
+        {/*>*/}
+        {/*  خروجی اکسل واحدها*/}
+        {/*</Button>*/}
       </div>
       <div className={classes.row}>
         <SearchInput
