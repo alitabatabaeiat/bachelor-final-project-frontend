@@ -35,9 +35,11 @@ const DeclareCharge = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [state, setState] = React.useState({
     title: `شارژ ${toPersianJalaliMonth(now.jMonth())} ${toPersianNumber(now.format('jYY'))}`,
+    isEmergency: false,
     paymentDeadline: undefined,
     delayPenalty: undefined,
     includeFixedCharge: true,
+    description: undefined,
     selectedExpenses: []
   });
   const [errors, setErrors] = React.useState({});

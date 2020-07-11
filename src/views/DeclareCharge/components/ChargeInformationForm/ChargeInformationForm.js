@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/styles';
@@ -10,6 +10,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import MenuItem from '@material-ui/core/MenuItem';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -49,7 +50,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChargeInformationForm = props => {
-  const {onInputChange, state, errors} = props;
+  const { onInputChange, state, errors } = props;
+
+  const priorities = [
+    {
+      id: 1,
+      title: 'بالا'
+    },
+    {
+      id: 2,
+      title: 'عادی'
+    },
+    {
+      id: 3,
+      title: 'پایین'
+    }
+  ];
 
   const classes = useStyles();
 
@@ -79,36 +95,93 @@ const ChargeInformationForm = props => {
       </div>
 
       <div className={classes.formRowContainer}>
-        <TextField
-          className={classes.formElement}
-          error={hasError(errors, 'paymentDeadline')}
-          helperText={hasError(errors, 'paymentDeadline') ? errors.paymentDeadline.message : ''}
-          inputProps={{
-            name: 'paymentDeadline'
-          }}
-          label="مهلت پرداخت (روز)"
-          margin="dense"
-          onChange={event => handleInputChange(event, {isNumber: true})}
-          value={toPersianNumberWithComma(state.paymentDeadline)}
-          variant="outlined"
-        />
+        <FormControl
+          error={hasError(errors, 'isEmergency')}
+          required
+        >
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={state.isEmergency}
+                color="primary"
+                name="isEmergency"
+                onChange={event => handleInputChange(event, { isCheckbox: true })}
+              />
+            }
+            label="شارژ اضطراری"
+          />
+        </FormControl>
+        {
+          hasError(errors, 'isEmergency') && <FormHelperText>{errors.isEmergency.message}</FormHelperText>
+        }
       </div>
 
-      <div className={classes.formRowContainer}>
-        <TextField
-          className={classes.formElement}
-          error={hasError(errors, 'delayPenalty')}
-          helperText={hasError(errors, 'delayPenalty') ? errors.delayPenalty.message : ''}
-          inputProps={{
-            name: 'delayPenalty'
-          }}
-          label="جریمه تأخیر در پرداخت (روزانه)"
-          margin="dense"
-          onChange={event => handleInputChange(event, {isNumber: true})}
-          value={toPersianNumberWithComma(state.delayPenalty)}
-          variant="outlined"
-        />
-      </div>
+      {
+        state.isEmergency &&
+        <Fragment>
+          <div className={classes.formRowContainer}>
+            <TextField
+              className={clsx(classes.formElement, classes.typeTextField)}
+              error={hasError(errors, 'priority')}
+              helperText={hasError(errors, 'priority') ? errors.priority.message : 'اولویت را انتخاب کنید'}
+              id="outlined-select-currency"
+              inputProps={{
+                name: 'priority'
+              }}
+              label="اولویت"
+              margin="dense"
+              onChange={handleInputChange}
+              required
+              select
+              value={state.priority}
+              variant="outlined"
+            >
+              {
+                priorities.map(type => (
+                  <MenuItem
+                    key={type.id}
+                    value={type.id}
+                  >
+                    {type.title}
+                  </MenuItem>
+                ))
+              }
+            </TextField>
+          </div>
+
+          <div className={classes.formRowContainer}>
+            <TextField
+              className={classes.formElement}
+              error={hasError(errors, 'paymentDeadline')}
+              helperText={hasError(errors, 'paymentDeadline') ? errors.paymentDeadline.message : ''}
+              inputProps={{
+                name: 'paymentDeadline'
+              }}
+              label="مهلت پرداخت (روز)"
+              margin="dense"
+              onChange={event => handleInputChange(event, { isNumber: true })}
+              value={toPersianNumberWithComma(state.paymentDeadline)}
+              variant="outlined"
+            />
+          </div>
+
+          <div className={classes.formRowContainer}>
+            <TextField
+              className={classes.formElement}
+              error={hasError(errors, 'delayPenalty')}
+              helperText={hasError(errors, 'delayPenalty') ? errors.delayPenalty.message : ''}
+              inputProps={{
+                name: 'delayPenalty'
+              }}
+              label="جریمه تأخیر در پرداخت (روزانه)"
+              margin="dense"
+              onChange={event => handleInputChange(event, { isNumber: true })}
+              value={toPersianNumberWithComma(state.delayPenalty)}
+              variant="outlined"
+            />
+          </div>
+        </Fragment>
+      }
 
       <div className={classes.formRowContainer}>
         <FormControl
@@ -121,7 +194,7 @@ const ChargeInformationForm = props => {
                 checked={state.includeFixedCharge}
                 color="primary"
                 name="includeFixedCharge"
-                onChange={event => handleInputChange(event, {isCheckbox: true})}
+                onChange={event => handleInputChange(event, { isCheckbox: true })}
               />
             }
             label="شارژ ثابت محاسبه گردد"
@@ -130,6 +203,24 @@ const ChargeInformationForm = props => {
         {
           hasError(errors, 'includeFixedCharge') && <FormHelperText>{errors.includeFixedCharge.message}</FormHelperText>
         }
+      </div>
+
+      <div className={classes.formRowContainer}>
+        <TextField
+          className={classes.formElement}
+          error={hasError(errors, 'description')}
+          helperText={hasError(errors, 'description') ? errors.description.message : ''}
+          inputProps={{
+            name: 'description'
+          }}
+          label="توضیحات"
+          margin="dense"
+          multiline
+          onChange={handleInputChange}
+          rows={4}
+          value={state.description}
+          variant="outlined"
+        />
       </div>
     </form>
   );
