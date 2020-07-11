@@ -14,6 +14,8 @@ import {
   Typography,
   Button
 } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import { toEnglishNumberWithoutComma, toPersianNumber, toPersianNumberWithComma } from '../../../../helpers/persian';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -28,6 +30,25 @@ const Notifications = props => {
 
   const classes = useStyles();
 
+  const [state, setState] = React.useState({
+    residentCountStep: undefined,
+    parkingSpaceCountStep: undefined,
+    areaStep: undefined,
+  });
+
+  const [errors, setErrors] = React.useState({});
+
+  const handleAmountChange = async event => {
+    const { name, value } = event.target;
+    const amount = toEnglishNumberWithoutComma(value)
+    await setState({
+      ...state,
+      [name]: amount
+    });
+  };
+
+  const hasError = (errors, name) => errors && errors[name];
+
   return (
     <Card
       {...rest}
@@ -35,8 +56,8 @@ const Notifications = props => {
     >
       <form>
         <CardHeader
-          subheader="Manage the notifications"
-          title="Notifications"
+          subheader="تنظیمات هزینه‌ها را مدیریت کن"
+          title="هزینه‌ها"
         />
         <Divider />
         <CardContent>
@@ -48,82 +69,66 @@ const Notifications = props => {
             <Grid
               className={classes.item}
               item
-              md={4}
-              sm={6}
               xs={12}
             >
-              <Typography
-                gutterBottom
-                variant="h6"
-              >
-                Notifications
-              </Typography>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    defaultChecked //
-                  />
-                }
-                label="Email"
+              <TextField
+                className={clsx(classes.formElement, classes.rightFormElement)}
+                error={hasError(errors, 'residentCountStep')}
+                helperText={hasError(errors, 'residentCountStep') ? errors.residentCountStep.message : 'میزان گام به ازای هر ساکن را وارد کنید'}
+                inputProps={{
+                  name: 'residentCountStep'
+                }}
+                label="گام تعداد ساکنین"
+                margin="dense"
+                onChange={handleAmountChange}
+                required
+                value={toPersianNumber(state.residentCountStep)}
+                variant="outlined"
               />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    defaultChecked //
-                  />
-                }
-                label="Push Notifications"
+
+              <TextField
+                className={clsx(classes.formElement, classes.rightFormElement)}
+                error={hasError(errors, 'parkingSpaceCountStep')}
+                helperText={hasError(errors, 'parkingSpaceCountStep') ? errors.parkingSpaceCountStep.message : 'میزان گام به ازای هر پارکینگ را وارد کنید'}
+                inputProps={{
+                  name: 'parkingSpaceCountStep'
+                }}
+                label="گام تعداد پارکینگ"
+                margin="dense"
+                onChange={handleAmountChange}
+                required
+                value={toPersianNumber(state.parkingSpaceCountStep)}
+                variant="outlined"
               />
-              <FormControlLabel
-                control={<Checkbox color="primary" />}
-                label="Text Messages"
+
+              <TextField
+                className={clsx(classes.formElement, classes.rightFormElement)}
+                error={hasError(errors, 'parkingSpaceCountStep')}
+                helperText={hasError(errors, 'parkingSpaceCountStep') ? errors.parkingSpaceCountStep.message : 'میزان گام به ازای هر پارکینگ را وارد کنید'}
+                inputProps={{
+                  name: 'parkingSpaceCountStep'
+                }}
+                label="گام تعداد پارکینگ"
+                margin="dense"
+                onChange={handleAmountChange}
+                required
+                value={toPersianNumber(state.parkingSpaceCountStep)}
+                variant="outlined"
               />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    defaultChecked //
-                  />
-                }
-                label="Phone calls"
-              />
-            </Grid>
-            <Grid
-              className={classes.item}
-              item
-              md={4}
-              sm={6}
-              xs={12}
-            >
-              <Typography
-                gutterBottom
-                variant="h6"
-              >
-                Messages
-              </Typography>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    defaultChecked //
-                  />
-                }
-                label="Email"
-              />
-              <FormControlLabel
-                control={<Checkbox color="primary" />}
-                label="Push Notifications"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    defaultChecked //
-                  />
-                }
-                label="Phone calls"
+
+              <TextField
+                className={clsx(classes.formElement, classes.rightFormElement)}
+                error={hasError(errors, 'areaStep')}
+                helperText={hasError(errors, 'areaStep') ? errors.areaStep.message : 'میزان گام به ازای هر متر از واحد را وارد کنید'}
+                inputProps={{
+                  name: 'areaStep'
+                }}
+                label="گام متراژ"
+                margin="dense"
+                onChange={handleAmountChange}
+                required
+                value={toPersianNumber(state.areaStep)}
+                variant="outlined"
               />
             </Grid>
           </Grid>
@@ -133,8 +138,11 @@ const Notifications = props => {
           <Button
             color="primary"
             variant="outlined"
+            style={{
+              marginRight: 'auto'
+            }}
           >
-            Save
+            ذخیره
           </Button>
         </CardActions>
       </form>

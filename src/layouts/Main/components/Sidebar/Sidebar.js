@@ -77,12 +77,12 @@ const Sidebar = props => {
       icon: <ReceiptIcon />
     },
 
-    {
-      title: 'گزارشات',
-      href: '/reports',
-      icon: <AssessmentIcon />,
-      disabled: true
-    },
+    // {
+    //   title: 'گزارشات',
+    //   href: '/reports',
+    //   icon: <AssessmentIcon />,
+    //   disabled: true
+    // },
     // {
     //   title: 'Icons',
     //   href: '/icons',
@@ -97,8 +97,7 @@ const Sidebar = props => {
     {
       title: 'تنظیمات',
       href: '/settings',
-      icon: <SettingsIcon />,
-      disabled: true
+      icon: <SettingsIcon />
     }
   ];
 

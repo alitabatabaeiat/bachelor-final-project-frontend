@@ -120,7 +120,7 @@ const ExpenseForm = props => {
 
   const handleAmountChange = async event => {
     const { name, value } = event.target;
-    const amount = toEnglishNumberWithoutComma(value)
+    const amount = toEnglishNumberWithoutComma(value);
     await setState({
       ...state,
       [name]: amount
