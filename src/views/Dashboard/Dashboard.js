@@ -1,14 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Grid } from '@material-ui/core';
-
-import {
-  Residents,
-  TotalExpenses,
-  TasksProgress,
-  LastDeclaredCharge,
-  ExpensesSeperation,
-} from './components';
+import { useSelector } from 'react-redux';
+import ManagerDashboard from './ManagerDashboard';
+import ResidentDashboard from './ResidentDashboard';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,85 +13,17 @@ const useStyles = makeStyles(theme => ({
 const Dashboard = () => {
   const classes = useStyles();
 
+  const role = useSelector(state => state.user.role)
+
   return (
     <div className={classes.root}>
-      <Grid
-        container
-        spacing={4}
-      >
-        <Grid
-          item
-          lg={3}
-          sm={6}
-          xl={3}
-          xs={12}
-        >
-          <Residents />
-        </Grid>
-        <Grid
-          item
-          lg={3}
-          sm={6}
-          xl={3}
-          xs={12}
-        >
-          <TotalExpenses />
-        </Grid>
-        <Grid
-          item
-          lg={3}
-          sm={6}
-          xl={3}
-          xs={12}
-        >
-          <TasksProgress />
-        </Grid>
-        <Grid
-          item
-          lg={3}
-          sm={6}
-          xl={3}
-          xs={12}
-        >
-          <LastDeclaredCharge />
-        </Grid>
-        {/*<Grid*/}
-        {/*  item*/}
-        {/*  lg={8}*/}
-        {/*  md={12}*/}
-        {/*  xl={9}*/}
-        {/*  xs={12}*/}
-        {/*>*/}
-        {/*  <LatestSales />*/}
-        {/*</Grid>*/}
-        <Grid
-          item
-          lg={4}
-          md={6}
-          xl={3}
-          xs={12}
-        >
-          <ExpensesSeperation />
-        </Grid>
-        {/*<Grid*/}
-        {/*  item*/}
-        {/*  lg={4}*/}
-        {/*  md={6}*/}
-        {/*  xl={3}*/}
-        {/*  xs={12}*/}
-        {/*>*/}
-        {/*  <LatestProducts />*/}
-        {/*</Grid>*/}
-        {/*<Grid*/}
-        {/*  item*/}
-        {/*  lg={8}*/}
-        {/*  md={12}*/}
-        {/*  xl={9}*/}
-        {/*  xs={12}*/}
-        {/*>*/}
-        {/*  <LatestOrders />*/}
-        {/*</Grid>*/}
-      </Grid>
+      {
+        role === 'manager' && <ManagerDashboard />
+      }
+
+      {
+        role === 'resident' && <ResidentDashboard />
+      }
     </div>
   );
 };

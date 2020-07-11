@@ -6,6 +6,8 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { List, ListItem, Button, colors } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import _ from 'lodash';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -54,12 +56,14 @@ const SidebarNav = props => {
 
   const classes = useStyles();
 
+  const role = useSelector(state => state.user.role);
+
   return (
     <List
       {...rest}
       className={clsx(classes.root, className)}
     >
-      {pages.map(page => (
+      {pages.map(page => _.includes(page.role, role) && (
         <ListItem
           className={classes.item}
           disableGutters

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/styles';
@@ -6,6 +6,8 @@ import { useMediaQuery } from '@material-ui/core';
 
 import { Sidebar, Topbar, Footer } from './components';
 import Typography from '@material-ui/core/Typography';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -18,6 +20,9 @@ const useStyles = makeStyles(theme => ({
   shiftContent: {
     paddingLeft: 240
   },
+  blurContent: {
+    filter: 'blur(8px)'
+  },
   title: {
     padding: theme.spacing(4),
     paddingBottom: 0,
@@ -25,6 +30,10 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     height: '100%'
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff'
   }
 }));
 
@@ -36,6 +45,7 @@ const Main = props => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'), {
     defaultMatches: true
   });
+
 
   const [openSidebar, setOpenSidebar] = useState(false);
 
@@ -50,26 +60,36 @@ const Main = props => {
   const shouldOpenSidebar = isDesktop ? true : openSidebar;
 
   return (
-    <div
-      className={clsx({
-        [classes.root]: true,
-        [classes.shiftContent]: isDesktop
-      })}
-    >
-      <Topbar onSidebarOpen={handleSidebarOpen} />
-      <Sidebar
-        onClose={handleSidebarClose}
-        open={shouldOpenSidebar}
-        variant={isDesktop ? 'persistent' : 'temporary'}
-      />
-      <main className={classes.content}>
-        <div className={classes.title}>
-          <Typography variant="h2">{title}</Typography>
-        </div>
-        {children}
-        <Footer />
-      </main>
-    </div>
+    <Fragment>
+      <div
+        className={clsx({
+          [classes.root]: true,
+          [classes.shiftContent]: isDesktop,
+          [classes.blurContent]: false
+        })}
+      >
+        <Topbar onSidebarOpen={handleSidebarOpen}/>
+        <Sidebar
+          onClose={handleSidebarClose}
+          open={shouldOpenSidebar}
+          variant={isDesktop ? 'persistent' : 'temporary'}
+        />
+        <main className={classes.content}>
+          <div className={classes.title}>
+            <Typography variant="h2">{title}</Typography>
+          </div>
+          {children}
+          <Footer/>
+        </main>
+      </div>
+      <Backdrop
+        className={classes.backdrop}
+        // onClick={handleClose}
+        open={false}
+      >
+        <CircularProgress color="inherit"/>
+      </Backdrop>
+    </Fragment>
   );
 };
 

@@ -13,6 +13,7 @@ import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import PanToolIcon from '@material-ui/icons/PanTool';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import AssessmentIcon from '@material-ui/icons/Assessment';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 
 import { Profile, SidebarNav, Apartment } from './components';
 
@@ -48,17 +49,20 @@ const Sidebar = props => {
     {
       title: 'داشبورد',
       href: '/dashboard',
-      icon: <DashboardIcon />
+      icon: <DashboardIcon />,
+      role: ['manager', 'resident']
     },
     {
       title: 'هزینه ها',
       href: '/expenses',
-      icon: <AccountBalanceWalletIcon />
+      icon: <AccountBalanceWalletIcon />,
+      role: ['manager']
     },
     {
       title: 'واحد ها',
       href: '/units',
-      icon: <MeetingRoomIcon />
+      icon: <MeetingRoomIcon />,
+      role: ['manager']
     },
     // {
     //   title: 'ورود',
@@ -68,20 +72,23 @@ const Sidebar = props => {
     {
       title: 'اعلام شارژ',
       href: '/declare-charge',
-      icon: <PanToolIcon />
+      icon: <PanToolIcon />,
+      role: ['manager']
     },
 
     {
       title: 'صورتحساب',
       href: '/bills',
-      icon: <ReceiptIcon />
+      icon: <ReceiptIcon />,
+      role: ['manager', 'resident']
     },
 
     // {
     //   title: 'گزارشات',
     //   href: '/reports',
     //   icon: <AssessmentIcon />,
-    //   disabled: true
+    //   disabled: true,
+    //   role: ['manager', 'resident']
     // },
     // {
     //   title: 'Icons',
@@ -89,15 +96,24 @@ const Sidebar = props => {
     //   icon: <ImageIcon />
     // },
     {
+      title: 'تابلو اعلانات',
+      href: '/notifications',
+      icon: <NotificationsIcon />,
+      disabled: true,
+      role: ['manager', 'resident']
+    },
+    {
       title: 'پروفایل',
       href: '/account',
       icon: <AccountBoxIcon />,
-      disabled: true
+      disabled: true,
+      role: ['manager', 'resident']
     },
     {
       title: 'تنظیمات',
       href: '/settings',
-      icon: <SettingsIcon />
+      icon: <SettingsIcon />,
+      role: ['manager']
     }
   ];
 

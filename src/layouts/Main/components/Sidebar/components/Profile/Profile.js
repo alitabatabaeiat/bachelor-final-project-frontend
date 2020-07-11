@@ -6,6 +6,8 @@ import { makeStyles } from '@material-ui/styles';
 import { Avatar, Typography, Button } from '@material-ui/core';
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import * as UserAction from '../../../../../../store/user/UserAction';
+import { useDispatch, useSelector } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,10 +35,13 @@ const Profile = props => {
 
   const classes = useStyles();
 
-  const user = {
-    name: 'سید علی طباطبایی آل طه',
-    avatar: '/images/avatars/avatar_11.png',
-    role: 'مدیر'
+  const dispatch = useDispatch();
+
+  const user = useSelector(state => state.user);
+  console.log(user)
+
+  const handleRoleButtonClick = () => {
+    dispatch(UserAction.changeRole());
   };
 
   return (
@@ -62,10 +67,11 @@ const Profile = props => {
         className={classes.roleButton}
         color="primary"
         endIcon={<SwapHorizIcon />}
+        onClick={handleRoleButtonClick}
         size="small"
         variant="outlined"
       >
-        {user.role}
+        {user.role === 'manager' ? 'مدیر' : 'ساکن'}
       </Button>
     </div>
   );

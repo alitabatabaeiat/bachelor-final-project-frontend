@@ -16,6 +16,8 @@ Chart.helpers.extend(Chart.elements.Rectangle.prototype, {
   draw: chartjs.draw
 });
 
+Chart.defaults.global.defaultFontFamily = 'Vazir';
+
 function App(props) {
   return (
     <RTL>
