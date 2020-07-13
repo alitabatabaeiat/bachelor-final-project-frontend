@@ -25,6 +25,12 @@ export async function requestCreateApartmentExpense(role, apartmentId, data) {
   return HttpUtils.post(endpoint, data);
 }
 
+export async function requestCalculateApartmentExpense(role, apartmentId, data) {
+  const endpoint = environment.api(role).apartments(apartmentId).expenses().calculate;
+
+  return HttpUtils.post(endpoint, data);
+}
+
 export async function requestDeleteApartmentExpense(role, apartmentId, expenseId) {
   const endpoint = environment.api(role).apartments(apartmentId).expenses(expenseId).delete;
 

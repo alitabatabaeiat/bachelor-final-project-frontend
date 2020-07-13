@@ -12,7 +12,8 @@ export const initialState = {
   expenseOptions: {
     splitOptions: [],
     filterOptions: []
-  }
+  },
+  calculatedUnitExpenses: []
 };
 
 const apartmentsReducer = baseReducer(initialState, {
@@ -22,7 +23,8 @@ const apartmentsReducer = baseReducer(initialState, {
     return {
       ...state,
       apartments: action.payload.data,
-      activeApartment: state.activeApartment ?? action.payload.data[0]
+      activeApartment: state.activeApartment ?? action.payload.data[0],
+      calculatedUnitExpenses: []
     };
   },
 
@@ -59,6 +61,15 @@ const apartmentsReducer = baseReducer(initialState, {
     return {
       ...state,
       expenses: [action.payload.data, ...state.expenses]
+    };
+  },
+
+  [ApartmentsAction.REQUEST_CALCULATE_APARTMENT_EXPENSE_FINISHED](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      calculatedUnitExpenses: action.payload.data
     };
   },
 

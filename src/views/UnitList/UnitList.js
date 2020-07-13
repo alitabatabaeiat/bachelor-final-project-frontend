@@ -1,14 +1,12 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { IconButton, Grid, Typography, colors } from '@material-ui/core';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { Grid, Typography } from '@material-ui/core';
+import _ from 'lodash';
 
 import { UnitsToolbar, UnitCard, UnitFormDialog } from './components';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUnits } from './UnitListSelector';
 import * as UnitsAction from '../../store/units/UnitsAction';
-import Divider from '@material-ui/core/Divider';
 import { toPersianNumber } from '../../helpers/persian';
 
 const useStyles = makeStyles(theme => ({
@@ -51,7 +49,7 @@ const UnitList = () => {
       <UnitsToolbar/>
       <div className={classes.content}>
         {
-          Object.entries(unitList).map(([floor, floorUnits]) => (
+          _.map(unitList, (floorUnits, floor) => (
             <div className={classes.floorContainer}>
               <Typography
                 className={classes.floorTitle}

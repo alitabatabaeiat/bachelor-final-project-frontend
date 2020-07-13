@@ -11,15 +11,13 @@ import { selectExpenseOptions, selectExpenseTypes, selectUnits } from './Expense
 import * as ExpenseTypesAction from '../../../../store/expenseTypes/ExpenseTypesAction';
 import * as ApartmentsAction from '../../../../store/apartments/ApartmentsAction';
 import * as UnitsAction from '../../../../store/units/UnitsAction';
-import Paper from '@material-ui/core/Paper';
 import clsx from 'clsx';
 import { Typography } from '@material-ui/core';
-import { toPersianNumber, toEnglishNumberWithoutComma, toPersianNumberWithComma } from '../../../../helpers/persian';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Badge from '@material-ui/core/Badge';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import validate from '../../../../helpers/validate';
+import { toEnglishNumberWithoutComma, toPersianNumberWithComma } from '../../../../helpers/persian';
+import _ from 'lodash';
+import UnitCard from './UnitCard';
 import { createApartmentExpenseSchema } from './ExpenseFormValidation';
+import validate from '../../../../helpers/validate';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -42,17 +40,6 @@ const useStyles = makeStyles((theme) => ({
   errorContainer: {
     marginTop: theme.spacing(-.75),
     marginLeft: theme.spacing(2.5)
-  },
-  unitButton: {
-    margin: theme.spacing(1)
-  },
-  unit: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minWidth: 160,
-    padding: theme.spacing(1)
   },
   formElement: {
     flexGrow: 1,
@@ -92,13 +79,13 @@ const ExpenseForm = props => {
     description: undefined
   });
 
-  const [coefficients, setCoefficients] = React.useState(undefined);
+  const [coefficients, setCoefficients] = React.useState({});
   const [selectedUnits, setSelectedUnits] = React.useState([]);
   const [errors, setErrors] = React.useState({});
 
   const types = useSelector(selectExpenseTypes);
   const options = useSelector(selectExpenseOptions);
-  const units = useSelector(selectUnits(state, coefficients, selectedUnits));
+  const units = useSelector(selectUnits(selectedUnits));
 
   const dispatch = useDispatch();
 
@@ -129,35 +116,48 @@ const ExpenseForm = props => {
 
   const handleSplitOptionChange = async event => {
     if (event.target.value === 6)
-      await setCoefficients([
-        ...Array(units.length).fill(false)
-      ]);
+      await setCoefficients(_.assign({}, ..._.map(units, u => ({
+        [u.id]: 0
+      }))));
     await handleChange(event);
   };
 
   const handleFilterOptionChange = async event => {
-    if (event.target.value === 4)
-      await setSelectedUnits([
-        ...Array(units.length).fill(false)
-      ]);
-    if (event.target.value === 6)
-      await setCoefficients([
-        ...Array(units.length).fill(0)
-      ]);
+    console.log(event.target.value);
+    switch (event.target.value) {
+      case 1:
+        await setSelectedUnits(_.map(units, 'id'));
+        break;
+      case 2:
+        await setSelectedUnits(_.chain(units).filter(['isEmpty', false]).map('id').value());
+        break;
+      case 3:
+        await setSelectedUnits(_.chain(units).filter(['isEmpty', true]).map('id').value());
+        break;
+      case 4:
+        await setSelectedUnits([]);
+        break;
+    }
+    console.log(selectedUnits);
     await handleChange(event);
   };
 
   const handleCoefficientChange = async event => {
-    const coefficientsCopy = [...coefficients];
-    coefficientsCopy[event.target.name] = event.target.value ? parseInt(event.target.value) : 0;
+    const coefficientsCopy = {...coefficients};
+    coefficientsCopy[event.target.name] = event.target.value ? toEnglishNumberWithoutComma(event.target.value) : 0;
     await setCoefficients(coefficientsCopy);
   };
 
-  const handleOnUnitClick = async (event, index) => {
+  const handleOnUnitClick = async (event, unitId) => {
     const inputFocused = document.activeElement === event.currentTarget.getElementsByTagName('input')[0];
     if (state.filterOption === 4 && !inputFocused) {
-      const selectedUnitsCopy = [...selectedUnits];
-      selectedUnitsCopy[index] = !selectedUnitsCopy[index];
+      let selectedUnitsCopy = [...selectedUnits];
+      console.log(selectedUnits);
+      console.log(unitId);
+      if (_.includes(selectedUnits, unitId))
+        _.remove(selectedUnitsCopy, u => u === unitId);
+      else
+        selectedUnitsCopy.push(unitId);
       await setSelectedUnits(selectedUnitsCopy);
     }
   };
@@ -166,8 +166,8 @@ const ExpenseForm = props => {
     // validation
     const data = {
       ...state,
-      coefficients: coefficients ? coefficients.filter((coefficient, index) => units[index].selected) : undefined,
-      units: units.filter(unit => unit.selected).map(unit => unit.id)
+      coefficients: !_.isEmpty(coefficients) ? _.map(selectedUnits, unitId => coefficients[unitId]) : undefined,
+      units: selectedUnits
     };
 
     const errors = validate(createApartmentExpenseSchema, data);
@@ -327,56 +327,15 @@ const ExpenseForm = props => {
         state.filterOption &&
         <div className={clsx(classes.formRowContainer, classes.unitsRowContainer)}>
           {
-            units.map((unit, index) => (
-              <ButtonBase
-                className={classes.unitButton}
-                focusVisibleClassName={classes.focusVisible}
+            units.map((unit) => (
+              <UnitCard
+                coefficients={coefficients}
                 key={unit.id}
-                onClick={(event) => handleOnUnitClick(event, index)}
-              >
-                <Badge
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left'
-                  }}
-                  badgeContent={
-                    unit.selected ?
-                      <CheckCircleIcon
-                        color="primary"
-                        fontSize="small"
-                      /> : false
-                  }
-                >
-                  <Paper className={classes.unit}>
-                    <Typography variant="body1">
-                      طبقه {toPersianNumber(unit.floor)} - {unit.title}
-                    </Typography>
-                    <Typography variant="caption">
-                      {unit.resident ? `${unit.resident.firstName ?? 'ساکن ثبت نام نکرده'} ${unit.resident.lastName ?? ''}` : 'واحد خالی'}
-                    </Typography>
-                    {
-                      <Typography variant="caption">
-                        {unit.share !== undefined ? toPersianNumberWithComma(Math.round(unit.share)) + ' ریال' : 'نامشخص'}
-                      </Typography>
-                    }
-                    {
-                      state.splitOption === 6 &&
-                      <TextField
-                        className={classes.unitCoefficient}
-                        inputProps={{
-                          name: index
-                        }}
-                        label="ضریب"
-                        margin="dense"
-                        onChange={handleCoefficientChange}
-                        size="small"
-                        value={coefficients[index]}
-                        variant="outlined"
-                      />
-                    }
-                  </Paper>
-                </Badge>
-              </ButtonBase>
+                onCoefficientChange={handleCoefficientChange}
+                onUnitClick={handleOnUnitClick}
+                splitOption={state.splitOption}
+                unit={unit}
+              />
             ))
           }
         </div>

@@ -13,6 +13,7 @@ export function toPersianNumberWithComma(amount) {
 }
 
 export function toEnglishNumberWithoutComma(amount) {
+  console.log(amount)
   if (!amount) return amount;
   return persianJs(amount).toEnglishNumber().toString().split(',').join('');
 }

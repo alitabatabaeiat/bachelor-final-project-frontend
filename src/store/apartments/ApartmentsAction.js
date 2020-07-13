@@ -15,6 +15,9 @@ export const REQUEST_ALL_APARTMENT_EXPENSES_FINISHED = 'ApartmentsAction.REQUEST
 export const REQUEST_CREATE_APARTMENT_EXPENSE = 'ApartmentsAction.REQUEST_CREATE_APARTMENT_EXPENSE';
 export const REQUEST_CREATE_APARTMENT_EXPENSE_FINISHED = 'ApartmentsAction.REQUEST_CREATE_APARTMENT_EXPENSE_FINISHED';
 
+export const REQUEST_CALCULATE_APARTMENT_EXPENSE = 'ApartmentsAction.REQUEST_CALCULATE_APARTMENT_EXPENSE';
+export const REQUEST_CALCULATE_APARTMENT_EXPENSE_FINISHED = 'ApartmentsAction.REQUEST_CALCULATE_APARTMENT_EXPENSE_FINISHED';
+
 export const REQUEST_DELETE_APARTMENT_EXPENSE = 'ApartmentsAction.REQUEST_DELETE_APARTMENT_EXPENSE';
 export const REQUEST_DELETE_APARTMENT_EXPENSE_FINISHED = 'ApartmentsAction.REQUEST_DELETE_APARTMENT_EXPENSE_FINISHED';
 
@@ -67,6 +70,17 @@ export function requestCreateApartmentExpense(data) {
 
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_CREATE_APARTMENT_EXPENSE, ApartmentsEffect.requestCreateApartmentExpense,
+      userRole, apartmentId, data);
+  };
+}
+
+export function requestCalculateApartmentExpense(data) {
+  return async (dispatch, getState) => {
+    const userRole = getState().user.role;
+    const apartmentId = getState().apartments.activeApartment.id;
+
+
+    await ActionUtils.createThunkEffect(dispatch, REQUEST_CALCULATE_APARTMENT_EXPENSE, ApartmentsEffect.requestCalculateApartmentExpense,
       userRole, apartmentId, data);
   };
 }
