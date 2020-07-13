@@ -14,7 +14,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TablePagination,
+  TablePagination
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,6 +24,10 @@ import { toPersianNumber, toPersianNumberWithComma } from '../../../../helpers/p
 import ClearIcon from '@material-ui/icons/Clear';
 import DoneIcon from '@material-ui/icons/Done';
 import green from '@material-ui/core/colors/green';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import red from '@material-ui/core/colors/red';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -51,6 +55,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const BillsTable = props => {
+  const role = useSelector(state => state.user.role);
   const charges = useSelector(selectCharges);
 
   const dispatch = useDispatch();
@@ -83,10 +88,24 @@ const BillsTable = props => {
                 <TableRow>
                   <TableCell>ردیف</TableCell>
                   <TableCell>عنوان شارژ</TableCell>
-                  <TableCell>مهلت پرداخت</TableCell>
-                  <TableCell>جریمه دیرکرد</TableCell>
+                  {/*<TableCell>شارژ اضطراری</TableCell>*/}
+                  {
+                    role === 'manager' &&
+                    <TableCell>جمع شارژ</TableCell>
+                  }
+                  {
+                    role === 'resident' &&
+                    <TableCell>سهم شارژ</TableCell>
+                  }
+                  {
+                    role === 'resident' &&
+                    <TableCell>وضعیت پرداخت</TableCell>
+                  }
+                  {/*<TableCell>مهلت پرداخت</TableCell>*/}
+                  {/*<TableCell>جریمه دیرکرد</TableCell>*/}
                   <TableCell>شامل شارژ ثابت</TableCell>
                   <TableCell>تاریخ ثبت</TableCell>
+                  {/*<TableCell>عملیات</TableCell>*/}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -98,12 +117,108 @@ const BillsTable = props => {
                   >
                     <TableCell>{toPersianNumber(index + 1)}</TableCell>
                     <TableCell>{charge.title}</TableCell>
-                    <TableCell>{charge.paymentDeadline ? toPersianNumberWithComma(charge.paymentDeadline) : <ClearIcon color="error" fontSize="small" />}</TableCell>
-                    <TableCell>{charge.delayPenalty ? toPersianNumberWithComma(charge.delayPenalty) : <ClearIcon color="error" fontSize="small" />}</TableCell>
-                    <TableCell>{charge.includeFixedCharge ? <DoneIcon style={{ color: green[500] }} fontSize="small" /> : <ClearIcon color="error" fontSize="small" />}</TableCell>
+                    {/*<TableCell>*/}
+                    {/*  {*/}
+                    {/*    charge.isEmergency ?*/}
+                    {/*      <DoneIcon*/}
+                    {/*        fontSize="small"*/}
+                    {/*        style={{ color: green[500] }}*/}
+                    {/*      /> :*/}
+                    {/*      <ClearIcon*/}
+                    {/*        color="error"*/}
+                    {/*        fontSize="small"*/}
+                    {/*      />*/}
+                    {/*  }*/}
+                    {/*</TableCell>*/}
+                    <TableCell>{toPersianNumberWithComma(15000000) + ' ریال'}</TableCell>
+                    {
+                      role === 'resident' &&
+                      <TableCell>
+                        {
+                          charge.isPaid ?
+                            <Typography
+                              style={{ color: green[500] }}
+                              varaint="span"
+                            >تسویه شده</Typography> :
+                            <Typography
+                              style={{ color: red[500] }}
+                              varaint="span"
+                            >تسویه نشده</Typography>
+                        }
+                      </TableCell>
+                    }
+                    {/*<TableCell>*/}
+                    {/*  {*/}
+                    {/*    charge.paymentDeadline ? toPersianNumberWithComma(charge.paymentDeadline) :*/}
+                    {/*      <ClearIcon*/}
+                    {/*        color="error"*/}
+                    {/*        fontSize="small"*/}
+                    {/*      />*/}
+                    {/*  }*/}
+                    {/*</TableCell>*/}
+                    {/*<TableCell>*/}
+                    {/*  {*/}
+                    {/*    charge.delayPenalty ? toPersianNumberWithComma(charge.delayPenalty) :*/}
+                    {/*      <ClearIcon*/}
+                    {/*        color="error"*/}
+                    {/*        fontSize="small"*/}
+                    {/*      />*/}
+                    {/*  }*/}
+                    {/*</TableCell>*/}
+                    <TableCell>
+                      {
+                        charge.includeFixedCharge ?
+                          <DoneIcon
+                            fontSize="small"
+                            style={{ color: green[500] }}
+                          /> :
+                          <ClearIcon
+                            color="error"
+                            fontSize="small"
+                          />
+                      }
+                    </TableCell>
                     <TableCell>
                       {toPersianNumber(moment(charge.createdAt).locale('fa').format('YYYY/MM/DD'))}
                     </TableCell>
+                    {/*<TableCell>*/}
+                    {/*  <Box*/}
+                    {/*    component="span"*/}
+                    {/*    mr={2}*/}
+                    {/*  >*/}
+                    {/*    <Button*/}
+                    {/*      className={classes.button}*/}
+                    {/*      color="primary"*/}
+                    {/*      disabled*/}
+                    {/*      size="small"*/}
+                    {/*      variant="contained"*/}
+                    {/*    >*/}
+                    {/*      ریز هزینه‌ها*/}
+                    {/*    </Button>*/}
+                    {/*  </Box>*/}
+                    {/*  {*/}
+                    {/*    role === 'manager' ?*/}
+                    {/*      <Button*/}
+                    {/*        className={classes.button}*/}
+                    {/*        color="secondary"*/}
+                    {/*        disabled*/}
+                    {/*        size="small"*/}
+                    {/*        variant="contained"*/}
+                    {/*      >*/}
+                    {/*        صورتحساب واحدها*/}
+                    {/*      </Button> :*/}
+                    {/*      <Button*/}
+                    {/*        className={classes.button}*/}
+                    {/*        color="secondary"*/}
+                    {/*        disabled*/}
+                    {/*        size="small"*/}
+                    {/*        variant="contained"*/}
+                    {/*      >*/}
+                    {/*        پرداخت*/}
+                    {/*      </Button>*/}
+                    {/*  }*/}
+                    {/*</TableCell>*/}
+
                   </TableRow>
                 ))}
               </TableBody>
@@ -126,7 +241,6 @@ const BillsTable = props => {
   );
 };
 
-BillsTable.propTypes = {
-};
+BillsTable.propTypes = {};
 
 export default BillsTable;

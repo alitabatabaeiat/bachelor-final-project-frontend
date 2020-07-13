@@ -99,7 +99,6 @@ const Sidebar = props => {
       title: 'تابلو اعلانات',
       href: '/notifications',
       icon: <NotificationsIcon />,
-      disabled: true,
       role: ['manager', 'resident']
     },
     {

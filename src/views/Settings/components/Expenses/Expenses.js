@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const Notifications = props => {
+const Expenses = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -103,16 +103,16 @@ const Notifications = props => {
 
               <TextField
                 className={clsx(classes.formElement, classes.rightFormElement)}
-                error={hasError(errors, 'parkingSpaceCountStep')}
-                helperText={hasError(errors, 'parkingSpaceCountStep') ? errors.parkingSpaceCountStep.message : 'میزان گام به ازای هر پارکینگ را وارد کنید'}
+                error={hasError(errors, 'floorStep')}
+                helperText={hasError(errors, 'floorStep') ? errors.floorStep.message : 'میزان گام به ازای هر طبقه را وارد کنید'}
                 inputProps={{
-                  name: 'parkingSpaceCountStep'
+                  name: 'floorStep'
                 }}
-                label="گام تعداد پارکینگ"
+                label="گام طبقه"
                 margin="dense"
                 onChange={handleAmountChange}
                 required
-                value={toPersianNumber(state.parkingSpaceCountStep)}
+                value={toPersianNumber(state.floorStep)}
                 variant="outlined"
               />
 
@@ -150,8 +150,8 @@ const Notifications = props => {
   );
 };
 
-Notifications.propTypes = {
+Expenses.propTypes = {
   className: PropTypes.string
 };
 
-export default Notifications;
+export default Expenses;

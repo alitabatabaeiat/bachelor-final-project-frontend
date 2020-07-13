@@ -164,7 +164,7 @@ const UnitCard = props => {
                 className={classes.cardDetail}
                 variant={cardDetailVariant}
               >
-                ضریب مصرف اصلاح شده: {toPersianNumberWithComma(unit.revisionedConsumptionCoefficient)}
+                ضریب مصرف اصلاح شده: {unit.suggestedConsumptionCoefficient ? toPersianNumberWithComma(unit.suggestedConsumptionCoefficient): '-'}
               </Typography>
             </div>
             <div className={classes.cardHalfSection}>

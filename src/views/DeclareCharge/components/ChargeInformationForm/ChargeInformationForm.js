@@ -94,94 +94,112 @@ const ChargeInformationForm = props => {
         />
       </div>
 
+      {/*<div className={classes.formRowContainer}>*/}
+      {/*  <FormControl*/}
+      {/*    error={hasError(errors, 'isEmergency')}*/}
+      {/*    required*/}
+      {/*  >*/}
+      {/*    <FormControlLabel*/}
+      {/*      control={*/}
+      {/*        <Checkbox*/}
+      {/*          checked={state.isEmergency}*/}
+      {/*          color="primary"*/}
+      {/*          name="isEmergency"*/}
+      {/*          onChange={event => handleInputChange(event, { isCheckbox: true })}*/}
+      {/*        />*/}
+      {/*      }*/}
+      {/*      label="شارژ اضطراری"*/}
+      {/*    />*/}
+      {/*  </FormControl>*/}
+      {/*  {*/}
+      {/*    hasError(errors, 'isEmergency') && <FormHelperText>{errors.isEmergency.message}</FormHelperText>*/}
+      {/*  }*/}
+      {/*</div>*/}
+
+      {/*{*/}
+      {/*  state.isEmergency &&*/}
+      {/*  <Fragment>*/}
+      {/*    <div className={classes.formRowContainer}>*/}
+      {/*      <TextField*/}
+      {/*        className={clsx(classes.formElement, classes.typeTextField)}*/}
+      {/*        error={hasError(errors, 'priority')}*/}
+      {/*        helperText={hasError(errors, 'priority') ? errors.priority.message : 'اولویت را انتخاب کنید'}*/}
+      {/*        id="outlined-select-currency"*/}
+      {/*        inputProps={{*/}
+      {/*          name: 'priority'*/}
+      {/*        }}*/}
+      {/*        label="اولویت"*/}
+      {/*        margin="dense"*/}
+      {/*        onChange={handleInputChange}*/}
+      {/*        required*/}
+      {/*        select*/}
+      {/*        value={state.priority}*/}
+      {/*        variant="outlined"*/}
+      {/*      >*/}
+      {/*        {*/}
+      {/*          priorities.map(type => (*/}
+      {/*            <MenuItem*/}
+      {/*              key={type.id}*/}
+      {/*              value={type.id}*/}
+      {/*            >*/}
+      {/*              {type.title}*/}
+      {/*            </MenuItem>*/}
+      {/*          ))*/}
+      {/*        }*/}
+      {/*      </TextField>*/}
+      {/*    </div>*/}
+
+      {/*    <div className={classes.formRowContainer}>*/}
+      {/*      <TextField*/}
+      {/*        className={classes.formElement}*/}
+      {/*        error={hasError(errors, 'paymentDeadline')}*/}
+      {/*        helperText={hasError(errors, 'paymentDeadline') ? errors.paymentDeadline.message : ''}*/}
+      {/*        inputProps={{*/}
+      {/*          name: 'paymentDeadline'*/}
+      {/*        }}*/}
+      {/*        label="مهلت پرداخت (روز)"*/}
+      {/*        margin="dense"*/}
+      {/*        onChange={event => handleInputChange(event, { isNumber: true })}*/}
+      {/*        value={toPersianNumberWithComma(state.paymentDeadline)}*/}
+      {/*        variant="outlined"*/}
+      {/*      />*/}
+      {/*    </div>*/}
+
+      {/*    <div className={classes.formRowContainer}>*/}
+      {/*      <TextField*/}
+      {/*        className={classes.formElement}*/}
+      {/*        error={hasError(errors, 'delayPenalty')}*/}
+      {/*        helperText={hasError(errors, 'delayPenalty') ? errors.delayPenalty.message : ''}*/}
+      {/*        inputProps={{*/}
+      {/*          name: 'delayPenalty'*/}
+      {/*        }}*/}
+      {/*        label="جریمه تأخیر در پرداخت (روزانه)"*/}
+      {/*        margin="dense"*/}
+      {/*        onChange={event => handleInputChange(event, { isNumber: true })}*/}
+      {/*        value={toPersianNumberWithComma(state.delayPenalty)}*/}
+      {/*        variant="outlined"*/}
+      {/*      />*/}
+      {/*    </div>*/}
+      {/*  </Fragment>*/}
+      {/*}*/}
+
       <div className={classes.formRowContainer}>
-        <FormControl
-          error={hasError(errors, 'isEmergency')}
-          required
-        >
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={state.isEmergency}
-                color="primary"
-                name="isEmergency"
-                onChange={event => handleInputChange(event, { isCheckbox: true })}
-              />
-            }
-            label="شارژ اضطراری"
-          />
-        </FormControl>
-        {
-          hasError(errors, 'isEmergency') && <FormHelperText>{errors.isEmergency.message}</FormHelperText>
-        }
+        <TextField
+          className={classes.formElement}
+          error={hasError(errors, 'description')}
+          helperText={hasError(errors, 'description') ? errors.description.message : ''}
+          inputProps={{
+            name: 'description'
+          }}
+          label="توضیحات"
+          margin="dense"
+          multiline
+          onChange={handleInputChange}
+          rows={4}
+          value={state.description}
+          variant="outlined"
+        />
       </div>
-
-      {
-        state.isEmergency &&
-        <Fragment>
-          <div className={classes.formRowContainer}>
-            <TextField
-              className={clsx(classes.formElement, classes.typeTextField)}
-              error={hasError(errors, 'priority')}
-              helperText={hasError(errors, 'priority') ? errors.priority.message : 'اولویت را انتخاب کنید'}
-              id="outlined-select-currency"
-              inputProps={{
-                name: 'priority'
-              }}
-              label="اولویت"
-              margin="dense"
-              onChange={handleInputChange}
-              required
-              select
-              value={state.priority}
-              variant="outlined"
-            >
-              {
-                priorities.map(type => (
-                  <MenuItem
-                    key={type.id}
-                    value={type.id}
-                  >
-                    {type.title}
-                  </MenuItem>
-                ))
-              }
-            </TextField>
-          </div>
-
-          <div className={classes.formRowContainer}>
-            <TextField
-              className={classes.formElement}
-              error={hasError(errors, 'paymentDeadline')}
-              helperText={hasError(errors, 'paymentDeadline') ? errors.paymentDeadline.message : ''}
-              inputProps={{
-                name: 'paymentDeadline'
-              }}
-              label="مهلت پرداخت (روز)"
-              margin="dense"
-              onChange={event => handleInputChange(event, { isNumber: true })}
-              value={toPersianNumberWithComma(state.paymentDeadline)}
-              variant="outlined"
-            />
-          </div>
-
-          <div className={classes.formRowContainer}>
-            <TextField
-              className={classes.formElement}
-              error={hasError(errors, 'delayPenalty')}
-              helperText={hasError(errors, 'delayPenalty') ? errors.delayPenalty.message : ''}
-              inputProps={{
-                name: 'delayPenalty'
-              }}
-              label="جریمه تأخیر در پرداخت (روزانه)"
-              margin="dense"
-              onChange={event => handleInputChange(event, { isNumber: true })}
-              value={toPersianNumberWithComma(state.delayPenalty)}
-              variant="outlined"
-            />
-          </div>
-        </Fragment>
-      }
 
       <div className={classes.formRowContainer}>
         <FormControl
@@ -203,24 +221,6 @@ const ChargeInformationForm = props => {
         {
           hasError(errors, 'includeFixedCharge') && <FormHelperText>{errors.includeFixedCharge.message}</FormHelperText>
         }
-      </div>
-
-      <div className={classes.formRowContainer}>
-        <TextField
-          className={classes.formElement}
-          error={hasError(errors, 'description')}
-          helperText={hasError(errors, 'description') ? errors.description.message : ''}
-          inputProps={{
-            name: 'description'
-          }}
-          label="توضیحات"
-          margin="dense"
-          multiline
-          onChange={handleInputChange}
-          rows={4}
-          value={state.description}
-          variant="outlined"
-        />
       </div>
     </form>
   );

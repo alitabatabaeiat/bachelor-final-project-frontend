@@ -60,7 +60,7 @@ const UnitForm = props => {
     residentCount: undefined,
     fixedCharge: undefined,
     powerConsumption: undefined,
-    revisionedConsumptionCoefficient: undefined,
+    suggestedConsumptionCoefficient: undefined,
     isEmpty: false,
     resident: undefined
   });
@@ -116,8 +116,8 @@ const UnitForm = props => {
       residentCount: state.residentCount !== selectedUnit.residentCount ? state.residentCount : undefined,
       fixedCharge: state.fixedCharge !== selectedUnit.fixedCharge ? state.fixedCharge : undefined,
       powerConsumption: state.powerConsumption !== selectedUnit.powerConsumption ? state.powerConsumption : undefined,
-      revisionedConsumptionCoefficient: state.revisionedConsumptionCoefficient !== selectedUnit.revisionedConsumptionCoefficient ?
-        state.revisionedConsumptionCoefficient : undefined,
+      suggestedConsumptionCoefficient: state.suggestedConsumptionCoefficient !== selectedUnit.suggestedConsumptionCoefficient ?
+        (state.suggestedConsumptionCoefficient !== '' ? state.suggestedConsumptionCoefficient : null) : undefined,
       isEmpty: state.isEmpty !== selectedUnit.isEmpty ? state.isEmpty : undefined
     };
 
@@ -133,6 +133,7 @@ const UnitForm = props => {
     setErrors(errors);
     if (!errors) {
       await dispatch(UnitsAction.requestUpdateUnit(selectedUnit.id, data));
+      await dispatch(UnitsAction.requestAllUnits());
 
       await dispatch(UnitsAction.setFormDialogOpen(false));
     }
@@ -148,6 +149,7 @@ const UnitForm = props => {
     setErrors(errors);
     if (!errors) {
       await dispatch(UnitsAction.requestCreateUnit(data));
+      await dispatch(UnitsAction.requestAllUnits());
 
       await dispatch(UnitsAction.setFormDialogOpen(false));
     }
@@ -262,7 +264,9 @@ const UnitForm = props => {
           value={toPersianNumberWithComma(state.fixedCharge)}
           variant="outlined"
         />
+      </div>
 
+      <div className={classes.formRowContainer}>
         <TextField
           className={clsx(classes.formElement, classes.rightFormElement)}
           error={hasError(errors, 'powerConsumption')}
@@ -270,7 +274,7 @@ const UnitForm = props => {
           inputProps={{
             name: 'powerConsumption'
           }}
-          label="ضریب مصرف"
+          label="مصرف برق(کیلووات/ریال)"
           margin="dense"
           onChange={handleNumberInputChange}
           value={toPersianNumberWithComma(state.powerConsumption)}
@@ -278,16 +282,31 @@ const UnitForm = props => {
         />
 
         <TextField
-          className={classes.formElement}
-          error={hasError(errors, 'revisionedConsumptionCoefficient')}
-          helperText={hasError(errors, 'revisionedConsumptionCoefficient') ? errors.revisionedConsumptionCoefficient.message : ''}
+          className={clsx(classes.formElement, classes.rightFormElement)}
+          disabled
+          error={hasError(errors, 'consumptionCoefficient')}
+          helperText={hasError(errors, 'consumptionCoefficient') ? errors.consumptionCoefficient.message : ''}
           inputProps={{
-            name: 'powerConsumption'
+            name: 'consumptionCoefficient'
+          }}
+          label="ضریب مصرف"
+          margin="dense"
+          onChange={handleNumberInputChange}
+          value={toPersianNumberWithComma(state.consumptionCoefficient)}
+          variant="outlined"
+        />
+
+        <TextField
+          className={classes.formElement}
+          error={hasError(errors, 'suggestedConsumptionCoefficient')}
+          helperText={hasError(errors, 'suggestedConsumptionCoefficient') ? errors.suggestedConsumptionCoefficient.message : ''}
+          inputProps={{
+            name: 'suggestedConsumptionCoefficient'
           }}
           label="ضریب مصرف اصلاح شده"
           margin="dense"
           onChange={handleNumberInputChange}
-          value={toPersianNumberWithComma(state.revisionedConsumptionCoefficient)}
+          value={toPersianNumberWithComma(state.suggestedConsumptionCoefficient)}
           variant="outlined"
         />
       </div>

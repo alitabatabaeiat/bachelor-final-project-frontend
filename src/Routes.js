@@ -9,6 +9,7 @@ import {
   UnitList as UnitListView,
   ExpenseList as ExpenseListView,
   BillList as BillListView,
+  NotificationList as NotificationListView,
   DeclareCharge as DeclareChargeView,
   Icons as IconsView,
   Account as AccountView,
@@ -86,6 +87,13 @@ const Routes = () => {
         layout={MainLayout}
         path="/settings"
         title="تنظیمات"
+      />
+      <RouteWithLayout
+        component={NotificationListView}
+        exact
+        layout={MainLayout}
+        path="/notifications"
+        title="تابلو اعلانات"
       />
       <RouteWithLayout
         component={SignUpView}
