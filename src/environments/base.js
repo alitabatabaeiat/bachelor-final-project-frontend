@@ -22,6 +22,10 @@ export default function baseEnv(baseApi) {
         charges: (chargeId = '') => ({
           getAll: `${baseApi}/${role}/apartments/${apartmentId}/charges`,
           create: `${baseApi}/${role}/apartments/${apartmentId}/charges`
+        }),
+        settings: () => ({
+          getApartmentSetting: `${baseApi}/${role}/apartments/${apartmentId}/settings`,
+          updateApartmentSetting: `${baseApi}/${role}/apartments/${apartmentId}/settings`,
         })
       }),
       expenseTypes: () => ({

@@ -42,3 +42,15 @@ export async function requestAllExpenseOptions(role, apartmentId) {
 
   return HttpUtils.get(endpoint);
 }
+
+export async function requestApartmentSetting(role, apartmentId) {
+  const endpoint = environment.api(role).apartments(apartmentId).settings().getApartmentSetting;
+
+  return HttpUtils.get(endpoint);
+}
+
+export async function requestUpdateApartmentSetting(role, apartmentId, data) {
+  const endpoint = environment.api(role).apartments(apartmentId).settings().updateApartmentSetting;
+
+  return HttpUtils.patch(endpoint, data);
+}

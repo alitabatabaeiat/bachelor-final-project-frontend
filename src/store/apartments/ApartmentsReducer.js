@@ -1,5 +1,6 @@
 import * as ApartmentsAction from './ApartmentsAction';
 import baseReducer from '../../helpers/BaseReducer';
+import { REQUEST_UPDATE_APARTMENT_SETTING } from './ApartmentsAction';
 
 export const initialState = {
   apartments: [],
@@ -13,7 +14,8 @@ export const initialState = {
     splitOptions: [],
     filterOptions: []
   },
-  calculatedUnitExpenses: []
+  calculatedUnitExpenses: [],
+  setting: {}
 };
 
 const apartmentsReducer = baseReducer(initialState, {
@@ -85,6 +87,24 @@ const apartmentsReducer = baseReducer(initialState, {
     return {
       ...state,
       expenseOptions: action.payload.data
+    };
+  },
+
+  [ApartmentsAction.REQUEST_APARTMENT_SETTING_FINISHED](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      setting: action.payload.data
+    };
+  },
+
+  [ApartmentsAction.REQUEST_UPDATE_APARTMENT_SETTING_FINISHED](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      setting: action.payload.data
     };
   },
 

@@ -24,6 +24,12 @@ export const REQUEST_DELETE_APARTMENT_EXPENSE_FINISHED = 'ApartmentsAction.REQUE
 export const REQUEST_ALL_EXPENSE_OPTIONS = 'ApartmentsAction.REQUEST_ALL_EXPENSE_OPTIONS';
 export const REQUEST_ALL_EXPENSE_OPTIONS_FINISHED = 'ApartmentsAction.REQUEST_ALL_EXPENSE_OPTIONS_FINISHED';
 
+export const REQUEST_APARTMENT_SETTING = 'ApartmentsAction.REQUEST_APARTMENT_SETTING';
+export const REQUEST_APARTMENT_SETTING_FINISHED = 'ApartmentsAction.REQUEST_APARTMENT_SETTING_FINISHED';
+
+export const REQUEST_UPDATE_APARTMENT_SETTING = 'ApartmentsAction.REQUEST_UPDATE_APARTMENT_SETTING';
+export const REQUEST_UPDATE_APARTMENT_SETTING_FINISHED = 'ApartmentsAction.REQUEST_UPDATE_APARTMENT_SETTING_FINISHED';
+
 export const SELECT_ALL_EXPENSES = 'ApartmentsAction.SELECT_ALL_EXPENSES';
 
 export const SELECT_EXPENSE = 'ApartmentsAction.SELECT_EXPENSE';
@@ -103,6 +109,26 @@ export function requestAllExpenseOptions() {
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_ALL_EXPENSE_OPTIONS, ApartmentsEffect.requestAllExpenseOptions,
       userRole, apartmentId);
+  };
+}
+
+export function requestApartmentSetting() {
+  return async (dispatch, getState) => {
+    const userRole = getState().user.role;
+    const apartmentId = getState().apartments.activeApartment.id;
+
+    await ActionUtils.createThunkEffect(dispatch, REQUEST_APARTMENT_SETTING, ApartmentsEffect.requestApartmentSetting,
+      userRole, apartmentId);
+  };
+}
+
+export function requestUpdateApartmentSetting(data) {
+  return async (dispatch, getState) => {
+    const userRole = getState().user.role;
+    const apartmentId = getState().apartments.activeApartment.id;
+
+    await ActionUtils.createThunkEffect(dispatch, REQUEST_UPDATE_APARTMENT_SETTING, ApartmentsEffect.requestUpdateApartmentSetting,
+      userRole, apartmentId, data);
   };
 }
 

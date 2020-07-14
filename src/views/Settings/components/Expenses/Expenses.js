@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
@@ -9,19 +9,25 @@ import {
   CardActions,
   Grid,
   Divider,
-  FormControlLabel,
-  Checkbox,
-  Typography,
   Button
 } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { toEnglishNumberWithoutComma, toPersianNumber, toPersianNumberWithComma } from '../../../../helpers/persian';
+import { useDispatch, useSelector } from 'react-redux';
+import * as ApartmentsAction from '../../../../store/apartments/ApartmentsAction';
+import _ from 'lodash';
+import validate from '../../../../helpers/validate';
+import { updateApartmentSettingSchema } from './ExpensesValidation';
+import Typography from '@material-ui/core/Typography';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   root: {},
   item: {
     display: 'flex',
     flexDirection: 'column'
+  },
+  formElement: {
+    marginBottom: theme.spacing(2)
   }
 }));
 
@@ -30,24 +36,57 @@ const Expenses = props => {
 
   const classes = useStyles();
 
+  const dispatch = useDispatch();
+
+  const setting = useSelector(state => state.apartments.setting);
+
   const [state, setState] = React.useState({
-    residentCountStep: undefined,
-    parkingSpaceCountStep: undefined,
-    areaStep: undefined,
+    residentCountStep: '',
+    parkingSpaceCountStep: '',
+    areaStep: '',
+    floorStep: ''
   });
 
   const [errors, setErrors] = React.useState({});
 
+
+  useEffect(async () => {
+    dispatch(ApartmentsAction.requestApartmentSetting());
+  }, []);
+
   const handleAmountChange = async event => {
     const { name, value } = event.target;
-    const amount = toEnglishNumberWithoutComma(value)
+    const amount = toEnglishNumberWithoutComma(value);
     await setState({
       ...state,
       [name]: amount
     });
   };
 
+  const handleSubmit = async () => {
+    const data = {
+      residentCountStep: state.residentCountStep ? state.residentCountStep : undefined,
+      parkingSpaceCountStep: state.parkingSpaceCountStep ? state.parkingSpaceCountStep : undefined,
+      areaStep: state.areaStep ? state.areaStep : undefined,
+      floorStep: state.floorStep ? state.floorStep : undefined
+    };
+
+    const errors = validate(updateApartmentSettingSchema, data);
+    setErrors(errors);
+    if (!errors) {
+      await dispatch(ApartmentsAction.requestUpdateApartmentSetting(data));
+      setState({
+        residentCountStep: '',
+        parkingSpaceCountStep: '',
+        areaStep: '',
+        floorStep: ''
+      });
+    }
+  };
+
   const hasError = (errors, name) => errors && errors[name];
+
+  console.log(toPersianNumber(state.residentCountStep));
 
   return (
     <Card
@@ -59,7 +98,7 @@ const Expenses = props => {
           subheader="تنظیمات هزینه‌ها را مدیریت کن"
           title="هزینه‌ها"
         />
-        <Divider />
+        <Divider/>
         <CardContent>
           <Grid
             container
@@ -71,6 +110,7 @@ const Expenses = props => {
               item
               xs={12}
             >
+              <Typography variant="caption">{`مقدار فعلی: ${toPersianNumber(setting.residentCountStep)}`}</Typography>
               <TextField
                 className={clsx(classes.formElement, classes.rightFormElement)}
                 error={hasError(errors, 'residentCountStep')}
@@ -86,6 +126,7 @@ const Expenses = props => {
                 variant="outlined"
               />
 
+              <Typography variant="caption">{`مقدار فعلی: ${toPersianNumber(setting.parkingSpaceCountStep)}`}</Typography>
               <TextField
                 className={clsx(classes.formElement, classes.rightFormElement)}
                 error={hasError(errors, 'parkingSpaceCountStep')}
@@ -101,21 +142,7 @@ const Expenses = props => {
                 variant="outlined"
               />
 
-              <TextField
-                className={clsx(classes.formElement, classes.rightFormElement)}
-                error={hasError(errors, 'floorStep')}
-                helperText={hasError(errors, 'floorStep') ? errors.floorStep.message : 'میزان گام به ازای هر طبقه را وارد کنید'}
-                inputProps={{
-                  name: 'floorStep'
-                }}
-                label="گام طبقه"
-                margin="dense"
-                onChange={handleAmountChange}
-                required
-                value={toPersianNumber(state.floorStep)}
-                variant="outlined"
-              />
-
+              <Typography variant="caption">{`مقدار فعلی: ${toPersianNumber(setting.areaStep)}`}</Typography>
               <TextField
                 className={clsx(classes.formElement, classes.rightFormElement)}
                 error={hasError(errors, 'areaStep')}
@@ -130,17 +157,34 @@ const Expenses = props => {
                 value={toPersianNumber(state.areaStep)}
                 variant="outlined"
               />
+
+              <Typography variant="caption">{`مقدار فعلی: ${toPersianNumber(setting.floorStep)}`}</Typography>
+              <TextField
+                className={clsx(classes.formElement, classes.rightFormElement)}
+                error={hasError(errors, 'floorStep')}
+                helperText={hasError(errors, 'floorStep') ? errors.floorStep.message : 'میزان گام به ازای هر طبقه را وارد کنید'}
+                inputProps={{
+                  name: 'floorStep'
+                }}
+                label="گام طبقه"
+                margin="dense"
+                onChange={handleAmountChange}
+                required
+                value={toPersianNumber(state.floorStep)}
+                variant="outlined"
+              />
             </Grid>
           </Grid>
         </CardContent>
-        <Divider />
+        <Divider/>
         <CardActions>
           <Button
             color="primary"
-            variant="outlined"
+            onClick={handleSubmit}
             style={{
               marginRight: 'auto'
             }}
+            variant="outlined"
           >
             ذخیره
           </Button>
