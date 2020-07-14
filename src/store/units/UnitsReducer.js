@@ -5,7 +5,8 @@ export const initialState = {
   units: [],
   formDialogOpen: false,
   formDialogUpdate: false,
-  selectedUnit: {}
+  selectedUnit: {},
+  activeUnit: {}
 };
 
 const unitsReducer = baseReducer(initialState, {
@@ -14,7 +15,7 @@ const unitsReducer = baseReducer(initialState, {
       return state;
     return {
       ...state,
-      units: action.payload.data
+      units: action.payload.data,
     };
   },
 

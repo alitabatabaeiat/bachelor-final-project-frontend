@@ -37,6 +37,9 @@ export default function baseEnv(baseApi) {
         create: `${baseApi}/${role}/units`,
         update: `${baseApi}/${role}/units/${unitId}`,
         delete: `${baseApi}/${role}/units/${unitId}`,
+        charges: (chargeId = '') => ({
+          getAll: `${baseApi}/${role}/units/${unitId}/charges`,
+        }),
       })
     }),
     isProduction: true,

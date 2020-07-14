@@ -4,4 +4,4 @@
 //   return expenses;
 // }
 //
-// export const selectCharges = createSelector((state) => state.charges.charges, _selectCharges);
+// export const selectCharges = createSelector((state) => state.apartmentCharges.apartmentCharges, _selectCharges);

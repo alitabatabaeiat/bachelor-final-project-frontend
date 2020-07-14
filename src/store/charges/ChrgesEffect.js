@@ -7,8 +7,14 @@ export async function requestCreateCharge(role, apartmentId, data) {
   return HttpUtils.post(endpoint, data);
 }
 
-export async function requestGetAllCharges(role, apartmentId) {
+export async function requestGetAllApartmentCharges(role, apartmentId) {
   const endpoint = environment.api(role).apartments(apartmentId).charges().getAll;
+
+  return HttpUtils.get(endpoint);
+}
+
+export async function requestGetAllUnitCharges(role, unitId) {
+  const endpoint = environment.api(role).units(unitId).charges().getAll;
 
   return HttpUtils.get(endpoint);
 }

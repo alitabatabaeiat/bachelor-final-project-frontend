@@ -71,7 +71,7 @@ const NotificationsTable = props => {
   const dispatch = useDispatch();
 
   // useEffect(() => {
-  //   dispatch(ChargesAction.requestGetAllCharges());
+  //   dispatch(ChargesAction.requestGetAllApartmentCharges());
   // }, [dispatch]);
 
   const classes = useStyles();

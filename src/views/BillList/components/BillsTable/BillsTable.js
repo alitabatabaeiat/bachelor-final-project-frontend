@@ -60,9 +60,16 @@ const BillsTable = props => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(ChargesAction.requestGetAllCharges());
-  }, [dispatch]);
+  const getCharges = () => {
+    if (role === 'manager')
+      dispatch(ChargesAction.requestGetAllApartmentCharges());
+    else
+      dispatch(ChargesAction.requestGetAllUnitCharges());
+  };
+
+  // useEffect(getCharges, []);
+
+  useEffect(getCharges, [role]);
 
   const classes = useStyles();
 
@@ -116,7 +123,7 @@ const BillsTable = props => {
                     key={charge.id}
                   >
                     <TableCell>{toPersianNumber(index + 1)}</TableCell>
-                    <TableCell>{charge.title}</TableCell>
+                    <TableCell>{role === 'manager' ? charge.title : charge.charge.title}</TableCell>
                     {/*<TableCell>*/}
                     {/*  {*/}
                     {/*    charge.isEmergency ?*/}
@@ -130,7 +137,7 @@ const BillsTable = props => {
                     {/*      />*/}
                     {/*  }*/}
                     {/*</TableCell>*/}
-                    <TableCell>{toPersianNumberWithComma(15000000) + ' ریال'}</TableCell>
+                    <TableCell>{toPersianNumberWithComma(role === 'manager' ? charge.totalAmount : charge.amount) + ' ریال'}</TableCell>
                     {
                       role === 'resident' &&
                       <TableCell>
@@ -167,7 +174,7 @@ const BillsTable = props => {
                     {/*</TableCell>*/}
                     <TableCell>
                       {
-                        charge.includeFixedCharge ?
+                        (role === 'manager' && charge.includeFixedCharge) || (role === 'resident' && charge.charge.includeFixedCharge) ?
                           <DoneIcon
                             fontSize="small"
                             style={{ color: green[500] }}
