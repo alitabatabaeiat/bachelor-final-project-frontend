@@ -40,10 +40,10 @@ const BillsToolbar = props => {
       className={clsx(classes.root, className)}
     >
       <div className={classes.row}>
-        <SearchInput
-          className={classes.searchInput}
-          placeholder="جستجو"
-        />
+        {/*<SearchInput*/}
+        {/*  className={classes.searchInput}*/}
+        {/*  placeholder="جستجو"*/}
+        {/*/>*/}
       </div>
     </div>
   );

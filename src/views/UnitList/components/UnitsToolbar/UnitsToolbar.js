@@ -80,10 +80,10 @@ const UnitsToolbar = props => {
         {/*</Button>*/}
       </div>
       <div className={classes.row}>
-        <SearchInput
-          className={classes.searchInput}
-          placeholder="جستجو"
-        />
+        {/*<SearchInput*/}
+        {/*  className={classes.searchInput}*/}
+        {/*  placeholder="جستجو"*/}
+        {/*/>*/}
       </div>
     </div>
   );

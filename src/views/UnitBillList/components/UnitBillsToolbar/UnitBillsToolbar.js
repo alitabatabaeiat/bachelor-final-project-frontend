@@ -30,8 +30,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ExpensesToolbar = props => {
-  const { className, onCreateApartmentExpenseClick } = props;
+const UnitBillsToolbar = props => {
+  const { className } = props;
 
   const classes = useStyles();
 
@@ -39,17 +39,6 @@ const ExpensesToolbar = props => {
     <div
       className={clsx(classes.root, className)}
     >
-      <div className={classes.row}>
-        <span className={classes.spacer} />
-        <Button
-          color="primary"
-          onClick={onCreateApartmentExpenseClick}
-          startIcon={<AddIcon/>}
-          variant="contained"
-        >
-          ثبت هزینه
-        </Button>
-      </div>
       <div className={classes.row}>
         {/*<SearchInput*/}
         {/*  className={classes.searchInput}*/}
@@ -60,9 +49,8 @@ const ExpensesToolbar = props => {
   );
 };
 
-ExpensesToolbar.propTypes = {
-  className: PropTypes.string,
-  onCreateApartmentExpenseClick: PropTypes.func.isRequired
+UnitBillsToolbar.propTypes = {
+  className: PropTypes.string
 };
 
-export default ExpensesToolbar;
+export default UnitBillsToolbar;

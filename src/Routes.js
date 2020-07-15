@@ -9,6 +9,7 @@ import {
   UnitList as UnitListView,
   ExpenseList as ExpenseListView,
   BillList as BillListView,
+  UnitBillList as UnitBillListView,
   NotificationList as NotificationListView,
   DeclareCharge as DeclareChargeView,
   Icons as IconsView,
@@ -60,6 +61,13 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/bills"
+        title="صورتحساب"
+      />
+      <RouteWithLayout
+        component={UnitBillListView}
+        exact
+        layout={MainLayout}
+        path="/unit-bills"
         title="صورتحساب"
       />
       <RouteWithLayout

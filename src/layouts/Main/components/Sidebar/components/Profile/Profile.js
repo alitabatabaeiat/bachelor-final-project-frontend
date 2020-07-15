@@ -8,6 +8,8 @@ import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import * as UserAction from '../../../../../../store/user/UserAction';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from "react-router-dom";
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,13 +37,15 @@ const Profile = props => {
 
   const classes = useStyles();
 
+  const history = useHistory();
+
   const dispatch = useDispatch();
 
   const user = useSelector(state => state.user);
-  console.log(user)
 
   const handleRoleButtonClick = () => {
     dispatch(UserAction.changeRole());
+    history.push('/dashboard');
   };
 
   return (

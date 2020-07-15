@@ -13,6 +13,12 @@ export async function requestGetAllApartmentCharges(role, apartmentId) {
   return HttpUtils.get(endpoint);
 }
 
+export async function requestGetApartmentCharge(role, apartmentId, chargeId) {
+  const endpoint = environment.api(role).apartments(apartmentId).charges(chargeId).getOne;
+
+  return HttpUtils.get(endpoint);
+}
+
 export async function requestGetAllUnitCharges(role, unitId) {
   const endpoint = environment.api(role).units(unitId).charges().getAll;
 

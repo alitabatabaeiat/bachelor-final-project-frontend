@@ -9,4 +9,5 @@ export { default as SignUp } from './SignUp';
 export { default as DeclareCharge } from './DeclareCharge';
 export { default as ExpenseList } from './ExpenseList';
 export { default as BillList } from './BillList';
+export { default as UnitBillList } from './UnitBillList';
 export { default as NotificationList } from './NotificationList';

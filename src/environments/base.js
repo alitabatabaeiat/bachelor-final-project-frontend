@@ -21,6 +21,7 @@ export default function baseEnv(baseApi) {
         }),
         charges: (chargeId = '') => ({
           getAll: `${baseApi}/${role}/apartments/${apartmentId}/charges`,
+          getOne: `${baseApi}/${role}/apartments/${apartmentId}/charges/${chargeId}`,
           create: `${baseApi}/${role}/apartments/${apartmentId}/charges`
         }),
         settings: () => ({

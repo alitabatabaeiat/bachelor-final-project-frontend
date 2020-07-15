@@ -18,12 +18,13 @@ import {
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCharges } from './BillsSelector';
+import { selectCharges } from './UnitBillsSelector';
 import * as ChargesAction from '../../../../store/charges/ChargesAction';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import Row from './Row';
-import * as ApartmentsAction from '../../../../store/apartments/ApartmentsAction';
+import _ from 'lodash';
+
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -38,15 +39,22 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BillsTable = props => {
-  const charges = useSelector(selectCharges);
+const UnitBillsTable = props => {
+  const role = useSelector(state => state.user.role);
+  let charges = useSelector(selectCharges);
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(ChargesAction.requestGetAllApartmentCharges());
-    dispatch(ApartmentsAction.requestAllApartmentExpenses({ declared: true }));
-  }, []);
+  const getCharges = () => {
+    if (role === 'resident')
+      dispatch(ChargesAction.requestGetAllUnitCharges());
+  };
+
+  useEffect(getCharges, []);
+
+  if (role === 'manager')
+    charges = _.sortBy(charges, c => c.unit.title);
+
 
   const classes = useStyles();
 
@@ -60,6 +68,7 @@ const BillsTable = props => {
   const handleRowsPerPageChange = event => {
     setRowsPerPage(event.target.value);
   };
+
   return (
     <Card
       className={classes.root}
@@ -73,14 +82,17 @@ const BillsTable = props => {
                   <TableRow>
                     <TableCell/>
                     <TableCell>ردیف</TableCell>
-                    <TableCell>عنوان شارژ</TableCell>
-                    {/*<TableCell>شارژ اضطراری</TableCell>*/}
-                    <TableCell>جمع شارژ</TableCell>
+                    <TableCell>{role === 'resident' ? 'عنوان شارژ' : 'عنوان واحد'}</TableCell>
+                    <TableCell>سهم شارژ</TableCell>
+                    <TableCell>وضعیت پرداخت</TableCell>
                     {/*<TableCell>مهلت پرداخت</TableCell>*/}
                     {/*<TableCell>جریمه دیرکرد</TableCell>*/}
                     <TableCell>شامل شارژ ثابت</TableCell>
                     <TableCell>تاریخ ثبت</TableCell>
-                    <TableCell>عملیات</TableCell>
+                    {
+                      role === 'manager' &&
+                      <TableCell>عملیات</TableCell>
+                    }
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -111,6 +123,6 @@ const BillsTable = props => {
   );
 };
 
-BillsTable.propTypes = {};
+UnitBillsTable.propTypes = {};
 
-export default BillsTable;
+export default UnitBillsTable;

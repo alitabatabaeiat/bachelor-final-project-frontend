@@ -80,7 +80,14 @@ const Sidebar = props => {
       title: 'صورتحساب',
       href: '/bills',
       icon: <ReceiptIcon />,
-      role: ['manager', 'resident']
+      role: ['manager']
+    },
+
+    {
+      title: 'صورتحساب',
+      href: '/unit-bills',
+      icon: <ReceiptIcon />,
+      role: ['resident']
     },
 
     // {

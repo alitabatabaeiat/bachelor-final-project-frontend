@@ -88,17 +88,17 @@ const UnitChargesTable = props => {
           </div>
         </PerfectScrollbar>
       </CardContent>
-      <CardActions className={classes.actions}>
-        <TablePagination
-          component="div"
-          count={unitCharges.length}
-          onChangePage={handlePageChange}
-          onChangeRowsPerPage={handleRowsPerPageChange}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[5, 10, 25]}
-        />
-      </CardActions>
+      {/*<CardActions className={classes.actions}>*/}
+      {/*  <TablePagination*/}
+      {/*    component="div"*/}
+      {/*    count={unitCharges.length}*/}
+      {/*    onChangePage={handlePageChange}*/}
+      {/*    onChangeRowsPerPage={handleRowsPerPageChange}*/}
+      {/*    page={page}*/}
+      {/*    rowsPerPage={rowsPerPage}*/}
+      {/*    rowsPerPageOptions={[5, 10, 25]}*/}
+      {/*  />*/}
+      {/*</CardActions>*/}
     </Card>
   );
 };

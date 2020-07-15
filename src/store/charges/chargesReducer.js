@@ -4,7 +4,8 @@ import baseReducer from '../../helpers/BaseReducer';
 export const initialState = {
   apartmentCharges: [],
   unitCharges: [],
-  charge: null
+  charge: null,
+  activeChargeId: null
 };
 
 const chargesReducer = baseReducer(initialState, {
@@ -14,6 +15,15 @@ const chargesReducer = baseReducer(initialState, {
     return {
       ...state,
       apartmentCharges: action.payload.data
+    };
+  },
+
+  [ApartmentsAction.REQUEST_GET_APARTMENT_CHARGE_FINISHED](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      unitCharges: action.payload.data.unitCharges
     };
   },
 
@@ -32,6 +42,15 @@ const chargesReducer = baseReducer(initialState, {
     return {
       ...state,
       unitCharges: action.payload.data
+    };
+  },
+
+  [ApartmentsAction.SET_ACTIVE_CHARGE](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      activeChargeId: action.payload
     };
   }
 });
