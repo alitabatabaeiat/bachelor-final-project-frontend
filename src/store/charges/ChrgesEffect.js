@@ -24,3 +24,9 @@ export async function requestGetAllUnitCharges(role, unitId) {
 
   return HttpUtils.get(endpoint);
 }
+
+export async function requestPayUnitCharges(role, unitId, chargeId) {
+  const endpoint = environment.api(role).units(unitId).charges(chargeId).pay;
+
+  return HttpUtils.post(endpoint);
+}

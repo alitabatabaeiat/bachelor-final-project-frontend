@@ -18,11 +18,10 @@ import Collapse from '@material-ui/core/Collapse';
 import { toPersianNumber, toPersianNumberWithComma } from '../../../../helpers/persian';
 import green from '@material-ui/core/colors/green';
 import red from '@material-ui/core/colors/red';
-import ClearIcon from '@material-ui/icons/Clear';
-import DoneIcon from '@material-ui/icons/Done';
 import moment from 'jalali-moment';
 import Button from '@material-ui/core/Button';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import * as ChargesAction from '../../../../store/charges/ChargesAction';
 
 
 const useRowStyles = makeStyles({
@@ -43,8 +42,13 @@ function Row(props) {
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
 
+  const dispatch = useDispatch();
+
   const role = useSelector(state => state.user.role);
-  console.log(charge)
+
+  const payCharge = chargeId => {
+    dispatch(ChargesAction.requestPayUnitCharges(chargeId));
+  };
 
   return (
     <React.Fragment>
@@ -87,6 +91,8 @@ function Row(props) {
             <Button
               className={classes.button}
               color="primary"
+              disabled={charge.isPaid}
+              onClick={() => payCharge(charge.id)}
               size="small"
               variant="contained"
             >

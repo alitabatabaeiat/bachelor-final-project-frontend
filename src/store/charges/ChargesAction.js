@@ -13,7 +13,8 @@ export const REQUEST_GET_APARTMENT_CHARGE_FINISHED = 'ChargesAction.REQUEST_GET_
 export const REQUEST_GET_ALL_UNIT_CHARGES = 'ChargesAction.REQUEST_GET_ALL_UNIT_CHARGES';
 export const REQUEST_GET_ALL_UNIT_CHARGES_FINISHED = 'ChargesAction.REQUEST_GET_ALL_UNIT_CHARGES_FINISHED';
 
-export const SET_ACTIVE_CHARGE = 'ChargesAction.SET_ACTIVE_CHARGE';
+export const REQUEST_REQUEST_PAY_UNIT_CHARGE = 'ChargesAction.REQUEST_REQUEST_PAY_UNIT_CHARGE';
+export const REQUEST_REQUEST_PAY_UNIT_CHARGE_FINISHED = 'ChargesAction.REQUEST_REQUEST_PAY_UNIT_CHARGE_FINISHED';
 
 export function requestCreateCharge(data) {
   return async (dispatch, getState) => {
@@ -55,6 +56,12 @@ export function requestGetAllUnitCharges() {
   };
 }
 
-export function setActiveCharge(chargeId) {
-  return ActionUtils.createAction(SET_ACTIVE_CHARGE, chargeId);
+export function requestPayUnitCharges(chargeId) {
+  return async (dispatch, getState) => {
+    const userRole = getState().user.role;
+    const unitId = getState().units.activeUnit.id;
+
+    await ActionUtils.createThunkEffect(dispatch, REQUEST_REQUEST_PAY_UNIT_CHARGE, ChargesEffect.requestPayUnitCharges,
+      userRole, unitId, chargeId);
+  };
 }

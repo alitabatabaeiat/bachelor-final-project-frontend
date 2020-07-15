@@ -40,6 +40,7 @@ export default function baseEnv(baseApi) {
         delete: `${baseApi}/${role}/units/${unitId}`,
         charges: (chargeId = '') => ({
           getAll: `${baseApi}/${role}/units/${unitId}/charges`,
+          pay: `${baseApi}/${role}/units/${unitId}/charges/${chargeId}/pay`,
         }),
       })
     }),

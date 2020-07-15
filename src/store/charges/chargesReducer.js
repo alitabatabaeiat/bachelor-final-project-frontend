@@ -45,12 +45,18 @@ const chargesReducer = baseReducer(initialState, {
     };
   },
 
-  [ApartmentsAction.SET_ACTIVE_CHARGE](state, action) {
+  [ApartmentsAction.REQUEST_REQUEST_PAY_UNIT_CHARGE_FINISHED](state, action) {
     if (action.error)
       return state;
+    const unitCharges = [...state.unitCharges];
+    const chargeIndex = unitCharges.findIndex(c => c.id === action.payload.data.id);
+    unitCharges[chargeIndex] = {
+      ...unitCharges[chargeIndex],
+      isPaid: true
+    };
     return {
       ...state,
-      activeChargeId: action.payload
+      unitCharges
     };
   }
 });
