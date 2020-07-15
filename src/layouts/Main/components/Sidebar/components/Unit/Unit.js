@@ -6,8 +6,9 @@ import { Typography, Button } from '@material-ui/core';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import ChooseDialog from '../ChooseDialog';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectActiveApartment } from './ApartmentSelector';
-import * as ApartmentsAction from '../../../../../../store/apartments/ApartmentsAction';
+import { selectActiveUnit } from './UnitSelector';
+import * as UnitsAction from '../../../../../../store/units/UnitsAction';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,19 +18,19 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Apartment = props => {
+const Unit = props => {
   const [open, setOpen] = React.useState(false);
 
-  const dispatch = useDispatch();
-
-  const { apartments, activeApartment } = useSelector(state => state.apartments);
+  const {units, activeUnit} = useSelector(state => state.units);
 
   const { className, ...rest } = props;
 
   const classes = useStyles();
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(ApartmentsAction.requestAllApartments());
+    dispatch(UnitsAction.requestAllUnits());
   }, []);
 
   const handleClickOpen = () => setOpen(true);
@@ -39,12 +40,7 @@ const Apartment = props => {
   };
 
   const handleListItemClick = (value) => {
-    dispatch(ApartmentsAction.updateActiveApartment(value));
-    handleClose();
-  };
-
-  const handleDeleteClick = (id) => {
-    dispatch(ApartmentsAction.requestDeleteApartment(id));
+    dispatch(UnitsAction.updateActiveUnit(value));
     handleClose();
   };
 
@@ -57,26 +53,25 @@ const Apartment = props => {
         color="primary"
         onClick={handleClickOpen}
         size="large"
-        startIcon={<ApartmentIcon/>}
-      >ساختمان های من</Button>
+        startIcon={<ApartmentIcon />}
+      >واحد های من</Button>
       <div className={classes.content}>
         <Typography
           align="center"
           variant="h6"
         >
-          {activeApartment.title}
+          {activeUnit.title}
         </Typography>
         <Typography
           align="center"
           variant="body2"
         >
-          کد: {activeApartment.id}
+          آپارتمان: {activeUnit.apartment.title}
         </Typography>
       </div>
       <ChooseDialog
-        list={apartments}
+        list={units}
         onClose={handleClose}
-        onDeleteClick={handleDeleteClick}
         onItemClick={handleListItemClick}
         open={open}
       />
@@ -84,8 +79,8 @@ const Apartment = props => {
   );
 };
 
-Apartment.propTypes = {
+Unit.propTypes = {
   className: PropTypes.string
 };
 
-export default Apartment;
+export default Unit;

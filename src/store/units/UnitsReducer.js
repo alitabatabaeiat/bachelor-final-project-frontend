@@ -1,12 +1,16 @@
 import * as UnitsAction from './UnitsAction';
 import baseReducer from '../../helpers/BaseReducer';
+import { UPDATE_ACTIVE_UNIT } from './UnitsAction';
 
 export const initialState = {
   units: [],
   formDialogOpen: false,
   formDialogUpdate: false,
   selectedUnit: {},
-  activeUnit: {}
+  activeUnit: {
+    id: '-',
+    title: 'هیچ واحدی انتخاب نشده است'
+  }
 };
 
 const unitsReducer = baseReducer(initialState, {
@@ -16,6 +20,16 @@ const unitsReducer = baseReducer(initialState, {
     return {
       ...state,
       units: action.payload.data,
+      activeUnit: state.activeUnit ?? action.payload.data[0]
+    };
+  },
+
+  [UnitsAction.UPDATE_ACTIVE_UNIT](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      activeUnit: action.payload
     };
   },
 

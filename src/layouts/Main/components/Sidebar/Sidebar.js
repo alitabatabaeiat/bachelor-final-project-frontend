@@ -16,6 +16,8 @@ import AssessmentIcon from '@material-ui/icons/Assessment';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
 import { Profile, SidebarNav, Apartment } from './components';
+import { useSelector } from 'react-redux';
+import Unit from './components/Unit';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -45,23 +47,25 @@ const Sidebar = props => {
 
   const classes = useStyles();
 
+  const role = useSelector(state => state.user.role);
+
   const pages = [
     {
       title: 'داشبورد',
       href: '/dashboard',
-      icon: <DashboardIcon />,
+      icon: <DashboardIcon/>,
       role: ['manager', 'resident']
     },
     {
       title: 'هزینه ها',
       href: '/expenses',
-      icon: <AccountBalanceWalletIcon />,
+      icon: <AccountBalanceWalletIcon/>,
       role: ['manager']
     },
     {
       title: 'واحد ها',
       href: '/units',
-      icon: <MeetingRoomIcon />,
+      icon: <MeetingRoomIcon/>,
       role: ['manager']
     },
     // {
@@ -72,21 +76,21 @@ const Sidebar = props => {
     {
       title: 'اعلام شارژ',
       href: '/declare-charge',
-      icon: <PanToolIcon />,
+      icon: <PanToolIcon/>,
       role: ['manager']
     },
 
     {
       title: 'صورتحساب',
       href: '/bills',
-      icon: <ReceiptIcon />,
+      icon: <ReceiptIcon/>,
       role: ['manager']
     },
 
     {
       title: 'صورتحساب',
       href: '/unit-bills',
-      icon: <ReceiptIcon />,
+      icon: <ReceiptIcon/>,
       role: ['resident']
     },
 
@@ -105,20 +109,20 @@ const Sidebar = props => {
     {
       title: 'تابلو اعلانات',
       href: '/notifications',
-      icon: <NotificationsIcon />,
+      icon: <NotificationsIcon/>,
       role: ['manager', 'resident']
     },
     {
       title: 'پروفایل',
       href: '/account',
-      icon: <AccountBoxIcon />,
+      icon: <AccountBoxIcon/>,
       disabled: true,
       role: ['manager', 'resident']
     },
     {
       title: 'تنظیمات',
       href: '/settings',
-      icon: <SettingsIcon />,
+      icon: <SettingsIcon/>,
       role: ['manager']
     }
   ];
@@ -135,10 +139,15 @@ const Sidebar = props => {
         {...rest}
         className={clsx(classes.root, className)}
       >
-        <Profile />
-        <Divider className={classes.divider} />
-        <Apartment />
-        <Divider className={classes.divider} />
+        <Profile/>
+        <Divider className={classes.divider}/>
+        {
+          role === 'manager' && <Apartment/>
+        }
+        {
+          role === 'resident' && <Unit/>
+        }
+        <Divider className={classes.divider}/>
         <SidebarNav
           className={classes.nav}
           pages={pages}

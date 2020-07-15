@@ -18,6 +18,12 @@ export let SET_FORM_DIALOG_OPEN = 'UnitsAction.SET_FORM_DIALOG_OPEN';
 export let SET_FORM_DIALOG_UPDATE = 'UnitsAction.SET_FORM_DIALOG_UPDATE';
 export let SELECT_UNIT = 'UnitsAction.SELECT_UNIT';
 
+export let UPDATE_ACTIVE_UNIT = 'UnitsAction.UPDATE_ACTIVE_UNIT';
+
+
+export function updateActiveUnit(unit) {
+  return ActionUtils.createAction(UPDATE_ACTIVE_UNIT, unit);
+}
 
 export function requestAllUnits(params) {
   return async (dispatch, getState) => {

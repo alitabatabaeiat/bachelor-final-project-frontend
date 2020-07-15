@@ -12,13 +12,13 @@ import AddIcon from '@material-ui/icons/Add';
 import { blue } from '@material-ui/core/colors';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { selectApartments } from './ApartmentDialogSelector';
 import * as ApartmentsAction from '../../../../../../store/apartments/ApartmentsAction';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles({
   avatar: {
@@ -30,64 +30,52 @@ const useStyles = makeStyles({
   }
 });
 
-function ApartmentDialog(props) {
+function ChooseDialog(props) {
   const classes = useStyles();
-  const { onClose, open } = props;
+  const { onClose, open, list, onItemClick, onDeleteClick } = props;
 
-  const dispatch = useDispatch();
+  const history = useHistory();
 
-  useEffect(() => {
-    dispatch(ApartmentsAction.requestAllApartments());
-  }, [dispatch]);
-
-  const apartments = useSelector(selectApartments);
-
-  const handleClose = () => {
-    onClose();
-  };
-
-  const handleListItemClick = (value) => {
-    dispatch(ApartmentsAction.updateActiveApartment(value));
-    onClose();
-  };
-
-  const handleDeleteClick = (id) => {
-    dispatch(ApartmentsAction.requestDeleteApartment(id));
-    onClose();
-  };
+  const handleItemClick = item => {
+    onItemClick(item);
+    history.push('/dashboard');
+  }
 
   return (
     <Dialog
-      onClose={handleClose}
+      onClose={onClose}
       open={open}
       scroll="paper"
     >
-      <DialogTitle>انتخاب ساختمان</DialogTitle>
+      <DialogTitle>انتخاب</DialogTitle>
       <DialogContent
         className={classes.dialogContent}
         dividers
       >
         <List>
-          {apartments.map((apartment) => (
+          {list.map((item) => (
             <ListItem
               button
-              key={apartment.id}
-              onClick={() => handleListItemClick(apartment)}
+              key={item.id}
+              onClick={() => handleItemClick(item)}
             >
               <ListItemAvatar>
                 <Avatar className={classes.avatar}>
                   <ApartmentIcon/>
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary={apartment.title}/>
-              <ListItemSecondaryAction>
-                <IconButton
-                  edge="end"
-                  onClick={() => handleDeleteClick(apartment.id)}
-                >
-                  <DeleteIcon fontSize="small"/>
-                </IconButton>
-              </ListItemSecondaryAction>
+              <ListItemText primary={item.title}/>
+              {
+                onDeleteClick &&
+                <ListItemSecondaryAction>
+                  <IconButton
+                    edge="end"
+                    onClick={() => onDeleteClick(item.id)}
+                  >
+                    <DeleteIcon fontSize="small"/>
+                  </IconButton>
+                </ListItemSecondaryAction>
+              }
             </ListItem>
           ))}
         </List>
@@ -97,7 +85,7 @@ function ApartmentDialog(props) {
         <ListItem
           autoFocus
           button
-          onClick={() => handleListItemClick('addApartment')}
+          onClick={() => onItemClick('addApartment')}
         >
           <ListItemAvatar>
             <Avatar>
@@ -111,9 +99,12 @@ function ApartmentDialog(props) {
   );
 }
 
-ApartmentDialog.propTypes = {
+ChooseDialog.propTypes = {
+  list: PropTypes.array.isRequired,
   onClose: PropTypes.func.isRequired,
+  onDeleteClick: PropTypes.func,
+  onItemClick: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired
 };
 
-export default ApartmentDialog;
+export default ChooseDialog;

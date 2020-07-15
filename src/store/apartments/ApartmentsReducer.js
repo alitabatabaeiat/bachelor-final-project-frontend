@@ -25,8 +25,7 @@ const apartmentsReducer = baseReducer(initialState, {
     return {
       ...state,
       apartments: action.payload.data,
-      activeApartment: state.activeApartment ?? action.payload.data[0],
-      calculatedUnitExpenses: []
+      activeApartment: state.activeApartment ?? action.payload.data[0]
     };
   },
 
