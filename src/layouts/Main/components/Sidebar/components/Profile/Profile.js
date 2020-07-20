@@ -44,8 +44,8 @@ const Profile = props => {
   const user = useSelector(state => state.user);
 
   const handleRoleButtonClick = () => {
-    dispatch(UserAction.changeRole());
     history.push('/dashboard');
+    dispatch(UserAction.changeRole());
   };
 
   return (

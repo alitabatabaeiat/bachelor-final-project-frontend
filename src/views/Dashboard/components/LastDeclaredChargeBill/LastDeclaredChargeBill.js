@@ -81,21 +81,21 @@ const LastDeclaredChargeBill = props => {
               className={classes.detailBox}
               item
             >
-              <Typography
-                className={classes.boxTitle}
-                variant="h6"
-              >
-                اضطراری
-              </Typography>
-              <Typography
-                className={classes.boxValue}
-                variant="h4"
-              >
-                <DoneIcon
-                  fontSize="small"
-                  style={{ color: green[500] }}
-                />
-              </Typography>
+              {/*<Typography*/}
+              {/*  className={classes.boxTitle}*/}
+              {/*  variant="h6"*/}
+              {/*>*/}
+              {/*  اضطراری*/}
+              {/*</Typography>*/}
+              {/*<Typography*/}
+              {/*  className={classes.boxValue}*/}
+              {/*  variant="h4"*/}
+              {/*>*/}
+              {/*  <DoneIcon*/}
+              {/*    fontSize="small"*/}
+              {/*    style={{ color: green[500] }}*/}
+              {/*  />*/}
+              {/*</Typography>*/}
             </Grid>
           </Grid>
 

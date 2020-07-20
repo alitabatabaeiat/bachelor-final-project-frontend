@@ -50,7 +50,7 @@ const Expenses = props => {
   const [errors, setErrors] = React.useState({});
 
 
-  useEffect(async () => {
+  useEffect(() => {
     dispatch(ApartmentsAction.requestApartmentSetting());
   }, []);
 

@@ -292,7 +292,8 @@ const UnitForm = props => {
           label="ضریب مصرف"
           margin="dense"
           onChange={handleNumberInputChange}
-          value={toPersianNumberWithComma(state.consumptionCoefficient)}
+          value={toPersianNumberWithComma(state.consumptionCoefficient ? state.consumptionCoefficient.toFixed(3) : undefined
+          )}
           variant="outlined"
         />
 

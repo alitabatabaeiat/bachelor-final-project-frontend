@@ -166,9 +166,11 @@ const ExpenseForm = props => {
     // validation
     const data = {
       ...state,
-      coefficients: !_.isEmpty(coefficients) ? _.map(selectedUnits, unitId => coefficients[unitId]) : undefined,
+      coefficients: state.splitOption === 6 ? _.map(selectedUnits, unitId => coefficients[unitId]) : undefined,
       units: selectedUnits
     };
+
+    console.log(data)
 
     const errors = validate(createApartmentExpenseSchema, data);
     if (data.coefficients && !(data.coefficients.find(coefficient => coefficient > 0) > 0))

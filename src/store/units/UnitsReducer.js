@@ -36,19 +36,13 @@ const unitsReducer = baseReducer(initialState, {
   [UnitsAction.REQUEST_CREATE_UNIT_FINISHED](state, action) {
     if (action.error)
       return state;
-    return {
-      ...state,
-      units: [action.payload.data, ...state.units]
-    };
+    return state;
   },
 
   [UnitsAction.REQUEST_UPDATE_UNIT_FINISHED](state, action) {
     if (action.error)
       return state;
-    return {
-      ...state,
-      units: state.units.map(unit => unit.id === action.payload.data.id ? action.payload.data : unit)
-    };
+    return state;
   },
 
   [UnitsAction.REQUEST_DELETE_UNIT_FINISHED](state, action) {

@@ -42,7 +42,7 @@ const UnitList = () => {
 
   useEffect(() => {
     dispatch(UnitsAction.requestAllUnits());
-  }, [dispatch]);
+  }, []);
 
   return (
     <div className={classes.root}>

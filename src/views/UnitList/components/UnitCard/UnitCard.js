@@ -86,6 +86,8 @@ const UnitCard = props => {
   const getResidentName = unit => {
     if (unit.resident)
       return (unit.resident.firstName ? unit.resident.firstName + ' ' + unit.resident.lastName : 'عدم ثبت نام');
+    else if (!unit.isEmpty)
+      return 'شماره‌ای ثبت نشده';
     else
       return 'واحد خالی';
   };
@@ -140,7 +142,7 @@ const UnitCard = props => {
                 className={classes.cardDetail}
                 variant={cardDetailVariant}
               >
-                تعداد ساکنین: {toPersianNumber(unit.residentCount)} نفر
+                تعداد ساکنین: {unit.residentCount !== null ? toPersianNumber(unit.residentCount) + ' نفر' : '-'}
               </Typography>
 
               <Typography
@@ -164,7 +166,7 @@ const UnitCard = props => {
                 className={classes.cardDetail}
                 variant={cardDetailVariant}
               >
-                ضریب مصرف اصلاح شده: {unit.suggestedConsumptionCoefficient ? toPersianNumberWithComma(unit.suggestedConsumptionCoefficient): '-'}
+                ضریب مصرف اصلاح شده: {unit.suggestedConsumptionCoefficient ? toPersianNumberWithComma(unit.suggestedConsumptionCoefficient.toFixed(3)): '-'}
               </Typography>
             </div>
             <div className={classes.cardHalfSection}>
@@ -206,7 +208,7 @@ const UnitCard = props => {
                 className={classes.cardDetail}
                 variant={cardDetailVariant}
               >
-                ضریب مصرف: {toPersianNumberWithComma(unit.consumptionCoefficient)}
+                ضریب مصرف: {toPersianNumberWithComma(unit.consumptionCoefficient !== null ? unit.consumptionCoefficient.toFixed(3) : undefined)}
               </Typography>
             </div>
           </div>

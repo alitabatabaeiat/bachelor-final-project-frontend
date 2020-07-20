@@ -43,7 +43,8 @@ const UnitCard = props => {
       case 5:
         return `طبقه: ${toPersianNumber(unit.floor)}`;
       case 7:
-        return `ضریب مصرف: ${toPersianNumber(unit.suggestedConsumptionCoefficient ? unit.suggestedConsumptionCoefficient : unit.consumptionCoefficient)}`;
+        return `ضریب مصرف: ${toPersianNumber(unit.suggestedConsumptionCoefficient ? unit.suggestedConsumptionCoefficient.toFixed(3) : 
+          unit.consumptionCoefficient.toFixed(3))}`;
       case 8:
         return `تعداد ساکنین: ${toPersianNumber(unit.residentCount)} طبقه: ${toPersianNumber(unit.floor)}`;
       default:
