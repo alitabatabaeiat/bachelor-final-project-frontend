@@ -8,6 +8,9 @@ export const REQUEST_ALL_UNITS_FINISHED = 'UnitsAction.REQUEST_ALL_UNITS_FINISHE
 export const REQUEST_CREATE_UNIT = 'UnitsAction.REQUEST_CREATE_UNIT';
 export const REQUEST_CREATE_UNIT_FINISHED = 'UnitsAction.REQUEST_CREATE_UNIT_FINISHED';
 
+export const REQUEST_UPLOAD_EXCEL = 'UnitsAction.REQUEST_UPLOAD_EXCEL';
+export const REQUEST_UPLOAD_EXCEL_FINISHED = 'UnitsAction.REQUEST_UPLOAD_EXCEL_FINISHED';
+
 export const REQUEST_UPDATE_UNIT = 'UnitsAction.REQUEST_UPDATE_UNIT';
 export const REQUEST_UPDATE_UNIT_FINISHED = 'UnitsAction.REQUEST_UPDATE_UNIT_FINISHED';
 
@@ -17,6 +20,8 @@ export const REQUEST_DELETE_UNIT_FINISHED = 'UnitsAction.REQUEST_DELETE_UNIT_FIN
 export let SET_FORM_DIALOG_OPEN = 'UnitsAction.SET_FORM_DIALOG_OPEN';
 export let SET_FORM_DIALOG_UPDATE = 'UnitsAction.SET_FORM_DIALOG_UPDATE';
 export let SELECT_UNIT = 'UnitsAction.SELECT_UNIT';
+
+export let SET_UPLOAD_EXCEL_DIALOG_OPEN = 'UnitsAction.SET_UPLOAD_EXCEL_DIALOG_OPEN';
 
 export let UPDATE_ACTIVE_UNIT = 'UnitsAction.UPDATE_ACTIVE_UNIT';
 
@@ -44,6 +49,17 @@ export function requestCreateUnit(data) {
   };
 }
 
+export function requestUploadExcel(data) {
+  return async (dispatch, getState) => {
+    const userRole = getState().user.role;
+    const apartmentId = getState().apartments.activeApartment.id;
+
+    data.append('apartment', apartmentId);
+
+    await ActionUtils.createThunkEffect(dispatch, REQUEST_UPLOAD_EXCEL, UnitsEffect.requestUploadExcel, userRole, data);
+  };
+}
+
 export function requestUpdateUnit(unitId, data) {
   return async (dispatch, getState) => {
     const userRole = getState().user.role;
@@ -62,6 +78,10 @@ export function requestDeleteUnit(unitId) {
 
 export function setFormDialogOpen(open) {
   return ActionUtils.createAction(SET_FORM_DIALOG_OPEN, open);
+}
+
+export function setUploadExcelDialogOpen(open) {
+  return ActionUtils.createAction(SET_UPLOAD_EXCEL_DIALOG_OPEN, open);
 }
 
 export function setFormDialogUpdate(update) {

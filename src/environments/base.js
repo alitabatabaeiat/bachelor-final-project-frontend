@@ -35,7 +35,9 @@ export default function baseEnv(baseApi) {
       }),
       units: (unitId = '') => ({
         getAll: `${baseApi}/${role}/units`,
+        getExcel: `${baseApi}/${role}/units/excel`,
         create: `${baseApi}/${role}/units`,
+        uploadExcel: `${baseApi}/${role}/units/excel`,
         update: `${baseApi}/${role}/units/${unitId}`,
         delete: `${baseApi}/${role}/units/${unitId}`,
         charges: (chargeId = '') => ({

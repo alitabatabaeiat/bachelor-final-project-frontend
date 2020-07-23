@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectUnits } from './UnitListSelector';
 import * as UnitsAction from '../../store/units/UnitsAction';
 import { toPersianNumber } from '../../helpers/persian';
+import UnitUploadExcelDialog from './components/UnitUploadExcelDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -89,6 +90,7 @@ const UnitList = () => {
       {/*  </IconButton>*/}
       {/*</div>*/}
       <UnitFormDialog/>
+      <UnitUploadExcelDialog/>
     </div>
   );
 };

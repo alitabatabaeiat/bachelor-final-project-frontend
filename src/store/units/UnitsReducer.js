@@ -1,11 +1,12 @@
 import * as UnitsAction from './UnitsAction';
 import baseReducer from '../../helpers/BaseReducer';
-import { UPDATE_ACTIVE_UNIT } from './UnitsAction';
+import { REQUEST_UPLOAD_EXCEL } from './UnitsAction';
 
 export const initialState = {
   units: [],
   formDialogOpen: false,
   formDialogUpdate: false,
+  uploadExcelDialogOpen: false,
   selectedUnit: {},
   activeUnit: {
     id: '-',
@@ -39,6 +40,12 @@ const unitsReducer = baseReducer(initialState, {
     return state;
   },
 
+  [UnitsAction.REQUEST_UPLOAD_EXCEL_FINISHED](state, action) {
+    if (action.error)
+      return state;
+    return state;
+  },
+
   [UnitsAction.REQUEST_UPDATE_UNIT_FINISHED](state, action) {
     if (action.error)
       return state;
@@ -58,6 +65,13 @@ const unitsReducer = baseReducer(initialState, {
     return {
       ...state,
       formDialogOpen: action.payload
+    }
+  },
+
+  [UnitsAction.SET_UPLOAD_EXCEL_DIALOG_OPEN](state, action) {
+    return {
+      ...state,
+      uploadExcelDialogOpen: action.payload
     }
   },
 

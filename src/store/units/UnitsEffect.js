@@ -13,6 +13,12 @@ export async function requestCreateUnit(role, data) {
   return HttpUtils.post(endpoint, data);
 }
 
+export async function requestUploadExcel(role, data) {
+  const endpoint = environment.api(role).units().uploadExcel;
+
+  return HttpUtils.post(endpoint, data);
+}
+
 export async function requestUpdateUnit(role, unitId, data) {
   const endpoint = environment.api(role).units(unitId).update;
 

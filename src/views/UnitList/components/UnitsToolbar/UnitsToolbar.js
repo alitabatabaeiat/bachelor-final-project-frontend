@@ -44,6 +44,10 @@ const UnitsToolbar = props => {
     dispatch(UnitsAction.setFormDialogUpdate(false));
   };
 
+  const handleCreateUnitsFromExcelClick = () => {
+    dispatch(UnitsAction.setUploadExcelDialogOpen(true));
+  };
+
   return (
     <div
       className={clsx(classes.root, className)}
@@ -62,7 +66,7 @@ const UnitsToolbar = props => {
         <Button
           className={classes.importButton}
           color="primary"
-          onClick={handleCreateUnitClick}
+          onClick={handleCreateUnitsFromExcelClick}
           startIcon={<AddIcon/>}
           variant="contained"
         >
