@@ -86,8 +86,6 @@ const Expenses = props => {
 
   const hasError = (errors, name) => errors && errors[name];
 
-  console.log(toPersianNumber(state.residentCountStep));
-
   return (
     <Card
       {...rest}

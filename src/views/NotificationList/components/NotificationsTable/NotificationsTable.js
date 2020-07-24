@@ -6,27 +6,20 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { makeStyles } from '@material-ui/styles';
 import {
   Card,
-  CardActions,
   CardContent,
-  Checkbox,
   Table,
   TableBody,
   TableCell,
   TableHead,
-  TableRow,
-  TablePagination
+  TableRow
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCharges } from './NotificationsSelector';
-import { toPersianNumber, toPersianNumberWithComma } from '../../../../helpers/persian';
-import ClearIcon from '@material-ui/icons/Clear';
-import DoneIcon from '@material-ui/icons/Done';
-import green from '@material-ui/core/colors/green';
-import Box from '@material-ui/core/Box';
+import { selectNotifications } from './NotificationsSelector';
+import { toPersianNumber } from '../../../../helpers/persian';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import red from '@material-ui/core/colors/red';
+import * as NotificationsAction from '../../../../store/notifications/NotificationsAction';
+
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -56,27 +49,17 @@ const useStyles = makeStyles(theme => ({
 const NotificationsTable = props => {
   const role = useSelector(state => state.user.role);
 
-  // const notifications = useSelector(selectCharges);
-  const notifications = [
-    {
-      id: 1,
-      title: 'تست',
-      body: 'سلام',
-      from: 'مدیر ساختمان',
-      createdAt: moment()
-    }
-  ];
-
+  const notifications = useSelector(selectNotifications);
 
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(ChargesAction.requestGetAllApartmentCharges());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(NotificationsAction.requestAllNotifications());
+  }, []);
 
   const classes = useStyles();
 
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(100);
   const [page, setPage] = useState(0);
 
   const handlePageChange = (event, page) => {
@@ -86,6 +69,16 @@ const NotificationsTable = props => {
   const handleRowsPerPageChange = event => {
     setRowsPerPage(event.target.value);
   };
+
+  const getBody = body => {
+    const words = body.split(' ');
+    console.log(words);
+    if (words.length < 6)
+      return body;
+    else
+      return words.slice(0, 4).join(' ') + ' ...';
+  };
+
   return (
     <Card
       className={classes.root}
@@ -100,10 +93,10 @@ const NotificationsTable = props => {
                   <TableCell>متن</TableCell>
                   <TableCell>توسط</TableCell>
                   <TableCell>تاریخ ثبت</TableCell>
-                  {
-                    role === 'manager' &&
-                    <TableCell>عملیات</TableCell>
-                  }
+                  {/*{*/}
+                  {/*  role === 'manager' &&*/}
+                  {/*  <TableCell>عملیات</TableCell>*/}
+                  {/*}*/}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -112,27 +105,28 @@ const NotificationsTable = props => {
                     className={classes.tableRow}
                     hover
                     key={notification.id}
+                    onClick={() => props.onRowClick(notification)}
                   >
                     <TableCell>{notification.title}</TableCell>
-                    <TableCell>{notification.body}</TableCell>
+                    <TableCell>{getBody(notification.body)}</TableCell>
 
-                    <TableCell>{notification.from}</TableCell>
+                    <TableCell>مدیر آپارتمان</TableCell>
                     <TableCell>
                       {toPersianNumber(moment(notification.createdAt).locale('fa').format('YYYY/MM/DD'))}
                     </TableCell>
-                    {
-                      role === 'manager' &&
-                      <TableCell>
-                        <Button
-                          className={classes.button}
-                          color="secondary"
-                          size="small"
-                          variant="contained"
-                        >
-                          حذف
-                        </Button>
-                      </TableCell>
-                    }
+                    {/*{*/}
+                    {/*  role === 'manager' &&*/}
+                    {/*  <TableCell>*/}
+                    {/*    <Button*/}
+                    {/*      className={classes.button}*/}
+                    {/*      color="secondary"*/}
+                    {/*      size="small"*/}
+                    {/*      variant="contained"*/}
+                    {/*    >*/}
+                    {/*      حذف*/}
+                    {/*    </Button>*/}
+                    {/*  </TableCell>*/}
+                    {/*}*/}
                   </TableRow>
                 ))}
               </TableBody>
@@ -155,6 +149,8 @@ const NotificationsTable = props => {
   );
 };
 
-NotificationsTable.propTypes = {};
+NotificationsTable.propTypes = {
+  onRowClick: PropTypes.func.isRequired
+};
 
 export default NotificationsTable;

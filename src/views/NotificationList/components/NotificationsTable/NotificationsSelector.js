@@ -1,7 +1,7 @@
-// import { createSelector } from 'reselect';
-//
-// function _selectCharges(expenses) {
-//   return expenses;
-// }
-//
-// export const selectCharges = createSelector((state) => state.apartmentCharges.apartmentCharges, _selectCharges);
+import { createSelector } from 'reselect';
+
+function _selectNotifications(notifications) {
+  return notifications;
+}
+
+export const selectNotifications = createSelector((state) => state.notifications.notifications, _selectNotifications);

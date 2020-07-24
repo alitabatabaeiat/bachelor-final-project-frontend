@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/styles';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 import { useDispatch } from 'react-redux';
-import * as ApartmentsAction from '../../../../store/apartments/ApartmentsAction';
+import * as NotificationsAction from '../../../../store/notifications/NotificationsAction';
 import clsx from 'clsx';
 import validate from '../../../../helpers/validate';
 import { createNotificationSchema } from './NotificationFormValidation';
 import handleInputChange from '../../../../helpers/handleInputChange';
+import _ from 'lodash';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -48,12 +49,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NotificationForm = props => {
-  const { onSubmit } = props;
+  const { notification, onSubmit } = props;
 
   const [state, setState] = React.useState({
     title: undefined,
     body: undefined
   });
+
+  useEffect(() => {
+    if (notification)
+      setState(_.pick(notification, ['title', 'body']));
+  }, [props.notification]);
 
   const [errors, setErrors] = React.useState({});
 
@@ -70,7 +76,8 @@ const NotificationForm = props => {
     const errors = validate(createNotificationSchema, data);
     setErrors(errors);
     if (!errors) {
-      await dispatch(ApartmentsAction.requestCreateApartmentExpense(data));
+      await dispatch(NotificationsAction.requestCreateNotification(data));
+      await dispatch(NotificationsAction.requestAllNotifications());
 
       onSubmit();
     }
@@ -85,6 +92,7 @@ const NotificationForm = props => {
       <div className={classes.formRowContainer}>
         <TextField
           className={clsx(classes.formElement, classes.rightFormElement)}
+          disabled={notification}
           error={hasError(errors, 'title')}
           helperText={hasError(errors, 'title') ? errors.title.message : 'عنوان اعلان را وارد کنید'}
           inputProps={{
@@ -102,12 +110,13 @@ const NotificationForm = props => {
       <div className={classes.formRowContainer}>
         <TextField
           className={classes.formElement}
+          disabled={notification}
           error={hasError(errors, 'body')}
-          helperText={hasError(errors, 'body') ? errors.body.message : ''}
+          helperText={hasError(errors, 'body') ? errors.body.message : 'متن اعلان را وارد کنید'}
           inputProps={{
             name: 'body'
           }}
-          label="توضیحات"
+          label="متن"
           margin="dense"
           multiline
           onChange={localHandleInputChange}
@@ -117,22 +126,26 @@ const NotificationForm = props => {
         />
       </div>
 
-      <div className={classes.formRowContainer}>
-        <Button
-          className={classes.submitButton}
-          color="primary"
-          onClick={handleSubmit}
-          startIcon={<SaveIcon/>}
-          variant="contained"
-        >
-          ثبت
-        </Button>
-      </div>
+      {
+        !notification &&
+        <div className={classes.formRowContainer}>
+          <Button
+            className={classes.submitButton}
+            color="primary"
+            onClick={handleSubmit}
+            startIcon={<SaveIcon/>}
+            variant="contained"
+          >
+            ثبت
+          </Button>
+        </div>
+      }
     </form>
   );
 };
 
 NotificationForm.propTypes = {
+  notification: PropTypes.object.isRequired,
   onSubmit: PropTypes.func.isRequired
 };
 

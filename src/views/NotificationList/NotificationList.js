@@ -15,6 +15,7 @@ const useStyles = makeStyles(theme => ({
 
 const NotificationList = () => {
   const [notificationFormDialogOpen, setNotificationFormDialogOpen] = useState(false);
+  const [notification, setNotification] = useState(null);
 
   const classes = useStyles();
 
@@ -24,15 +25,23 @@ const NotificationList = () => {
 
   const handleNotificationFormDialogClose = () => {
     setNotificationFormDialogOpen(false);
+    setNotification(null);
   };
 
+  const handleRowClick = notification => {
+    setNotificationFormDialogOpen(true);
+    setNotification(notification);
+  };
   return (
     <div className={classes.root}>
       <NotificationsToolbar onCreateNotificationClick={handleNotificationFormDialogOpen} />
       <div className={classes.content}>
-        <NotificationsTable />
+        <NotificationsTable
+          onRowClick={handleRowClick}
+        />
       </div>
       <NotificationFormDialog
+        notification={notification}
         onClose={handleNotificationFormDialogClose}
         onSubmit={handleNotificationFormDialogClose}
         open={notificationFormDialogOpen}

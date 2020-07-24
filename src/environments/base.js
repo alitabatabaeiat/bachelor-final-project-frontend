@@ -44,7 +44,11 @@ export default function baseEnv(baseApi) {
           getAll: `${baseApi}/${role}/units/${unitId}/charges`,
           pay: `${baseApi}/${role}/units/${unitId}/charges/${chargeId}/pay`,
         }),
-      })
+      }),
+      notifications: () => ({
+        getAll: `${baseApi}/${role}/notifications`,
+        create: `${baseApi}/${role}/notifications`,
+      }),
     }),
     isProduction: true,
     isDevelopment: false,

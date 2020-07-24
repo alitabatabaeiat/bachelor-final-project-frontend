@@ -7,7 +7,7 @@ import NotificationForm from './NotificationForm';
 import { Typography } from '@material-ui/core';
 
 const NotificationFormDialog = props => {
-  const { open, onClose, onSubmit } = props;
+  const { notification, open, onClose, onSubmit } = props;
 
   return (
     <Dialog
@@ -23,6 +23,7 @@ const NotificationFormDialog = props => {
       </DialogTitle>
       <DialogContent>
         <NotificationForm
+          notification={notification}
           onSubmit={onSubmit}
         />
       </DialogContent>
@@ -31,6 +32,7 @@ const NotificationFormDialog = props => {
 };
 
 NotificationFormDialog.propTypes = {
+  notification: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired

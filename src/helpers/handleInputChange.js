@@ -1,6 +1,6 @@
 import { toEnglishNumberWithoutComma } from './persian';
 
-export default async (state, setState, event, options) => {
+export default async (state, setState, event, options = {}) => {
   const { name, value, checked } = event.target;
   const newState = {...state};
   if (options.isNumber)
