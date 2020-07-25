@@ -164,6 +164,7 @@ const UnitForm = props => {
 
   const handleDelete = async () => {
     dispatch(UnitsAction.requestDeleteUnit(units.selectedUnit.id));
+    dispatch(UnitsAction.requestAllUnits());
     dispatch(UnitsAction.setFormDialogOpen(false));
   };
 

@@ -6,6 +6,15 @@ export const initialState = {
 };
 
 const notificationsReducer = baseReducer(initialState, {
+  [ApartmentsAction.REQUEST_ALL_NOTIFICATIONS](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      notifications: []
+    };
+  },
+
   [ApartmentsAction.REQUEST_ALL_NOTIFICATIONS_FINISHED](state, action) {
     if (action.error)
       return state;

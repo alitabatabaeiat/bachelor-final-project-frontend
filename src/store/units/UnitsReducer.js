@@ -11,12 +11,30 @@ export const initialState = {
 };
 
 const unitsReducer = baseReducer(initialState, {
+  [UnitsAction.REQUEST_ALL_UNITS](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      units: []
+    };
+  },
+
   [UnitsAction.REQUEST_ALL_UNITS_FINISHED](state, action) {
     if (action.error)
       return state;
     return {
       ...state,
       units: action.payload.data
+    };
+  },
+
+  [UnitsAction.REQUEST_ALL_UNITS_COUNT](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      unitsCount: 0
     };
   },
 
@@ -50,10 +68,7 @@ const unitsReducer = baseReducer(initialState, {
   [UnitsAction.REQUEST_DELETE_UNIT_FINISHED](state, action) {
     if (action.error)
       return state;
-    return {
-      ...state,
-      units: state.units.filter(unit => unit.id !== action.payload.data.id)
-    };
+    return state;
   },
 
   [UnitsAction.SET_FORM_DIALOG_OPEN](state, action) {
