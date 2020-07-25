@@ -7,15 +7,12 @@ import {
   Card,
   CardHeader,
   CardContent,
-  IconButton,
   Divider,
   Typography
 } from '@material-ui/core';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
-import RefreshIcon from '@material-ui/icons/Refresh';
-import TabletMacIcon from '@material-ui/icons/TabletMac';
-import { toPersianNumber, toPersianNumberWithComma } from '../../../../helpers/persian';
+import { toPersianNumberWithComma } from '../../../../helpers/persian';
+import { useSelector } from 'react-redux';
+import _ from 'lodash';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,11 +21,19 @@ const useStyles = makeStyles(theme => ({
   chartContainer: {
     position: 'relative',
     height: '300px'
+  },
+  noCharge: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: 350
   }
 }));
 
 const LatestDeclaredCharges = props => {
   const { className, ...rest } = props;
+
+  const latestCharges = useSelector(state => state.charges.apartmentCharges);
 
   const classes = useStyles();
   const theme = useTheme();
@@ -36,7 +41,7 @@ const LatestDeclaredCharges = props => {
   const data = {
     datasets: [
       {
-        data: [8000000, 55000000, 40000000],
+        data: _.chain(latestCharges).clone().reverse().map(charge => charge.totalAmount).value(),
         backgroundColor: [
           theme.palette.primary.main,
           theme.palette.error.main,
@@ -47,7 +52,7 @@ const LatestDeclaredCharges = props => {
         hoverBorderColor: theme.palette.white
       }
     ],
-    labels: ['شارژ اضطراری تعمیر آسانسور', 'شارژ اردیبهشت ۹۹', 'شارژ خرداد ۹۹'].map(label => label.split(' '))
+    labels: _.chain(latestCharges).clone().reverse().map(charge => charge.title.split(' ')).value()
   };
 
   const options = {
@@ -69,7 +74,7 @@ const LatestDeclaredCharges = props => {
       backgroundColor: theme.palette.white,
       titleFontColor: theme.palette.text.primary,
       bodyFontColor: theme.palette.text.secondary,
-      footerFontColor: theme.palette.text.secondary,
+      footerFontColor: theme.palette.text.secondary
     },
     scales: {
       yAxes: [{
@@ -96,33 +101,23 @@ const LatestDeclaredCharges = props => {
         // }
         title="آخرین شارژهای اعلامی"
       />
-      <Divider />
+      <Divider/>
       <CardContent>
-        <div className={classes.chartContainer}>
-          <Bar
-            data={data}
-            height={50}
-            options={options}
-            width={100}
-          />
+        <div className={classes.noCharge}>
+          {
+            latestCharges.length > 0 &&
+            <Bar
+              data={data}
+              height={50}
+              options={options}
+              width={100}
+            />
+          }
+          {
+            latestCharges.length === 0 &&
+            <Typography variant="h5">تا به حال شارژی اعلام نشده است</Typography>
+          }
         </div>
-        {/*<div className={classes.stats}>*/}
-        {/*  {devices.map(device => (*/}
-        {/*    <div*/}
-        {/*      className={classes.device}*/}
-        {/*      key={device.title}*/}
-        {/*    >*/}
-        {/*      <span className={classes.deviceIcon}>{device.icon}</span>*/}
-        {/*      <Typography variant="body1">{device.title}</Typography>*/}
-        {/*      <Typography*/}
-        {/*        style={{ color: device.color }}*/}
-        {/*        variant="h2"*/}
-        {/*      >*/}
-        {/*        {toPersianNumber(device.value)}٪*/}
-        {/*      </Typography>*/}
-        {/*    </div>*/}
-        {/*  ))}*/}
-        {/*</div>*/}
       </CardContent>
     </Card>
   );

@@ -6,8 +6,8 @@ import { Typography, Button } from '@material-ui/core';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import ChooseDialog from '../ChooseDialog';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectActiveApartment } from './ApartmentSelector';
 import * as ApartmentsAction from '../../../../../../store/apartments/ApartmentsAction';
+import * as UserAction from '../../../../../../store/user/UserAction';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,7 +22,9 @@ const Apartment = props => {
 
   const dispatch = useDispatch();
 
-  const { apartments, activeApartment } = useSelector(state => state.apartments);
+  const apartments = useSelector(state => state.apartments.apartments);
+
+  const currentApartment = useSelector(state => state.user.currentApartment);
 
   const { className, ...rest } = props;
 
@@ -39,7 +41,7 @@ const Apartment = props => {
   };
 
   const handleListItemClick = (value) => {
-    dispatch(ApartmentsAction.updateActiveApartment(value));
+    dispatch(UserAction.changeCurrentApartment(value));
     handleClose();
   };
 
@@ -64,13 +66,13 @@ const Apartment = props => {
           align="center"
           variant="h6"
         >
-          {activeApartment.title}
+          {currentApartment.title}
         </Typography>
         <Typography
           align="center"
           variant="body2"
         >
-          کد: {activeApartment.id}
+          کد: {currentApartment.id}
         </Typography>
       </div>
       <ChooseDialog

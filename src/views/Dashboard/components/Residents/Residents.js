@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import HomeIcon from '@material-ui/icons/Home';
+import { useSelector } from 'react-redux';
+import { toPersianNumber, toPersianNumberWithComma } from '../../../../helpers/persian';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -43,6 +45,8 @@ const useStyles = makeStyles(theme => ({
 const Residents = props => {
   const { className, ...rest } = props;
 
+  const unitsCount = useSelector(state => state.units.unitsCount);
+
   const classes = useStyles();
 
   return (
@@ -64,7 +68,7 @@ const Residents = props => {
             >
               واحد‌ها
             </Typography>
-            <Typography variant="h3">۱۲</Typography>
+            <Typography variant="h3">{toPersianNumberWithComma(unitsCount)}</Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>

@@ -5,6 +5,9 @@ import _ from 'lodash';
 export const REQUEST_ALL_UNITS = 'UnitsAction.REQUEST_ALL_UNITS';
 export const REQUEST_ALL_UNITS_FINISHED = 'UnitsAction.REQUEST_ALL_UNITS_FINISHED';
 
+export const REQUEST_ALL_UNITS_COUNT = 'UnitsAction.REQUEST_ALL_UNITS_COUNT';
+export const REQUEST_ALL_UNITS_COUNT_FINISHED = 'UnitsAction.REQUEST_ALL_UNITS_COUNT_FINISHED';
+
 export const REQUEST_CREATE_UNIT = 'UnitsAction.REQUEST_CREATE_UNIT';
 export const REQUEST_CREATE_UNIT_FINISHED = 'UnitsAction.REQUEST_CREATE_UNIT_FINISHED';
 
@@ -23,27 +26,29 @@ export let SELECT_UNIT = 'UnitsAction.SELECT_UNIT';
 
 export let SET_UPLOAD_EXCEL_DIALOG_OPEN = 'UnitsAction.SET_UPLOAD_EXCEL_DIALOG_OPEN';
 
-export let UPDATE_ACTIVE_UNIT = 'UnitsAction.UPDATE_ACTIVE_UNIT';
-
-
-export function updateActiveUnit(unit) {
-  return ActionUtils.createAction(UPDATE_ACTIVE_UNIT, unit);
-}
-
 export function requestAllUnits(params) {
   return async (dispatch, getState) => {
     const userRole = getState().user.role;
-    const apartmentId = getState().apartments.activeApartment.id;
+    const apartmentId = getState().user.currentApartment.id;
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_ALL_UNITS, UnitsEffect.requestUnits, userRole,
       _.assign(params, { apartment: apartmentId }));
   };
 }
 
+export function requestUnitsCount() {
+  return async (dispatch, getState) => {
+    const userRole = getState().user.role;
+    const apartmentId = getState().user.currentApartment.id;
+
+    await ActionUtils.createThunkEffect(dispatch, REQUEST_ALL_UNITS_COUNT, UnitsEffect.requestUnitsCount, userRole, { apartment: apartmentId });
+  };
+}
+
 export function requestCreateUnit(data) {
   return async (dispatch, getState) => {
     const userRole = getState().user.role;
-    const apartmentId = getState().apartments.activeApartment.id;
+    const apartmentId = getState().user.currentApartment.id;
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_CREATE_UNIT, UnitsEffect.requestCreateUnit, userRole, {...data, apartment: apartmentId });
   };
@@ -52,7 +57,7 @@ export function requestCreateUnit(data) {
 export function requestUploadExcel(data) {
   return async (dispatch, getState) => {
     const userRole = getState().user.role;
-    const apartmentId = getState().apartments.activeApartment.id;
+    const apartmentId = getState().user.currentApartment.id;
 
     data.append('apartment', apartmentId);
 

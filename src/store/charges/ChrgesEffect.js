@@ -7,14 +7,26 @@ export async function requestCreateCharge(role, apartmentId, data) {
   return HttpUtils.post(endpoint, data);
 }
 
-export async function requestGetAllApartmentCharges(role, apartmentId) {
+export async function requestGetAllApartmentCharges(role, apartmentId, query) {
   const endpoint = environment.api(role).apartments(apartmentId).charges().getAll;
 
-  return HttpUtils.get(endpoint);
+  return HttpUtils.get(endpoint, query);
 }
 
 export async function requestGetApartmentCharge(role, apartmentId, chargeId) {
   const endpoint = environment.api(role).apartments(apartmentId).charges(chargeId).getOne;
+
+  return HttpUtils.get(endpoint);
+}
+
+export async function requestGetApartmentLastCharge(role, apartmentId) {
+  const endpoint = environment.api(role).apartments(apartmentId).charges().lastCharge;
+
+  return HttpUtils.get(endpoint);
+}
+
+export async function requestGetUnitLastCharge(role, unitId) {
+  const endpoint = environment.api(role).units(unitId).charges().lastCharge;
 
   return HttpUtils.get(endpoint);
 }

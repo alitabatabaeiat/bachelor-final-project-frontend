@@ -7,8 +7,6 @@ export const REQUEST_ALL_APARTMENTS_FINISHED = 'ApartmentsAction.REQUEST_ALL_APA
 export const REQUEST_DELETE_APARTMENT = 'ApartmentsAction.REQUEST_DELETE_APARTMENT';
 export const REQUEST_DELETE_APARTMENT_FINISHED = 'ApartmentsAction.REQUEST_DELETE_APARTMENT_FINISHED';
 
-export const UPDATE_ACTIVE_APARTMENT = 'ApartmentsAction.UPDATE_ACTIVE_APARTMENT';
-
 export const REQUEST_ALL_APARTMENT_EXPENSES = 'ApartmentsAction.REQUEST_ALL_APARTMENT_EXPENSES';
 export const REQUEST_ALL_APARTMENT_EXPENSES_FINISHED = 'ApartmentsAction.REQUEST_ALL_APARTMENT_EXPENSES_FINISHED';
 
@@ -55,14 +53,10 @@ export function requestDeleteApartment(id) {
   };
 }
 
-export function updateActiveApartment(apartment) {
-  return ActionUtils.createAction(UPDATE_ACTIVE_APARTMENT, apartment);
-}
-
 export function requestAllApartmentExpenses(query) {
   return async (dispatch, getState) => {
     const userRole = getState().user.role;
-    const apartmentId = getState().apartments.activeApartment.id;
+    const apartmentId = getState().user.currentApartment.id;
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_ALL_APARTMENT_EXPENSES, ApartmentsEffect.requestAllApartmentExpenses,
       userRole, apartmentId, query);
@@ -72,7 +66,7 @@ export function requestAllApartmentExpenses(query) {
 export function requestCreateApartmentExpense(data) {
   return async (dispatch, getState) => {
     const userRole = getState().user.role;
-    const apartmentId = getState().apartments.activeApartment.id;
+    const apartmentId = getState().user.currentApartment.id;
 
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_CREATE_APARTMENT_EXPENSE, ApartmentsEffect.requestCreateApartmentExpense,
@@ -83,7 +77,7 @@ export function requestCreateApartmentExpense(data) {
 export function requestCalculateApartmentExpense(data) {
   return async (dispatch, getState) => {
     const userRole = getState().user.role;
-    const apartmentId = getState().apartments.activeApartment.id;
+    const apartmentId = getState().user.currentApartment.id;
 
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_CALCULATE_APARTMENT_EXPENSE, ApartmentsEffect.requestCalculateApartmentExpense,
@@ -94,7 +88,7 @@ export function requestCalculateApartmentExpense(data) {
 export function requestDeleteApartmentExpense(expenseId) {
   return async (dispatch, getState) => {
     const userRole = getState().user.role;
-    const apartmentId = getState().apartments.activeApartment.id;
+    const apartmentId = getState().user.currentApartment.id;
 
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_DELETE_APARTMENT_EXPENSE, ApartmentsEffect.requestDeleteApartmentExpense,
@@ -105,7 +99,7 @@ export function requestDeleteApartmentExpense(expenseId) {
 export function requestAllExpenseOptions() {
   return async (dispatch, getState) => {
     const userRole = getState().user.role;
-    const apartmentId = getState().apartments.activeApartment.id;
+    const apartmentId = getState().user.currentApartment.id;
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_ALL_EXPENSE_OPTIONS, ApartmentsEffect.requestAllExpenseOptions,
       userRole, apartmentId);
@@ -115,7 +109,7 @@ export function requestAllExpenseOptions() {
 export function requestApartmentSetting() {
   return async (dispatch, getState) => {
     const userRole = getState().user.role;
-    const apartmentId = getState().apartments.activeApartment.id;
+    const apartmentId = getState().user.currentApartment.id;
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_APARTMENT_SETTING, ApartmentsEffect.requestApartmentSetting,
       userRole, apartmentId);
@@ -125,7 +119,7 @@ export function requestApartmentSetting() {
 export function requestUpdateApartmentSetting(data) {
   return async (dispatch, getState) => {
     const userRole = getState().user.role;
-    const apartmentId = getState().apartments.activeApartment.id;
+    const apartmentId = getState().user.currentApartment.id;
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_UPDATE_APARTMENT_SETTING, ApartmentsEffect.requestUpdateApartmentSetting,
       userRole, apartmentId, data);

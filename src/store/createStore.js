@@ -14,6 +14,7 @@ export default function createStoreWithMiddleware(initialState, history) {
   const persistConfig = {
     key: 'root',
     storage,
+    whitelist: ['user', 'router']
   };
 
   const persistedReducer = persistReducer(persistConfig, rootReducer(history));

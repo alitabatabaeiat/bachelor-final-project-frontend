@@ -13,9 +13,11 @@ import {
 } from '@material-ui/core';
 import LaptopMacIcon from '@material-ui/icons/LaptopMac';
 import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
-import RefreshIcon from '@material-ui/icons/Refresh';
 import TabletMacIcon from '@material-ui/icons/TabletMac';
 import { toPersianNumber } from '../../../../helpers/persian';
+import { useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
+import _ from 'lodash';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -39,8 +41,24 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ExpensesSeperation = props => {
+const ExpensesSeparation = props => {
   const { className, ...rest } = props;
+
+  const _selectExpenses = expenses => {
+    let _expenses = _.chain(expenses).groupBy('type.title').mapValues(item => ({
+      title: item[0].type.title,
+      amount: _.sumBy(item, 'amount'),
+      color: item[0].type.color
+    })).values().sortBy('amount').value();
+    const sum = _.sumBy(_expenses, 'amount');
+    return _.map(_expenses, expense => ({
+      ...expense,
+      percent: (expense.amount / sum * 100).toFixed(0)
+    }));
+  };
+
+  const expenses = useSelector(createSelector(state => state.apartments.expenses, _selectExpenses));
+  console.log(expenses);
 
   const classes = useStyles();
   const theme = useTheme();
@@ -48,18 +66,14 @@ const ExpensesSeperation = props => {
   const data = {
     datasets: [
       {
-        data: [63, 15, 22],
-        backgroundColor: [
-          theme.palette.primary.main,
-          theme.palette.error.main,
-          theme.palette.warning.main
-        ],
+        data: _.map(expenses, 'amount'),
+        backgroundColor: _.map(expenses, expense => '#' + expense.color),
         borderWidth: 8,
         borderColor: theme.palette.white,
         hoverBorderColor: theme.palette.white
       }
     ],
-    labels: ['Desktop', 'Tablet', 'Mobile']
+    labels: _.map(expenses, 'title')
   };
 
   const options = {
@@ -88,19 +102,19 @@ const ExpensesSeperation = props => {
     {
       title: 'آب',
       value: '63',
-      icon: <LaptopMacIcon />,
+      icon: <LaptopMacIcon/>,
       color: theme.palette.primary.main
     },
     {
       title: 'برق',
       value: '15',
-      icon: <TabletMacIcon />,
+      icon: <TabletMacIcon/>,
       color: theme.palette.error.main
     },
     {
       title: 'گاز',
       value: '23',
-      icon: <PhoneIphoneIcon />,
+      icon: <PhoneIphoneIcon/>,
       color: theme.palette.warning.main
     }
   ];
@@ -118,7 +132,7 @@ const ExpensesSeperation = props => {
         // }
         title="هزینه‌ها به تفکیک نوع"
       />
-      <Divider />
+      <Divider/>
       <CardContent>
         <div className={classes.chartContainer}>
           <Doughnut
@@ -127,18 +141,18 @@ const ExpensesSeperation = props => {
           />
         </div>
         <div className={classes.stats}>
-          {devices.map(device => (
+          {expenses.map(expense => (
             <div
               className={classes.device}
-              key={device.title}
+              key={expense.title}
             >
-              <span className={classes.deviceIcon}>{device.icon}</span>
-              <Typography variant="body1">{device.title}</Typography>
+              {/*<span className={classes.deviceIcon}>{device.icon}</span>*/}
+              <Typography variant="body1">{expense.title}</Typography>
               <Typography
-                style={{ color: device.color }}
+                style={{ color: '#' + expense.color }}
                 variant="h2"
               >
-                {toPersianNumber(device.value)}٪
+                {toPersianNumber(expense.percent)}٪
               </Typography>
             </div>
           ))}
@@ -148,8 +162,8 @@ const ExpensesSeperation = props => {
   );
 };
 
-ExpensesSeperation.propTypes = {
+ExpensesSeparation.propTypes = {
   className: PropTypes.string
 };
 
-export default ExpensesSeperation;
+export default ExpensesSeparation;

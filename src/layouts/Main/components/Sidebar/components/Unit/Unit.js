@@ -6,8 +6,8 @@ import { Typography, Button } from '@material-ui/core';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import ChooseDialog from '../ChooseDialog';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectActiveUnit } from './UnitSelector';
 import * as UnitsAction from '../../../../../../store/units/UnitsAction';
+import * as UserAction from '../../../../../../store/user/UserAction';
 
 
 const useStyles = makeStyles(theme => ({
@@ -21,7 +21,9 @@ const useStyles = makeStyles(theme => ({
 const Unit = props => {
   const [open, setOpen] = React.useState(false);
 
-  const {units, activeUnit} = useSelector(state => state.units);
+  const units = useSelector(state => state.units.units);
+
+  const currentUnit = useSelector(state => state.user.currentUnit);
 
   const { className, ...rest } = props;
 
@@ -40,7 +42,7 @@ const Unit = props => {
   };
 
   const handleListItemClick = (value) => {
-    dispatch(UnitsAction.updateActiveUnit(value));
+    dispatch(UserAction.changeCurrentUnit(value));
     handleClose();
   };
 
@@ -53,21 +55,24 @@ const Unit = props => {
         color="primary"
         onClick={handleClickOpen}
         size="large"
-        startIcon={<ApartmentIcon />}
+        startIcon={<ApartmentIcon/>}
       >واحد های من</Button>
       <div className={classes.content}>
         <Typography
           align="center"
           variant="h6"
         >
-          {activeUnit.title}
+          {currentUnit.title}
         </Typography>
-        <Typography
-          align="center"
-          variant="body2"
-        >
-          آپارتمان: {activeUnit.apartment.title}
-        </Typography>
+        {
+          currentUnit &&
+          <Typography
+            align="center"
+            variant="body2"
+          >
+            آپارتمان: {currentUnit.apartment.title}
+          </Typography>
+        }
       </div>
       <ChooseDialog
         list={units}

@@ -4,4 +4,4 @@ function _selectActiveApartment(apartment) {
   return apartment;
 }
 
-export const selectActiveApartment = createSelector((state) => state.apartments.activeApartment, _selectActiveApartment);
+export const selectActiveApartment = createSelector((state) => state.user.currentApartment, _selectActiveApartment);

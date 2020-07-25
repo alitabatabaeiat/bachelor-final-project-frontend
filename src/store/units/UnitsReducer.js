@@ -1,17 +1,13 @@
 import * as UnitsAction from './UnitsAction';
 import baseReducer from '../../helpers/BaseReducer';
-import { REQUEST_UPLOAD_EXCEL } from './UnitsAction';
 
 export const initialState = {
   units: [],
+  unitsCount: 0,
   formDialogOpen: false,
   formDialogUpdate: false,
   uploadExcelDialogOpen: false,
-  selectedUnit: {},
-  activeUnit: {
-    id: '-',
-    title: 'هیچ واحدی انتخاب نشده است'
-  }
+  selectedUnit: {}
 };
 
 const unitsReducer = baseReducer(initialState, {
@@ -20,17 +16,16 @@ const unitsReducer = baseReducer(initialState, {
       return state;
     return {
       ...state,
-      units: action.payload.data,
-      activeUnit: state.activeUnit ?? action.payload.data[0]
+      units: action.payload.data
     };
   },
 
-  [UnitsAction.UPDATE_ACTIVE_UNIT](state, action) {
+  [UnitsAction.REQUEST_ALL_UNITS_COUNT_FINISHED](state, action) {
     if (action.error)
       return state;
     return {
       ...state,
-      activeUnit: action.payload
+      unitsCount: action.payload.data
     };
   },
 

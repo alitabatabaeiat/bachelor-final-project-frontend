@@ -18,6 +18,7 @@ import green from '@material-ui/core/colors/green';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { useDispatch } from 'react-redux';
 import * as UnitsAction from '../../../../store/units/UnitsAction';
+import _ from 'lodash';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -208,7 +209,7 @@ const UnitCard = props => {
                 className={classes.cardDetail}
                 variant={cardDetailVariant}
               >
-                ضریب مصرف: {toPersianNumberWithComma(unit.consumptionCoefficient !== null ? unit.consumptionCoefficient.toFixed(3) : undefined)}
+                ضریب مصرف: {toPersianNumberWithComma(!_.isNil(unit.consumptionCoefficient) ? unit.consumptionCoefficient.toFixed(3) : undefined)}
               </Typography>
             </div>
           </div>

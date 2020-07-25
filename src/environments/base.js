@@ -21,6 +21,7 @@ export default function baseEnv(baseApi) {
         }),
         charges: (chargeId = '') => ({
           getAll: `${baseApi}/${role}/apartments/${apartmentId}/charges`,
+          lastCharge: `${baseApi}/${role}/apartments/${apartmentId}/charges/last-charge`,
           getOne: `${baseApi}/${role}/apartments/${apartmentId}/charges/${chargeId}`,
           create: `${baseApi}/${role}/apartments/${apartmentId}/charges`
         }),
@@ -36,12 +37,14 @@ export default function baseEnv(baseApi) {
       units: (unitId = '') => ({
         getAll: `${baseApi}/${role}/units`,
         getExcel: `${baseApi}/${role}/units/excel`,
+        count: `${baseApi}/${role}/units/count`,
         create: `${baseApi}/${role}/units`,
         uploadExcel: `${baseApi}/${role}/units/excel`,
         update: `${baseApi}/${role}/units/${unitId}`,
         delete: `${baseApi}/${role}/units/${unitId}`,
         charges: (chargeId = '') => ({
           getAll: `${baseApi}/${role}/units/${unitId}/charges`,
+          lastCharge: `${baseApi}/${role}/units/${unitId}/charges/last-charge`,
           pay: `${baseApi}/${role}/units/${unitId}/charges/${chargeId}/pay`,
         }),
       }),

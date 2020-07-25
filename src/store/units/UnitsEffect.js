@@ -7,6 +7,12 @@ export async function requestUnits(role, params) {
   return HttpUtils.get(endpoint, params);
 }
 
+export async function requestUnitsCount(role, params) {
+  const endpoint = environment.api(role).units().count;
+
+  return HttpUtils.get(endpoint, params);
+}
+
 export async function requestCreateUnit(role, data) {
   const endpoint = environment.api(role).units().create;
 

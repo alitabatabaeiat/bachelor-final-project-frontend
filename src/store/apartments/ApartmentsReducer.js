@@ -4,10 +4,6 @@ import { REQUEST_UPDATE_APARTMENT_SETTING } from './ApartmentsAction';
 
 export const initialState = {
   apartments: [],
-  activeApartment: {
-    id: '-',
-    title: 'هیچ آپارتمانی انتخاب نشده است'
-  },
   expenses: [],
   selectedExpenses: [],
   expenseOptions: {
@@ -24,8 +20,7 @@ const apartmentsReducer = baseReducer(initialState, {
       return state;
     return {
       ...state,
-      apartments: action.payload.data,
-      activeApartment: state.activeApartment ?? action.payload.data[0]
+      apartments: action.payload.data
     };
   },
 
@@ -36,15 +31,6 @@ const apartmentsReducer = baseReducer(initialState, {
     // let apartments = [...state.apartments];
     // apartments = apartments.filter(apartment => apartment.id !== action.payload.id);
     return state;
-  },
-
-  [ApartmentsAction.UPDATE_ACTIVE_APARTMENT](state, action) {
-    if (action.error)
-      return state;
-    return {
-      ...state,
-      activeApartment: action.payload
-    };
   },
 
   [ApartmentsAction.REQUEST_ALL_APARTMENT_EXPENSES_FINISHED](state, action) {

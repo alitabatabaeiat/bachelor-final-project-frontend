@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Grid } from '@material-ui/core';
 
 import {
@@ -7,8 +7,22 @@ import {
   ExpensesSeperation,
 } from './components';
 import LatestDeclaredCharges from './components/LatestDeclaredCharges';
+import { useDispatch } from 'react-redux';
+import * as UnitsAction from '../../store/units/UnitsAction';
+import * as ChargesAction from '../../store/charges/ChargesAction';
+import * as ApartmentsAction from '../../store/apartments/ApartmentsAction';
 
 const Dashboard = () => {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(UnitsAction.requestUnitsCount());
+    dispatch(ChargesAction.requestGetApartmentLastCharge());
+    dispatch(ChargesAction.requestGetAllApartmentCharges({chargesCount: 3}));
+    dispatch(ApartmentsAction.requestAllApartmentExpenses());
+  }, dispatch);
+
   return (
     <Fragment>
       <Grid

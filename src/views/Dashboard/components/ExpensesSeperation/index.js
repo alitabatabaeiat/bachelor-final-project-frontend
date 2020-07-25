@@ -1,1 +1,1 @@
-export { default } from './ExpensesSeperation';
+export { default } from './ExpensesSeparation';

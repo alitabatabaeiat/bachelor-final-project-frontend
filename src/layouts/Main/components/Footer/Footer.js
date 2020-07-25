@@ -29,9 +29,9 @@ const Footer = props => {
         >
           علی طباطبایی
         </Link>
-        <Typography variant="displayInline">
+        <span>
           {' '}۱۳۹۸ - ۱۳۹۹
-        </Typography>
+        </span>
       </Typography>
       <Typography variant="caption">
         ساخته شده برای پروژه کارشناسی دانشگاه تهران

@@ -7,18 +7,14 @@ import {
   CardHeader,
   CardContent,
   CardActions,
-  Button,
   Divider,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  IconButton, useTheme
+  useTheme
 } from '@material-ui/core';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Bar } from 'react-chartjs-2';
 import { toPersianNumberWithComma } from '../../../../helpers/persian';
+import { useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
+import _ from 'lodash';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -33,24 +29,23 @@ const useStyles = makeStyles(() => ({
 const LastChargeChart = props => {
   const { className, ...rest } = props;
 
+  const lastCharge = useSelector(state => state.charges.unitLastCharge);
+  const expenses = lastCharge ? lastCharge.charge.expenses : null;
+
   const classes = useStyles();
   const theme = useTheme();
 
   const data = {
     datasets: [
       {
-        data: [8000000, 12000000, 20000000],
-        backgroundColor: [
-          theme.palette.primary.main,
-          theme.palette.error.main,
-          theme.palette.warning.main
-        ],
+        data: _.map(expenses, expense => expense.unitExpenses[0].amount),
+        backgroundColor: _.map(expenses, expense => '#' + expense.type.color),
         borderWidth: 8,
         borderColor: theme.palette.white,
         hoverBorderColor: theme.palette.white
       }
     ],
-    labels: ['قبض آب', 'قبض برق', 'باغبان'].map(label => label.split(' '))
+    labels: _.map(expenses, expense => expense.type.title).map(label => label.split(' '))
   };
 
   const options = {
@@ -83,7 +78,7 @@ const LastChargeChart = props => {
       className={clsx(classes.root, className)}
     >
       <CardHeader
-        title="هزینه های آخرین شارژ اعلام شده - شارژ خرداد ۹۹"
+        title={`هزینه های آخرین شارژ اعلام شده${lastCharge ? ' - ' + lastCharge.charge.title : ''}`}
       />
       <Divider/>
       <CardContent>

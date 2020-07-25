@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import PanToolIcon from '@material-ui/icons/PanTool';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,6 +34,8 @@ const useStyles = makeStyles(theme => ({
 const LastDeclaredCharge = props => {
   const { className, ...rest } = props;
 
+  const lastCharge = useSelector(state => state.charges.apartmentLastCharge);
+
   const classes = useStyles();
 
   return (
@@ -58,7 +61,7 @@ const LastDeclaredCharge = props => {
               color="inherit"
               variant="h3"
             >
-              خرداد ۹۹
+              {lastCharge ? lastCharge.title : null}
             </Typography>
           </Grid>
           <Grid item>

@@ -11,11 +11,14 @@ import {
   Divider,
   Button, Grid, colors
 } from '@material-ui/core';
-import { toPersianNumberWithComma } from '../../../../helpers/persian';
+import { toPersianNumber, toPersianNumberWithComma } from '../../../../helpers/persian';
 import Typography from '@material-ui/core/Typography';
-import DoneIcon from '@material-ui/icons/Done';
 import green from '@material-ui/core/colors/green';
 import ReceiptIcon from '@material-ui/icons/Receipt';
+import { useSelector } from 'react-redux';
+import red from '@material-ui/core/colors/red';
+import moment from 'jalali-moment';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -36,7 +39,15 @@ const useStyles = makeStyles(theme => ({
 const LastDeclaredChargeBill = props => {
   const { className, ...rest } = props;
 
+  const lastCharge = useSelector(state => state.charges.unitLastCharge);
+
+  const history = useHistory();
+
   const classes = useStyles();
+
+  const handleGoToBillClick = () => {
+    history.push('/unit-bills');
+  };
 
   return (
     <Card
@@ -44,104 +55,106 @@ const LastDeclaredChargeBill = props => {
       className={clsx(classes.root, className)}
     >
       <CardHeader
-        title={'صورتحساب من - شارژ خرداد ۹۹'}
+        title={`صورتحساب من${lastCharge ? ' - ' + lastCharge.charge.title : ''}`}
       />
       <Divider/>
       <CardContent>
-        <Grid
-          container
-          spacing={4}
-        >
+        {
+          lastCharge &&
           <Grid
             container
-            direction="column"
-            item
-            sm={6}
-            xs={12}
+            spacing={4}
           >
             <Grid
-              className={classes.detailBox}
+              container
+              direction="column"
               item
+              sm={6}
+              xs={12}
             >
-              <Typography
-                className={classes.boxTitle}
-                variant="h6"
+              <Grid
+                className={classes.detailBox}
+                item
               >
-                مبلغ
-              </Typography>
-              <Typography
-                className={classes.boxValue}
-                variant="h4"
+                <Typography
+                  className={classes.boxTitle}
+                  variant="h6"
+                >
+                  مبلغ
+                </Typography>
+                <Typography
+                  className={classes.boxValue}
+                  variant="h4"
+                >
+                  {toPersianNumberWithComma(lastCharge.amount) + ' ریال'}
+                </Typography>
+              </Grid>
+
+              <Grid
+                className={classes.detailBox}
+                item
               >
-                {toPersianNumberWithComma(15000000) + ' ریال'}
-              </Typography>
+                <Typography
+                  className={classes.boxTitle}
+                  variant="h6"
+                >
+                  وضعیت
+                </Typography>
+                <Typography
+                  className={classes.boxValue}
+                  style={{color: lastCharge.isPaid ? green[500] : red[500]}}
+                  variant="h4"
+                >
+                  {lastCharge.isPaid ? 'پرداخت شده' : 'پرداخت نشده'}
+                </Typography>
+              </Grid>
             </Grid>
 
             <Grid
-              className={classes.detailBox}
+              container
+              direction="column"
               item
+              sm={6}
+              xs={12}
             >
-              {/*<Typography*/}
-              {/*  className={classes.boxTitle}*/}
-              {/*  variant="h6"*/}
-              {/*>*/}
-              {/*  اضطراری*/}
-              {/*</Typography>*/}
-              {/*<Typography*/}
-              {/*  className={classes.boxValue}*/}
-              {/*  variant="h4"*/}
-              {/*>*/}
-              {/*  <DoneIcon*/}
-              {/*    fontSize="small"*/}
-              {/*    style={{ color: green[500] }}*/}
-              {/*  />*/}
-              {/*</Typography>*/}
+              <Grid
+                className={classes.detailBox}
+                item
+              >
+                <Typography
+                  className={classes.boxTitle}
+                  variant="h6"
+                >
+                  تاریخ ثبت
+                </Typography>
+                <Typography
+                  className={classes.boxValue}
+                  variant="h4"
+                >
+                  {toPersianNumber(moment(lastCharge.createdAt).locale('fa').format('YYYY/MM/DD'))}
+                </Typography>
+              </Grid>
             </Grid>
-          </Grid>
 
-          <Grid
-            container
-            direction="column"
-            item
-            sm={6}
-            xs={12}
-          >
             <Grid
-              className={classes.detailBox}
+              container
+              direction="column"
               item
+              sm={12}
+              xs={12}
             >
-              <Typography
-                className={classes.boxTitle}
-                variant="h6"
+              <Button
+                color="primary"
+                onClick={handleGoToBillClick}
+                size="small"
+                startIcon={<ReceiptIcon/>}
+                variant="outlined"
               >
-                تاریخ ثبت
-              </Typography>
-              <Typography
-                className={classes.boxValue}
-                variant="h4"
-              >
-                ۱۳۹۹/۰۳/۱۸
-              </Typography>
+                برو به صفحه صورتحساب
+              </Button>
             </Grid>
           </Grid>
-
-          <Grid
-            container
-            direction="column"
-            item
-            sm={12}
-            xs={12}
-          >
-            <Button
-              color="primary"
-              size="small"
-              startIcon={<ReceiptIcon />}
-              variant="outlined"
-            >
-              برو به صفحه صورتحساب
-            </Button>
-          </Grid>
-        </Grid>
+        }
       </CardContent>
       <Divider/>
       <CardActions className={classes.actions}>
