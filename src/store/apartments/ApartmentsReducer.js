@@ -15,6 +15,15 @@ export const initialState = {
 };
 
 const apartmentsReducer = baseReducer(initialState, {
+  [ApartmentsAction.REQUEST_ALL_APARTMENTS](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      apartments: []
+    };
+  },
+
   [ApartmentsAction.REQUEST_ALL_APARTMENTS_FINISHED](state, action) {
     if (action.error)
       return state;
@@ -33,6 +42,15 @@ const apartmentsReducer = baseReducer(initialState, {
     return state;
   },
 
+  [ApartmentsAction.REQUEST_ALL_APARTMENT_EXPENSES](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      expenses: []
+    };
+  },
+
   [ApartmentsAction.REQUEST_ALL_APARTMENT_EXPENSES_FINISHED](state, action) {
     if (action.error)
       return state;
@@ -45,10 +63,7 @@ const apartmentsReducer = baseReducer(initialState, {
   [ApartmentsAction.REQUEST_CREATE_APARTMENT_EXPENSE_FINISHED](state, action) {
     if (action.error)
       return state;
-    return {
-      ...state,
-      expenses: [action.payload.data, ...state.expenses]
-    };
+    return state;
   },
 
   [ApartmentsAction.REQUEST_CALCULATE_APARTMENT_EXPENSE_FINISHED](state, action) {
@@ -75,12 +90,30 @@ const apartmentsReducer = baseReducer(initialState, {
     };
   },
 
+  [ApartmentsAction.REQUEST_APARTMENT_SETTING](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      setting: []
+    };
+  },
+
   [ApartmentsAction.REQUEST_APARTMENT_SETTING_FINISHED](state, action) {
     if (action.error)
       return state;
     return {
       ...state,
       setting: action.payload.data
+    };
+  },
+
+  [ApartmentsAction.REQUEST_UPDATE_APARTMENT_SETTING](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      setting: []
     };
   },
 

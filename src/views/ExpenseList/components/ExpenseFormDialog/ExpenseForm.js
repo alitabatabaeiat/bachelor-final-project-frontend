@@ -180,6 +180,7 @@ const ExpenseForm = props => {
     setErrors(errors);
     if (!errors) {
       await dispatch(ApartmentsAction.requestCreateApartmentExpense(data));
+      await dispatch(ApartmentsAction.requestAllApartmentExpenses());
 
       onSubmit();
     }

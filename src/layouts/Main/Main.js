@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/styles';
@@ -8,6 +8,8 @@ import { Sidebar, Topbar, Footer } from './components';
 import Typography from '@material-ui/core/Typography';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { useSelector } from 'react-redux';
+import { selectRequesting } from '../../helpers/requestingSelector';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,7 +23,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 240
   },
   blurContent: {
-    filter: 'blur(8px)'
+    filter: 'blur(6px)'
   },
   title: {
     padding: theme.spacing(4),
@@ -33,7 +35,9 @@ const useStyles = makeStyles(theme => ({
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
-    color: '#fff'
+    color: '#fff',
+    top: 56,
+    left: 240
   }
 }));
 
@@ -46,8 +50,9 @@ const Main = props => {
     defaultMatches: true
   });
 
-
   const [openSidebar, setOpenSidebar] = useState(false);
+
+  const isRequesting = useSelector(selectRequesting);
 
   const handleSidebarOpen = () => {
     setOpenSidebar(true);
@@ -74,13 +79,27 @@ const Main = props => {
           open={shouldOpenSidebar}
           variant={isDesktop ? 'persistent' : 'temporary'}
         />
-        <main className={classes.content}>
+        <main
+          className={clsx({
+            [classes.content]: true,
+            [classes.blurContent]: isRequesting
+          })}
+        >
           <div className={classes.title}>
             <Typography variant="h2">{title}</Typography>
           </div>
           {children}
           <Footer/>
         </main>
+        {
+          <Backdrop
+            className={classes.backdrop}
+            // onClick={handleClose}
+            open={isRequesting}
+          >
+            <CircularProgress color="inherit"/>
+          </Backdrop>
+        }
       </div>
       <Backdrop
         className={classes.backdrop}

@@ -11,12 +11,30 @@ export const initialState = {
 };
 
 const chargesReducer = baseReducer(initialState, {
+  [ApartmentsAction.REQUEST_GET_ALL_APARTMENT_CHARGES](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      apartmentCharges: []
+    };
+  },
+
   [ApartmentsAction.REQUEST_GET_ALL_APARTMENT_CHARGES_FINISHED](state, action) {
     if (action.error)
       return state;
     return {
       ...state,
       apartmentCharges: action.payload.data
+    };
+  },
+
+  [ApartmentsAction.REQUEST_GET_APARTMENT_CHARGE](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      unitCharges: []
     };
   },
 
@@ -29,12 +47,30 @@ const chargesReducer = baseReducer(initialState, {
     };
   },
 
+  [ApartmentsAction.REQUEST_CREATE_CHARGE](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      charge: null
+    };
+  },
+
   [ApartmentsAction.REQUEST_CREATE_CHARGE_FINISHED](state, action) {
     if (action.error)
       return state;
     return {
       ...state,
       charge: action.payload.data
+    };
+  },
+
+  [ApartmentsAction.REQUEST_GET_APARTMENT_LAST_CHARGE](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      apartmentLastCharge: null
     };
   },
 
@@ -47,12 +83,30 @@ const chargesReducer = baseReducer(initialState, {
     };
   },
 
+  [ApartmentsAction.REQUEST_GET_UNIT_LAST_CHARGE](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      unitLastCharge: null
+    };
+  },
+
   [ApartmentsAction.REQUEST_GET_UNIT_LAST_CHARGE_FINISHED](state, action) {
     if (action.error)
       return state;
     return {
       ...state,
       unitLastCharge: action.payload.data
+    };
+  },
+
+  [ApartmentsAction.REQUEST_GET_ALL_UNIT_CHARGES](state, action) {
+    if (action.error)
+      return state;
+    return {
+      ...state,
+      unitCharges: []
     };
   },
 

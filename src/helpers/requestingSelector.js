@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import _ from 'lodash';
 
 export const selectRequesting = createSelector(
   (state) => state.requesting,
@@ -7,5 +8,7 @@ export const selectRequesting = createSelector(
 );
 
 function _selectRequesting(requestingState, actionTypes) {
-  return actionTypes.some((actionType) => requestingState[actionType]);
+  console.log('aaa', (_.isNil(actionTypes) && _.chain(requestingState).values().some(true).value()));
+  return (_.isNil(actionTypes) && _.chain(requestingState).values().some(v => v).value()) ||
+    (!_.isNil(actionTypes) && actionTypes.some((actionType) => requestingState[actionType]));
 }

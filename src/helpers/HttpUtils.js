@@ -31,7 +31,7 @@ export async function get(endpoint, token, params, requestConfig) {
 }
 
 export async function post(endpoint, token, data) {
-  const config = data ? { data } : undefined;
+  const config = data ? { data } : {};
   config.headers = { token };
 
   return _request(
@@ -44,7 +44,7 @@ export async function post(endpoint, token, data) {
 }
 
 export async function patch(endpoint, token, data) {
-  const config = data ? { data } : undefined;
+  const config = data ? { data } : {};
   config.headers = { token };
 
   return _request(
