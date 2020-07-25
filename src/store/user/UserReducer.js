@@ -2,6 +2,7 @@ import * as UserAction from './UserAction';
 import baseReducer from '../../helpers/BaseReducer';
 
 export const initialState = {
+  token: 1,
   name: 'سید علی طباطبایی آل طه',
   avatar: '/images/avatars/avatar_11.png',
   role: 'manager',
@@ -16,6 +17,20 @@ export const initialState = {
 };
 
 const apartmentsReducer = baseReducer(initialState, {
+  [UserAction.REQUEST_SIGN_IN_FINISHED](state, action) {
+    return {
+      ...state,
+      token: action.payload.data
+    };
+  },
+
+  [UserAction.SIGN_OUT](state) {
+    return {
+      ...state,
+      token: undefined
+    };
+  },
+
   [UserAction.CHANGE_ROLE](state) {
     return {
       ...state,

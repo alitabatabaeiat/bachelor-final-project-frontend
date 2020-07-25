@@ -39,90 +39,83 @@ export const RESET_SELECTED_EXPENSES = 'ApartmentsAction.RESET_SELECTED_EXPENSES
 
 export function requestAllApartments() {
   return async (dispatch, getState) => {
-    const userRole = getState().user.role;
+    const { user } = getState();
 
-    await ActionUtils.createThunkEffect(dispatch, REQUEST_ALL_APARTMENTS, ApartmentsEffect.requestAllApartments, userRole);
+    await ActionUtils.createThunkEffect(dispatch, REQUEST_ALL_APARTMENTS, ApartmentsEffect.requestAllApartments, user.token, user.role);
   };
 }
 
 export function requestDeleteApartment(id) {
   return async (dispatch, getState) => {
-    const userRole = getState().user.role;
+    const { user } = getState();
 
-    await ActionUtils.createThunkEffect(dispatch, REQUEST_DELETE_APARTMENT, ApartmentsEffect.requestDeleteApartment, userRole, id);
+    await ActionUtils.createThunkEffect(dispatch, REQUEST_DELETE_APARTMENT, ApartmentsEffect.requestDeleteApartment, user.token, user.role, id);
   };
 }
 
 export function requestAllApartmentExpenses(query) {
   return async (dispatch, getState) => {
-    const userRole = getState().user.role;
-    const apartmentId = getState().user.currentApartment.id;
+    const { user } = getState();
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_ALL_APARTMENT_EXPENSES, ApartmentsEffect.requestAllApartmentExpenses,
-      userRole, apartmentId, query);
+      user.token, user.role, user.currentApartment.id, query);
   };
 }
 
 export function requestCreateApartmentExpense(data) {
   return async (dispatch, getState) => {
-    const userRole = getState().user.role;
-    const apartmentId = getState().user.currentApartment.id;
+    const { user } = getState();
 
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_CREATE_APARTMENT_EXPENSE, ApartmentsEffect.requestCreateApartmentExpense,
-      userRole, apartmentId, data);
+      user.token, user.role, user.currentApartment.id, data);
   };
 }
 
 export function requestCalculateApartmentExpense(data) {
   return async (dispatch, getState) => {
-    const userRole = getState().user.role;
-    const apartmentId = getState().user.currentApartment.id;
+    const { user } = getState();
 
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_CALCULATE_APARTMENT_EXPENSE, ApartmentsEffect.requestCalculateApartmentExpense,
-      userRole, apartmentId, data);
+      user.token, user.role, user.currentApartment.id, data);
   };
 }
 
 export function requestDeleteApartmentExpense(expenseId) {
   return async (dispatch, getState) => {
-    const userRole = getState().user.role;
-    const apartmentId = getState().user.currentApartment.id;
+    const { user } = getState();
 
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_DELETE_APARTMENT_EXPENSE, ApartmentsEffect.requestDeleteApartmentExpense,
-      userRole, apartmentId, expenseId);
+      user.token, user.role, user.currentApartment.id, expenseId);
   };
 }
 
 export function requestAllExpenseOptions() {
   return async (dispatch, getState) => {
-    const userRole = getState().user.role;
-    const apartmentId = getState().user.currentApartment.id;
+    const { user } = getState();
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_ALL_EXPENSE_OPTIONS, ApartmentsEffect.requestAllExpenseOptions,
-      userRole, apartmentId);
+      user.token, user.role, user.currentApartment.id);
   };
 }
 
 export function requestApartmentSetting() {
   return async (dispatch, getState) => {
-    const userRole = getState().user.role;
-    const apartmentId = getState().user.currentApartment.id;
+    const { user } = getState();
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_APARTMENT_SETTING, ApartmentsEffect.requestApartmentSetting,
-      userRole, apartmentId);
+      user.token, user.role, user.currentApartment.id);
   };
 }
 
 export function requestUpdateApartmentSetting(data) {
   return async (dispatch, getState) => {
-    const userRole = getState().user.role;
-    const apartmentId = getState().user.currentApartment.id;
+    const { user } = getState();
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_UPDATE_APARTMENT_SETTING, ApartmentsEffect.requestUpdateApartmentSetting,
-      userRole, apartmentId, data);
+      user.token, user.role, user.currentApartment.id, data);
   };
 }
 

@@ -55,13 +55,12 @@ const NotificationForm = props => {
     title: undefined,
     body: undefined
   });
+  const [errors, setErrors] = React.useState({});
 
   useEffect(() => {
     if (notification)
       setState(_.pick(notification, ['title', 'body']));
   }, [props.notification]);
-
-  const [errors, setErrors] = React.useState({});
 
   const dispatch = useDispatch();
 

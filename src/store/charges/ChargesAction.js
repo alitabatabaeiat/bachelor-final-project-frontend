@@ -24,70 +24,63 @@ export const REQUEST_REQUEST_PAY_UNIT_CHARGE_FINISHED = 'ChargesAction.REQUEST_R
 
 export function requestCreateCharge(data) {
   return async (dispatch, getState) => {
-    const userRole = getState().user.role;
-    const apartmentId = getState().user.currentApartment.id;
+    const { user } = getState();
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_CREATE_CHARGE, ChargesEffect.requestCreateCharge,
-      userRole, apartmentId, data);
+      user.token, user.role, user.currentApartment.id, data);
   };
 }
 
 export function requestGetAllApartmentCharges(query = null) {
   return async (dispatch, getState) => {
-    const userRole = getState().user.role;
-    const apartmentId = getState().user.currentApartment.id;
+    const { user } = getState();
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_GET_ALL_APARTMENT_CHARGES, ChargesEffect.requestGetAllApartmentCharges,
-      userRole, apartmentId, query);
+      user.token, user.role, user.currentApartment.id, query);
   };
 }
 
 export function requestGetApartmentLastCharge() {
   return async (dispatch, getState) => {
-    const userRole = getState().user.role;
-    const apartmentId = getState().user.currentApartment.id;
+    const { user } = getState();
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_GET_APARTMENT_LAST_CHARGE, ChargesEffect.requestGetApartmentLastCharge,
-      userRole, apartmentId);
+      user.token, user.role, user.currentApartment.id);
   };
 }
 
 export function requestGetUnitLastCharge() {
   return async (dispatch, getState) => {
-    const userRole = getState().user.role;
-    const apartmentId = getState().user.currentUnit.id;
+    const { user } = getState();
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_GET_UNIT_LAST_CHARGE, ChargesEffect.requestGetUnitLastCharge,
-      userRole, apartmentId);
+      user.token, user.role, user.currentUnit.id);
   };
 }
 
 export function requestGetApartmentCharge(chargeId) {
   return async (dispatch, getState) => {
-    const userRole = getState().user.role;
-    const apartmentId = getState().user.currentApartment.id;
+    const { user } = getState();
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_GET_APARTMENT_CHARGE, ChargesEffect.requestGetApartmentCharge,
-      userRole, apartmentId, chargeId);
+      user.token, user.role, user.currentApartment.id, chargeId);
   };
 }
 
 export function requestGetAllUnitCharges() {
   return async (dispatch, getState) => {
-    const userRole = getState().user.role;
-    const unitId = getState().user.currentUnit.id;
+    const { user } = getState();
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_GET_ALL_UNIT_CHARGES, ChargesEffect.requestGetAllUnitCharges,
-      userRole, unitId);
+      user.token, user.role, user.currentUnit.id);
   };
 }
 
 export function requestPayUnitCharges(chargeId) {
   return async (dispatch, getState) => {
-    const userRole = getState().user.role;
-    const unitId = getState().user.currentUnit.id;
+    const { user } = getState();
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_REQUEST_PAY_UNIT_CHARGE, ChargesEffect.requestPayUnitCharges,
-      userRole, unitId, chargeId);
+      user.token, user.role, user.currentUnit.id, chargeId);
   };
 }

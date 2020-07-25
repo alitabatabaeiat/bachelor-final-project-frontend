@@ -8,7 +8,11 @@ export default function baseEnv(baseApi) {
     route: {
       baseRoute: '/'
     },
-    api: (role) => ({
+    api: (role = '') => ({
+      user: () => ({
+        signIn: `${baseApi}/users/sign-in`,
+        signUp: `${baseApi}/users/sign-up`
+      }),
       apartments: (apartmentId = '') => ({
         getAll: `${baseApi}/${role}/apartments`,
         delete: `${baseApi}/${role}/apartments/${apartmentId}`,

@@ -13,6 +13,18 @@ import {
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
+import handleInputChange from '../../helpers/handleInputChange';
+import clsx from 'clsx';
+import validate from '../../helpers/validate';
+import { createNotificationSchema } from '../NotificationList/components/NotificationFormDialog/NotificationFormValidation';
+import * as UserAction from '../../store/user/UserAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { signInSchema } from './SignInValidation';
+import { selectRequesting } from '../../helpers/requestingSelector';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import green from '@material-ui/core/colors/green';
+import usePrevious from '../../helpers/usePrevious';
+import { hasErrors, selectErrorText } from '../../helpers/errorSelector';
 
 // const schema = {
 //   email: {
@@ -113,7 +125,7 @@ const useStyles = makeStyles(theme => ({
   socialIcon: {
     marginRight: theme.spacing(1)
   },
-  sugestion: {
+  suggestion: {
     marginTop: theme.spacing(2)
   },
   textField: {
@@ -121,61 +133,62 @@ const useStyles = makeStyles(theme => ({
   },
   signInButton: {
     margin: theme.spacing(2, 0)
+  },
+  wrapper: {
+    position: 'relative'
+  },
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12
+  },
+  buttonSuccess: {
+    backgroundColor: green[500],
+    '&:hover': {
+      backgroundColor: green[700]
+    }
   }
 }));
 
 const SignIn = props => {
   const { history } = props;
 
+  const dispatch = useDispatch();
+  const isRequesting = useSelector(state => selectRequesting(state, [UserAction.REQUEST_SIGN_IN]));
+  const requestHasErrors = useSelector(state => hasErrors(state, [UserAction.REQUEST_SIGN_IN_FINISHED]));
+
+  const previousIsRequesting = usePrevious(isRequesting);
+  useEffect(() => {
+    if (previousIsRequesting && !requestHasErrors) {
+      history.push('/');
+    }
+  }, [isRequesting]);
+
   const classes = useStyles();
 
-  const [formState, setFormState] = useState({
-    isValid: false,
-    values: {},
-    touched: {},
-    errors: {}
-  });
+  const [formState, setFormState] = useState({});
+  const [errors, setErrors] = React.useState({});
 
-  // useEffect(() => {
-  //   // const errors = validate(formState.values, schema);
-  //
-  //   setFormState(formState => ({
-  //     ...formState,
-  //     isValid: errors ? false : true,
-  //     errors: errors || {}
-  //   }));
-  // }, [formState.values]);
+  const localHandleInputChange = async (event, options) => await handleInputChange(formState, setFormState, event, options);
 
-  const handleBack = () => {
-    history.goBack();
+  const handleSignIn = async () => {
+    const data = {
+      ...formState
+    };
+
+    const errors = validate(signInSchema, data);
+    setErrors(errors);
+    console.log(hasError(errors, 'mobileNumber'));
+
+    if (!errors) {
+      dispatch(UserAction.requestSignIn(data));
+      // history.push('/');
+    }
   };
 
-  const handleChange = event => {
-    event.persist();
-
-    setFormState(formState => ({
-      ...formState,
-      values: {
-        ...formState.values,
-        [event.target.name]:
-          event.target.type === 'checkbox'
-            ? event.target.checked
-            : event.target.value
-      },
-      touched: {
-        ...formState.touched,
-        [event.target.name]: true
-      }
-    }));
-  };
-
-  const handleSignIn = event => {
-    event.preventDefault();
-    history.push('/');
-  };
-
-  const hasError = field =>
-    formState.touched[field] && formState.errors[field] ? true : false;
+  const hasError = (errors, name) => errors && errors[name];
 
   return (
     <div className={classes.root}>
@@ -194,21 +207,20 @@ const SignIn = props => {
                 className={classes.quoteText}
                 variant="h1"
               >
-                Hella narwhal Cosby sweater McSweeney's, salvia kitsch before
-                they sold out High Life.
+                سلام، این پروژه جهت پروژه کارشناسی دانشگاه تهران توسط علی طباطبایی نوشته شده است
               </Typography>
               <div className={classes.person}>
                 <Typography
                   className={classes.name}
                   variant="body1"
                 >
-                  Takamaru Ayako
+                  Email: A.Tabatabaei97@gmail.com
                 </Typography>
                 <Typography
                   className={classes.bio}
                   variant="body2"
                 >
-                  Manager at inVision
+                  ۱۳۹۸-۱۳۹۹
                 </Typography>
               </div>
             </div>
@@ -221,11 +233,7 @@ const SignIn = props => {
           xs={12}
         >
           <div className={classes.content}>
-            <div className={classes.contentHeader}>
-              <IconButton onClick={handleBack}>
-                <ArrowBackIcon />
-              </IconButton>
-            </div>
+            <div className={classes.contentHeader}/>
             <div className={classes.contentBody}>
               <form
                 className={classes.form}
@@ -235,101 +243,73 @@ const SignIn = props => {
                   className={classes.title}
                   variant="h2"
                 >
-                  Sign in
-                </Typography>
-                <Typography
-                  color="textSecondary"
-                  gutterBottom
-                >
-                  Sign in with social media
-                </Typography>
-                <Grid
-                  className={classes.socialButtons}
-                  container
-                  spacing={2}
-                >
-                  <Grid item>
-                    <Button
-                      color="primary"
-                      onClick={handleSignIn}
-                      size="large"
-                      variant="contained"
-                    >
-                      <FacebookIcon className={classes.socialIcon} />
-                      Login with Facebook
-                    </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button
-                      onClick={handleSignIn}
-                      size="large"
-                      variant="contained"
-                    >
-                      <GoogleIcon className={classes.socialIcon} />
-                      Login with Google
-                    </Button>
-                  </Grid>
-                </Grid>
-                <Typography
-                  align="center"
-                  className={classes.sugestion}
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  or login with email address
+                  ورود
                 </Typography>
                 <TextField
                   className={classes.textField}
-                  error={hasError('email')}
+                  error={hasError(errors, 'mobileNumber')}
                   fullWidth
-                  helperText={
-                    hasError('email') ? formState.errors.email[0] : null
-                  }
-                  label="Email address"
-                  name="email"
-                  onChange={handleChange}
-                  type="text"
-                  value={formState.values.email || ''}
+                  helperText={hasError(errors, 'mobileNumber') ? errors.mobileNumber.message : 'شماره موبایل را وارد کنید'}
+                  inputProps={{
+                    name: 'mobileNumber'
+                  }}
+                  label="شماره موبایل"
+                  margin="dense"
+                  onChange={localHandleInputChange}
+                  required
+                  value={formState.mobileNumber}
                   variant="outlined"
                 />
                 <TextField
                   className={classes.textField}
-                  error={hasError('password')}
+                  error={hasError(errors, 'password')}
                   fullWidth
-                  helperText={
-                    hasError('password') ? formState.errors.password[0] : null
-                  }
-                  label="Password"
-                  name="password"
-                  onChange={handleChange}
+                  helperText={hasError(errors, 'password') ? errors.password.message : 'رمزعبور را وارد کنید'}
+                  inputProps={{
+                    name: 'password'
+                  }}
+                  label="رمزعبور"
+                  margin="dense"
+                  onChange={localHandleInputChange}
+                  required
                   type="password"
-                  value={formState.values.password || ''}
+                  value={formState.password}
                   variant="outlined"
                 />
-                <Button
-                  className={classes.signInButton}
-                  color="primary"
-                  disabled={!formState.isValid}
-                  fullWidth
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                >
-                  Sign in now
-                </Button>
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  Don't have an account?{' '}
-                  <Link
-                    component={RouterLink}
-                    to="/sign-up"
-                    variant="h6"
+                <div className={classes.wrapper}>
+                  <Button
+                    className={classes.signInButton}
+                    color="primary"
+                    disabled={isRequesting}
+                    fullWidth
+                    onClick={handleSignIn}
+                    size="large"
+                    variant="contained"
                   >
-                    Sign up
-                  </Link>
-                </Typography>
+                    ورود
+                  </Button>
+                  {
+                    isRequesting &&
+                    <CircularProgress
+                      className={classes.buttonProgress}
+                      color="primary"
+                      size={24}
+                    />
+                  }
+                </div>
+                {/*<Typography*/}
+                {/*  color="textSecondary"*/}
+                {/*  variant="body1"*/}
+                {/*>*/}
+                {/*  Don't have an account?{' '}*/}
+                {/*  <Link*/}
+                {/*    component={RouterLink}*/}
+                {/*    to="/sign-up"*/}
+                {/*    variant="h6"*/}
+                {/*  >*/}
+                {/*    Sign up*/}
+                {/*  </Link>*/}
+                {/*</Typography>*/}
               </form>
             </div>
           </div>

@@ -10,19 +10,19 @@ export const REQUEST_CREATE_NOTIFICATION_FINISHED = 'ApartmentsAction.REQUEST_CR
 
 export function requestAllNotifications() {
   return async (dispatch, getState) => {
-    const userRole = getState().user.role;
-    const apartmentId = userRole === 'manager' ? getState().user.currentApartment.id : getState().user.currentUnit.apartment.id;
+    const { user } = getState();
+    const apartmentId = user.role === 'manager' ? user.currentApartment.id : user.currentUnit.apartment.id;
 
-    await ActionUtils.createThunkEffect(dispatch, REQUEST_ALL_NOTIFICATIONS, NotificationsEffect.requestAllNotifications, userRole, {apartment: apartmentId});
+    await ActionUtils.createThunkEffect(dispatch, REQUEST_ALL_NOTIFICATIONS, NotificationsEffect.requestAllNotifications,
+      user.token, user.role, {apartment: apartmentId});
   };
 }
 
 export function requestCreateNotification(data) {
   return async (dispatch, getState) => {
-    const userRole = getState().user.role;
-    const apartmentId = getState().user.currentApartment.id;
+    const { user } = getState();
 
     await ActionUtils.createThunkEffect(dispatch, REQUEST_CREATE_NOTIFICATION, NotificationsEffect.requestCreateNotifications,
-      userRole, _.assign(data, {apartment: apartmentId}));
+      user.token, user.role, _.assign(data, {apartment: user.currentApartment.id}));
   };
 }

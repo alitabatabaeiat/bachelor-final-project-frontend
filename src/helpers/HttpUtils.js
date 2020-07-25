@@ -7,53 +7,65 @@ const RequestMethod = {
   Delete: 'DELETE',
   Options: 'OPTIONS',
   Head: 'HEAD',
-  Patch: 'PATCH',
+  Patch: 'PATCH'
 };
 
-export async function get(endpoint, params, requestConfig) {
+export async function get(endpoint, token, params, requestConfig) {
   const paramsConfig = params ? { params } : undefined;
+  console.log(params);
+  console.log(paramsConfig);
 
   return _request(
     {
       url: endpoint,
-      method: RequestMethod.Get,
+      method: RequestMethod.Get
     },
     {
       ...paramsConfig,
       ...requestConfig,
+      headers: {
+        token
+      }
     }
   );
 }
 
-export async function post(endpoint, data) {
+export async function post(endpoint, token, data) {
   const config = data ? { data } : undefined;
+  config.headers = { token };
 
   return _request(
     {
       url: endpoint,
-      method: RequestMethod.Post,
+      method: RequestMethod.Post
     },
     config
   );
 }
 
-export async function patch(endpoint, data) {
+export async function patch(endpoint, token, data) {
   const config = data ? { data } : undefined;
+  config.headers = { token };
 
   return _request(
     {
       url: endpoint,
-      method: RequestMethod.Patch,
+      method: RequestMethod.Patch
     },
     config
   );
 }
 
-export async function del(endpoint) {
-  return _request({
-    url: endpoint,
-    method: RequestMethod.Delete,
-  });
+export async function del(endpoint, token) {
+  const config = token ? { headers: { token } } : undefined;
+
+  return _request(
+    {
+      url: endpoint,
+      method: RequestMethod.Delete
+    },
+    config
+  );
 }
 
 async function _request(restRequest, config) {
@@ -68,9 +80,10 @@ async function _request(restRequest, config) {
       url: restRequest.url,
       headers: {
         'Content-Type': 'application/json',
-        ...config?.headers,
-      },
+        ...config?.headers
+      }
     };
+    console.log(axiosRequestConfig);
     const [axiosResponse] = await Promise.all([axios(axiosRequestConfig), _delay()]);
 
     const { data } = axiosResponse;
@@ -91,6 +104,6 @@ async function _request(restRequest, config) {
   }
 }
 
-function _delay(duration = 250) {
+function _delay(duration = 2500) {
   return new Promise((resolve) => setTimeout(resolve, duration));
 }

@@ -8,6 +8,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
+import { useDispatch } from 'react-redux';
+import * as UserAction from '../../../../store/user/UserAction';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,7 +18,7 @@ const useStyles = makeStyles(theme => ({
   },
   logoContainer: {
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   logoIcon: {
     fontSize: 40,
@@ -40,9 +43,18 @@ const useStyles = makeStyles(theme => ({
 const Topbar = props => {
   const { className, onSidebarOpen, ...rest } = props;
 
+  const dispatch = useDispatch();
+
+  const history = useHistory();
+
   const classes = useStyles();
 
   const [notifications] = useState([]);
+
+  const handleSignOut = () => {
+    dispatch(UserAction.requestSignOut());
+    history.push('/sign-in');
+  };
 
   return (
     <AppBar
@@ -76,6 +88,7 @@ const Topbar = props => {
           <IconButton
             className={classes.signOutButton}
             color="inherit"
+            onClick={handleSignOut}
           >
             <InputIcon/>
           </IconButton>

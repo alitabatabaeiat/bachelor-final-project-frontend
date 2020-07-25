@@ -10,6 +10,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css';
 import './assets/scss/index.scss';
 import Routes from './Routes';
 import RTL from './RTL';
+import Toasts from './components/Toasts/Toasts';
 
 
 Chart.helpers.extend(Chart.elements.Rectangle.prototype, {
@@ -24,6 +25,7 @@ function App(props) {
       <ThemeProvider theme={theme}>
         <ConnectedRouter history={props.history}>
           <Routes/>
+          <Toasts />
         </ConnectedRouter>
       </ThemeProvider>
     </RTL>

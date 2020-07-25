@@ -7,9 +7,10 @@ import reduxFreeze from 'redux-freeze';
 import rootReducer from './rootReducer';
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import errorToastMiddleware from '../helpers/errorToastMiddleware';
 
 export default function createStoreWithMiddleware(initialState, history) {
-  const middleware = [environment.isDevelopment ? reduxFreeze : null, thunk, routerMiddleware(history)].filter(Boolean);
+  const middleware = [environment.isDevelopment ? reduxFreeze : null, thunk, routerMiddleware(history), errorToastMiddleware()].filter(Boolean);
 
   const persistConfig = {
     key: 'root',
